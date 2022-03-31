@@ -1,0 +1,3 @@
+WorkflowError in line 1 of /gpfs/fs1/home/kh455/snakemake-tutorial/Snakefile:
+Workflow defines configfile config.yaml but it is not present or accessible.
+  File "/gpfs/fs1/home/kh455/snakemake-tutorial/Snakefile", line 1, in <module>

@@ -1,0 +1,87 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 10
+Rules claiming more threads will be scaled down.
+Job stats:
+job                       count    min threads    max threads
+----------------------  -------  -------------  -------------
+all                           1              1              1
+call_haplotypes               1              1              1
+censor_haplotypes             1              1              1
+clean_sequencing_reads        1              1              1
+organize_folders              1              1              1
+total                         5              1              1
+
+Select jobs to execute...
+
+[Thu Mar 24 13:30:04 2022]
+rule clean_sequencing_reads:
+    input: refs/AMA/AMA.fasta, raw_reads/1, raw_reads/2, adapters/forwardPrimers.fasta, adapters/reversePrimers.fasta
+    output: out/fastq/AMA/1, out/fastq/AMA/2
+    jobid: 1
+    priority: 10
+    resources: tmpdir=/tmp
+
+[Thu Mar 24 13:34:44 2022]
+Finished job 1.
+1 of 5 steps (20%) done
+Select jobs to execute...
+
+[Thu Mar 24 13:34:44 2022]
+rule organize_folders:
+    input: out/fastq/AMA/1, out/fastq/AMA/2
+    output: out/fastq/AMA/all_samples
+    jobid: 2
+    priority: 20
+    resources: tmpdir=/tmp
+
+[Thu Mar 24 13:34:44 2022]
+Finished job 2.
+2 of 5 steps (40%) done
+Select jobs to execute...
+
+[Thu Mar 24 13:34:44 2022]
+rule call_haplotypes:
+    input: out/fastq/AMA/all_samples
+    output: out/haplotype_output/AMA_trimAndFilterTable, out/haplotype_output/AMA_haplotypes.rds, out/haplotype_output/AMA_trackReadsThroughPipeline.csv
+    jobid: 3
+    priority: 30
+    resources: tmpdir=/tmp
+
+[Thu Mar 24 13:35:42 2022]
+Finished job 3.
+3 of 5 steps (60%) done
+Select jobs to execute...
+
+[Thu Mar 24 13:35:42 2022]
+rule censor_haplotypes:
+    input: out/haplotype_output/AMA_haplotypes.rds
+    output: out/haplotype_output/AMA_snps_between_haps_within_samples.fasta, out/haplotype_output/AMA_uniqueSeqs.fasta, out/haplotype_output/AMA_snp_table.fasta
+    jobid: 4
+    priority: 40
+    resources: tmpdir=/tmp
+
+[Thu Mar 24 13:35:55 2022]
+Error in rule censor_haplotypes:
+    jobid: 4
+    output: out/haplotype_output/AMA_snps_between_haps_within_samples.fasta, out/haplotype_output/AMA_uniqueSeqs.fasta, out/haplotype_output/AMA_snp_table.fasta
+
+RuleException:
+CalledProcessError in line 86 of /gpfs/fs1/home/kh455/snakemake-tutorial/Snakefile:
+Command 'set -euo pipefail;  Rscript --vanilla /gpfs/fs1/home/kh455/snakemake-tutorial/.snakemake/scripts/tmp77yk05au.haplotype_censoring.R' returned non-zero exit status 1.
+  File "/gpfs/fs1/home/kh455/snakemake-tutorial/Snakefile", line 86, in __rule_censor_haplotypes
+  File "/home/kh455/miniconda3/envs/haplotype_calling/lib/python3.8/concurrent/futures/thread.py", line 57, in run
+Removing output files of failed job censor_haplotypes since they might be corrupted:
+out/haplotype_output/AMA_snps_between_haps_within_samples.fasta, out/haplotype_output/AMA_uniqueSeqs.fasta, out/haplotype_output/AMA_snp_table.fasta
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+The code used to generate one or several output files has changed:
+    To inspect which output files have changes, run 'snakemake --list-code-changes'.
+    To trigger a re-run, use 'snakemake -R $(snakemake --list-code-changes)'.
+The input used to generate one or several output files has changed:
+    To inspect which output files have changes, run 'snakemake --list-input-changes'.
+    To trigger a re-run, use 'snakemake -R $(snakemake --list-input-changes)'.
+The params used to generate one or several output files has changed:
+    To inspect which output files have changes, run 'snakemake --list-params-changes'.
+    To trigger a re-run, use 'snakemake -R $(snakemake --list-params-changes)'.
+Complete log: /gpfs/fs1/home/kh455/snakemake-tutorial/.snakemake/log/2022-03-24T133002.512808.snakemake.log

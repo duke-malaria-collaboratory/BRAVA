@@ -1,0 +1,4 @@
+Building DAG of jobs...
+MissingInputException in line 21 of /gpfs/fs1/home/kh455/snakemake-tutorial/Snakefile:
+Missing input files for rule clean_sequencing_reads:
+refs/CSP, AMA/CSP, AMA.fasta

@@ -1,0 +1,14 @@
+#Summary
+#Generated on	Thu Mar 03 13:47:45 EST 2022
+#Version	5
+chroms	1
+bases	16344
+defined	344
+undefined	16000
+contigs	1
+scaffolds	1
+interpad	300
+source	/gpfs/fs1/home/kh455/snakemake-tutorial/ref/genome/1/merged_ref_64917.fa.gz
+bytes	260
+last modified	1644950696807
+scafprefixes	true

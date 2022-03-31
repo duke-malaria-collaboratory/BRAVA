@@ -1,0 +1,3 @@
+WildcardError in line 18 of /gpfs/fs1/home/kh455/snakemake-tutorial/Snakefile:
+No values given for wildcard 'OUT'.
+  File "/gpfs/fs1/home/kh455/snakemake-tutorial/Snakefile", line 18, in <module>

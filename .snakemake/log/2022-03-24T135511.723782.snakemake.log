@@ -1,0 +1,45 @@
+Building DAG of jobs...
+The code used to generate one or several output files has changed:
+    To inspect which output files have changes, run 'snakemake --list-code-changes'.
+    To trigger a re-run, use 'snakemake -R $(snakemake --list-code-changes)'.
+The input used to generate one or several output files has changed:
+    To inspect which output files have changes, run 'snakemake --list-input-changes'.
+    To trigger a re-run, use 'snakemake -R $(snakemake --list-input-changes)'.
+The params used to generate one or several output files has changed:
+    To inspect which output files have changes, run 'snakemake --list-params-changes'.
+    To trigger a re-run, use 'snakemake -R $(snakemake --list-params-changes)'.
+Using shell: /usr/bin/bash
+Provided cores: 10
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count    min threads    max threads
+-----------------  -------  -------------  -------------
+all                      1              1              1
+censor_haplotypes        1              1              1
+total                    2              1              1
+
+Select jobs to execute...
+
+[Thu Mar 24 13:55:12 2022]
+rule censor_haplotypes:
+    input: out/haplotype_output/AMA_haplotypes.rds
+    output: out/haplotype_output/AMA_snps_between_haps_within_samples.fasta, out/haplotype_output/AMA_uniqueSeqs.fasta, out/haplotype_output/AMA_snp_table.fasta
+    jobid: 4
+    priority: 40
+    resources: tmpdir=/tmp
+
+[Thu Mar 24 13:55:32 2022]
+Finished job 4.
+1 of 2 steps (50%) done
+Select jobs to execute...
+
+[Thu Mar 24 13:55:32 2022]
+localrule all:
+    input: out/fastq/AMA/1, out/fastq/AMA/all_samples, out/haplotype_output/AMA_trimAndFilterTable, out/haplotype_output/AMA_snp_table.fasta
+    jobid: 0
+    resources: tmpdir=/tmp
+
+[Thu Mar 24 13:55:32 2022]
+Finished job 0.
+2 of 2 steps (100%) done
+Complete log: /gpfs/fs1/home/kh455/snakemake-tutorial/.snakemake/log/2022-03-24T135511.723782.snakemake.log

@@ -1,0 +1,5 @@
+Building DAG of jobs...
+ChildIOException:
+File/directory is a child to another output:
+('/gpfs/fs1/home/kh455/snakemake-tutorial/out/fastq', clean_sequencing_reads)
+('/gpfs/fs1/home/kh455/snakemake-tutorial/out/fastq/AMA/all_samples', organize_folders)

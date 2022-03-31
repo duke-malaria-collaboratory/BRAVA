@@ -1,0 +1,32 @@
+Building DAG of jobs...
+The code used to generate one or several output files has changed:
+    To inspect which output files have changes, run 'snakemake --list-code-changes'.
+    To trigger a re-run, use 'snakemake -R $(snakemake --list-code-changes)'.
+The input used to generate one or several output files has changed:
+    To inspect which output files have changes, run 'snakemake --list-input-changes'.
+    To trigger a re-run, use 'snakemake -R $(snakemake --list-input-changes)'.
+The params used to generate one or several output files has changed:
+    To inspect which output files have changes, run 'snakemake --list-params-changes'.
+    To trigger a re-run, use 'snakemake -R $(snakemake --list-params-changes)'.
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                count    min threads    max threads
+---------------  -------  -------------  -------------
+call_haplotypes        1              1              1
+total                  1              1              1
+
+Select jobs to execute...
+
+[Tue Mar  1 14:31:26 2022]
+rule call_haplotypes:
+    input: scripts/step2a_dada2_ama.R
+    output: out/haplotype_output/AMA_trimAndFilterTable, out/haplotype_output/AMA_haplotypes.rds, out/haplotype_output/AMA_trackReadsThroughPipeline.csv
+    jobid: 0
+    resources: tmpdir=/tmp
+
+[Tue Mar  1 14:32:21 2022]
+Finished job 0.
+1 of 1 steps (100%) done
+Complete log: /gpfs/fs1/home/kh455/snakemake-tutorial/.snakemake/log/2022-03-01T143124.488072.snakemake.log

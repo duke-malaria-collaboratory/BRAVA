@@ -1,0 +1,13 @@
+ncores: 4
+target: AMA
+
+# Default pathnames, change if needed
+refs: refs
+pair1: raw_reads/1
+pair2: raw_reads/2
+forward: adapters/forwardPrimers
+rev: adapters/reversePrimers
+out: out
+
+# haplotype_censoring.R
+haplotype_length: 300 # length of the majority of haplotypes - AMA 300 bp, CSP 288 bp

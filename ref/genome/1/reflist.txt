@@ -1,0 +1,1 @@
+/gpfs/fs1/home/kh455/snakemake-tutorial/refs/AMA/AMA.fasta

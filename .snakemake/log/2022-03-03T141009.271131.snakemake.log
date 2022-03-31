@@ -1,0 +1,22 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                 count    min threads    max threads
+----------------  -------  -------------  -------------
+organize_folders        1              1              1
+total                   1              1              1
+
+Select jobs to execute...
+
+[Thu Mar  3 14:10:09 2022]
+rule organize_folders:
+    jobid: 0
+    priority: 20
+    resources: tmpdir=/tmp
+
+[Thu Mar  3 14:10:09 2022]
+Finished job 0.
+1 of 1 steps (100%) done
+Complete log: /gpfs/fs1/home/kh455/snakemake-tutorial/.snakemake/log/2022-03-03T141009.271131.snakemake.log

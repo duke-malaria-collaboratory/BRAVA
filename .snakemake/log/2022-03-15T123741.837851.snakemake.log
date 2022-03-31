@@ -1,0 +1,73 @@
+Building DAG of jobs...
+The code used to generate one or several output files has changed:
+    To inspect which output files have changes, run 'snakemake --list-code-changes'.
+    To trigger a re-run, use 'snakemake -R $(snakemake --list-code-changes)'.
+The input used to generate one or several output files has changed:
+    To inspect which output files have changes, run 'snakemake --list-input-changes'.
+    To trigger a re-run, use 'snakemake -R $(snakemake --list-input-changes)'.
+The params used to generate one or several output files has changed:
+    To inspect which output files have changes, run 'snakemake --list-params-changes'.
+    To trigger a re-run, use 'snakemake -R $(snakemake --list-params-changes)'.
+Using shell: /usr/bin/bash
+Provided cores: 10
+Rules claiming more threads will be scaled down.
+Job stats:
+job                       count    min threads    max threads
+----------------------  -------  -------------  -------------
+all                           1              1              1
+call_haplotypes               1              1              1
+clean_sequencing_reads        1              1              1
+organize_folders              1              1              1
+total                         4              1              1
+
+Select jobs to execute...
+
+[Tue Mar 15 12:37:42 2022]
+rule clean_sequencing_reads:
+    input: refs/AMA/AMA.fasta, raw_reads/1, raw_reads/2, adapters/forwardPrimers.fasta, adapters/reversePrimers.fasta
+    output: out/fastq/AMA/1, out/fastq/AMA/2
+    jobid: 1
+    priority: 10
+    resources: tmpdir=/tmp
+
+[Tue Mar 15 12:42:48 2022]
+Finished job 1.
+1 of 4 steps (25%) done
+Select jobs to execute...
+
+[Tue Mar 15 12:42:48 2022]
+rule organize_folders:
+    input: out/fastq/AMA/1, out/fastq/AMA/2
+    output: out/fastq/AMA/all_samples
+    jobid: 2
+    priority: 20
+    resources: tmpdir=/tmp
+
+[Tue Mar 15 12:42:48 2022]
+Finished job 2.
+2 of 4 steps (50%) done
+Select jobs to execute...
+
+[Tue Mar 15 12:42:48 2022]
+rule call_haplotypes:
+    input: out/fastq/AMA/all_samples
+    output: out/haplotype_output/AMA_trimAndFilterTable, out/haplotype_output/AMA_haplotypes.rds, out/haplotype_output/AMA_trackReadsThroughPipeline.csv
+    jobid: 3
+    priority: 30
+    resources: tmpdir=/tmp
+
+[Tue Mar 15 12:44:08 2022]
+Finished job 3.
+3 of 4 steps (75%) done
+Select jobs to execute...
+
+[Tue Mar 15 12:44:08 2022]
+localrule all:
+    input: out/fastq/AMA/1, out/fastq/AMA/all_samples, out/haplotype_output/AMA_trimAndFilterTable
+    jobid: 0
+    resources: tmpdir=/tmp
+
+[Tue Mar 15 12:44:08 2022]
+Finished job 0.
+4 of 4 steps (100%) done
+Complete log: /gpfs/fs1/home/kh455/snakemake-tutorial/.snakemake/log/2022-03-15T123741.837851.snakemake.log

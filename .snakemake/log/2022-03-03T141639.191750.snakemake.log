@@ -1,0 +1,27 @@
+Building DAG of jobs...
+The input used to generate one or several output files has changed:
+    To inspect which output files have changes, run 'snakemake --list-input-changes'.
+    To trigger a re-run, use 'snakemake -R $(snakemake --list-input-changes)'.
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                count    min threads    max threads
+---------------  -------  -------------  -------------
+call_haplotypes        1              1              1
+total                  1              1              1
+
+Select jobs to execute...
+
+[Thu Mar  3 14:16:39 2022]
+rule call_haplotypes:
+    input: out/fastq/AMA/all_samples
+    output: out/haplotype_output/AMA_trimAndFilterTable, out/haplotype_output/AMA_haplotypes.rds, out/haplotype_output/AMA_trackReadsThroughPipeline.csv
+    jobid: 0
+    priority: 30
+    resources: tmpdir=/tmp
+
+[Thu Mar  3 14:17:40 2022]
+Finished job 0.
+1 of 1 steps (100%) done
+Complete log: /gpfs/fs1/home/kh455/snakemake-tutorial/.snakemake/log/2022-03-03T141639.191750.snakemake.log

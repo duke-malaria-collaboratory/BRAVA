@@ -1,0 +1,3 @@
+KeyError in line 5 of /gpfs/fs1/home/kh455/snakemake-tutorial/Snakefile:
+'haplotype_length'
+  File "/gpfs/fs1/home/kh455/snakemake-tutorial/Snakefile", line 5, in <module>

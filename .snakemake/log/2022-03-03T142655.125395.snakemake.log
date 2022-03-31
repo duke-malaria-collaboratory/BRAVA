@@ -1,0 +1,3 @@
+WildcardError in line 29 of /gpfs/fs1/home/kh455/snakemake-tutorial/Snakefile:
+No values given for wildcard 'sample'.
+  File "/gpfs/fs1/home/kh455/snakemake-tutorial/Snakefile", line 29, in <module>

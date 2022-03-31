@@ -1,0 +1,51 @@
+Building DAG of jobs...
+The code used to generate one or several output files has changed:
+    To inspect which output files have changes, run 'snakemake --list-code-changes'.
+    To trigger a re-run, use 'snakemake -R $(snakemake --list-code-changes)'.
+The input used to generate one or several output files has changed:
+    To inspect which output files have changes, run 'snakemake --list-input-changes'.
+    To trigger a re-run, use 'snakemake -R $(snakemake --list-input-changes)'.
+The params used to generate one or several output files has changed:
+    To inspect which output files have changes, run 'snakemake --list-params-changes'.
+    To trigger a re-run, use 'snakemake -R $(snakemake --list-params-changes)'.
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                 count    min threads    max threads
+----------------  -------  -------------  -------------
+organize_folders        1              1              1
+total                   1              1              1
+
+Select jobs to execute...
+
+[Thu Mar  3 14:10:47 2022]
+rule organize_folders:
+    output: out/fastq/AMA/all_samples
+    jobid: 0
+    priority: 20
+    resources: tmpdir=/tmp
+
+[Thu Mar  3 14:10:47 2022]
+Error in rule organize_folders:
+    jobid: 0
+    output: out/fastq/AMA/all_samples
+    shell:
+        mkdir out/fastq/AMA/all_samples && cp out/fastq/AMA/1/*.fastq.gz out/fastq/AMA/all_samples && cp out/fastq/AMA/2/*.fastq.gz out/fastq/AMA/all_samples && mkdir out/haplotype_output
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Removing output files of failed job organize_folders since they might be corrupted:
+out/fastq/AMA/all_samples
+Skipped removing non-empty directory out/fastq/AMA/all_samples
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+The code used to generate one or several output files has changed:
+    To inspect which output files have changes, run 'snakemake --list-code-changes'.
+    To trigger a re-run, use 'snakemake -R $(snakemake --list-code-changes)'.
+The input used to generate one or several output files has changed:
+    To inspect which output files have changes, run 'snakemake --list-input-changes'.
+    To trigger a re-run, use 'snakemake -R $(snakemake --list-input-changes)'.
+The params used to generate one or several output files has changed:
+    To inspect which output files have changes, run 'snakemake --list-params-changes'.
+    To trigger a re-run, use 'snakemake -R $(snakemake --list-params-changes)'.
+Complete log: /gpfs/fs1/home/kh455/snakemake-tutorial/.snakemake/log/2022-03-03T141046.674300.snakemake.log

@@ -1,0 +1,4 @@
+TypeError in line 60 of /gpfs/fs1/home/kh455/snakemake-tutorial/Snakefile:
+'str' object does not support item assignment
+  File "/gpfs/fs1/home/kh455/snakemake-tutorial/Snakefile", line 73, in <module>
+  File "/gpfs/fs1/home/kh455/snakemake-tutorial/Snakefile", line 60, in returnLower

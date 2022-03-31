@@ -1,0 +1,605 @@
+
+The following have been reloaded with a version change:
+  1) jdk/1.7.0_60-fasrc01 => jdk/9-gcb01
+
+Provided cores: 1
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	clean_sequencing_reads
+	1
+rule clean_sequencing_reads:
+    input: raw_reads/1, adapters/forwardPrimers.fasta, refs/AMA/AMA.fasta, adapters/reversePrimers.fasta, raw_reads/2
+    output: out
+
+Started analysis of BF10_S10_L001_R1_001.fastq.gz
+Approx 5% complete for BF10_S10_L001_R1_001.fastq.gz
+Approx 10% complete for BF10_S10_L001_R1_001.fastq.gz
+Approx 15% complete for BF10_S10_L001_R1_001.fastq.gz
+Approx 20% complete for BF10_S10_L001_R1_001.fastq.gz
+Approx 25% complete for BF10_S10_L001_R1_001.fastq.gz
+Approx 30% complete for BF10_S10_L001_R1_001.fastq.gz
+Approx 35% complete for BF10_S10_L001_R1_001.fastq.gz
+Approx 40% complete for BF10_S10_L001_R1_001.fastq.gz
+Approx 45% complete for BF10_S10_L001_R1_001.fastq.gz
+Approx 50% complete for BF10_S10_L001_R1_001.fastq.gz
+Approx 55% complete for BF10_S10_L001_R1_001.fastq.gz
+Approx 60% complete for BF10_S10_L001_R1_001.fastq.gz
+Approx 65% complete for BF10_S10_L001_R1_001.fastq.gz
+Approx 70% complete for BF10_S10_L001_R1_001.fastq.gz
+Approx 75% complete for BF10_S10_L001_R1_001.fastq.gz
+Approx 80% complete for BF10_S10_L001_R1_001.fastq.gz
+Approx 85% complete for BF10_S10_L001_R1_001.fastq.gz
+Approx 90% complete for BF10_S10_L001_R1_001.fastq.gz
+Approx 95% complete for BF10_S10_L001_R1_001.fastq.gz
+Started analysis of BF10_S10_L001_R2_001.fastq.gz
+Approx 5% complete for BF10_S10_L001_R2_001.fastq.gz
+Approx 10% complete for BF10_S10_L001_R2_001.fastq.gz
+Approx 15% complete for BF10_S10_L001_R2_001.fastq.gz
+Approx 20% complete for BF10_S10_L001_R2_001.fastq.gz
+Approx 25% complete for BF10_S10_L001_R2_001.fastq.gz
+Approx 30% complete for BF10_S10_L001_R2_001.fastq.gz
+Approx 35% complete for BF10_S10_L001_R2_001.fastq.gz
+Approx 40% complete for BF10_S10_L001_R2_001.fastq.gz
+Approx 45% complete for BF10_S10_L001_R2_001.fastq.gz
+Approx 50% complete for BF10_S10_L001_R2_001.fastq.gz
+Approx 55% complete for BF10_S10_L001_R2_001.fastq.gz
+Approx 60% complete for BF10_S10_L001_R2_001.fastq.gz
+Approx 65% complete for BF10_S10_L001_R2_001.fastq.gz
+Approx 70% complete for BF10_S10_L001_R2_001.fastq.gz
+Approx 75% complete for BF10_S10_L001_R2_001.fastq.gz
+Approx 80% complete for BF10_S10_L001_R2_001.fastq.gz
+Approx 85% complete for BF10_S10_L001_R2_001.fastq.gz
+Approx 90% complete for BF10_S10_L001_R2_001.fastq.gz
+Approx 95% complete for BF10_S10_L001_R2_001.fastq.gz
+Started analysis of BF1_S1_L001_R1_001.fastq.gz
+Approx 5% complete for BF1_S1_L001_R1_001.fastq.gz
+Approx 10% complete for BF1_S1_L001_R1_001.fastq.gz
+Approx 15% complete for BF1_S1_L001_R1_001.fastq.gz
+Approx 20% complete for BF1_S1_L001_R1_001.fastq.gz
+Approx 25% complete for BF1_S1_L001_R1_001.fastq.gz
+Approx 30% complete for BF1_S1_L001_R1_001.fastq.gz
+Approx 35% complete for BF1_S1_L001_R1_001.fastq.gz
+Approx 40% complete for BF1_S1_L001_R1_001.fastq.gz
+Approx 45% complete for BF1_S1_L001_R1_001.fastq.gz
+Approx 50% complete for BF1_S1_L001_R1_001.fastq.gz
+Approx 55% complete for BF1_S1_L001_R1_001.fastq.gz
+Approx 60% complete for BF1_S1_L001_R1_001.fastq.gz
+Approx 65% complete for BF1_S1_L001_R1_001.fastq.gz
+Approx 70% complete for BF1_S1_L001_R1_001.fastq.gz
+Approx 75% complete for BF1_S1_L001_R1_001.fastq.gz
+Approx 80% complete for BF1_S1_L001_R1_001.fastq.gz
+Approx 85% complete for BF1_S1_L001_R1_001.fastq.gz
+Approx 90% complete for BF1_S1_L001_R1_001.fastq.gz
+Approx 95% complete for BF1_S1_L001_R1_001.fastq.gz
+Started analysis of BF1_S1_L001_R2_001.fastq.gz
+Approx 5% complete for BF1_S1_L001_R2_001.fastq.gz
+Approx 10% complete for BF1_S1_L001_R2_001.fastq.gz
+Approx 15% complete for BF1_S1_L001_R2_001.fastq.gz
+Approx 20% complete for BF1_S1_L001_R2_001.fastq.gz
+Approx 25% complete for BF1_S1_L001_R2_001.fastq.gz
+Approx 30% complete for BF1_S1_L001_R2_001.fastq.gz
+Approx 35% complete for BF1_S1_L001_R2_001.fastq.gz
+Approx 40% complete for BF1_S1_L001_R2_001.fastq.gz
+Approx 45% complete for BF1_S1_L001_R2_001.fastq.gz
+Approx 50% complete for BF1_S1_L001_R2_001.fastq.gz
+Approx 55% complete for BF1_S1_L001_R2_001.fastq.gz
+Approx 60% complete for BF1_S1_L001_R2_001.fastq.gz
+Approx 65% complete for BF1_S1_L001_R2_001.fastq.gz
+Approx 70% complete for BF1_S1_L001_R2_001.fastq.gz
+Approx 75% complete for BF1_S1_L001_R2_001.fastq.gz
+Approx 80% complete for BF1_S1_L001_R2_001.fastq.gz
+Approx 85% complete for BF1_S1_L001_R2_001.fastq.gz
+Approx 90% complete for BF1_S1_L001_R2_001.fastq.gz
+Approx 95% complete for BF1_S1_L001_R2_001.fastq.gz
+Started analysis of BF2_S2_L001_R1_001.fastq.gz
+Approx 5% complete for BF2_S2_L001_R1_001.fastq.gz
+Approx 10% complete for BF2_S2_L001_R1_001.fastq.gz
+Approx 15% complete for BF2_S2_L001_R1_001.fastq.gz
+Approx 20% complete for BF2_S2_L001_R1_001.fastq.gz
+Approx 25% complete for BF2_S2_L001_R1_001.fastq.gz
+Approx 30% complete for BF2_S2_L001_R1_001.fastq.gz
+Approx 35% complete for BF2_S2_L001_R1_001.fastq.gz
+Approx 40% complete for BF2_S2_L001_R1_001.fastq.gz
+Approx 45% complete for BF2_S2_L001_R1_001.fastq.gz
+Approx 50% complete for BF2_S2_L001_R1_001.fastq.gz
+Approx 55% complete for BF2_S2_L001_R1_001.fastq.gz
+Approx 60% complete for BF2_S2_L001_R1_001.fastq.gz
+Approx 65% complete for BF2_S2_L001_R1_001.fastq.gz
+Approx 70% complete for BF2_S2_L001_R1_001.fastq.gz
+Approx 75% complete for BF2_S2_L001_R1_001.fastq.gz
+Approx 80% complete for BF2_S2_L001_R1_001.fastq.gz
+Approx 85% complete for BF2_S2_L001_R1_001.fastq.gz
+Approx 90% complete for BF2_S2_L001_R1_001.fastq.gz
+Approx 95% complete for BF2_S2_L001_R1_001.fastq.gz
+Started analysis of BF2_S2_L001_R2_001.fastq.gz
+Approx 5% complete for BF2_S2_L001_R2_001.fastq.gz
+Approx 10% complete for BF2_S2_L001_R2_001.fastq.gz
+Approx 15% complete for BF2_S2_L001_R2_001.fastq.gz
+Approx 20% complete for BF2_S2_L001_R2_001.fastq.gz
+Approx 25% complete for BF2_S2_L001_R2_001.fastq.gz
+Approx 30% complete for BF2_S2_L001_R2_001.fastq.gz
+Approx 35% complete for BF2_S2_L001_R2_001.fastq.gz
+Approx 40% complete for BF2_S2_L001_R2_001.fastq.gz
+Approx 45% complete for BF2_S2_L001_R2_001.fastq.gz
+Approx 50% complete for BF2_S2_L001_R2_001.fastq.gz
+Approx 55% complete for BF2_S2_L001_R2_001.fastq.gz
+Approx 60% complete for BF2_S2_L001_R2_001.fastq.gz
+Approx 65% complete for BF2_S2_L001_R2_001.fastq.gz
+Approx 70% complete for BF2_S2_L001_R2_001.fastq.gz
+Approx 75% complete for BF2_S2_L001_R2_001.fastq.gz
+Approx 80% complete for BF2_S2_L001_R2_001.fastq.gz
+Approx 85% complete for BF2_S2_L001_R2_001.fastq.gz
+Approx 90% complete for BF2_S2_L001_R2_001.fastq.gz
+Approx 95% complete for BF2_S2_L001_R2_001.fastq.gz
+Started analysis of BF3_S3_L001_R1_001.fastq.gz
+Approx 5% complete for BF3_S3_L001_R1_001.fastq.gz
+Approx 10% complete for BF3_S3_L001_R1_001.fastq.gz
+Approx 15% complete for BF3_S3_L001_R1_001.fastq.gz
+Approx 20% complete for BF3_S3_L001_R1_001.fastq.gz
+Approx 25% complete for BF3_S3_L001_R1_001.fastq.gz
+Approx 30% complete for BF3_S3_L001_R1_001.fastq.gz
+Approx 35% complete for BF3_S3_L001_R1_001.fastq.gz
+Approx 40% complete for BF3_S3_L001_R1_001.fastq.gz
+Approx 45% complete for BF3_S3_L001_R1_001.fastq.gz
+Approx 50% complete for BF3_S3_L001_R1_001.fastq.gz
+Approx 55% complete for BF3_S3_L001_R1_001.fastq.gz
+Approx 60% complete for BF3_S3_L001_R1_001.fastq.gz
+Approx 65% complete for BF3_S3_L001_R1_001.fastq.gz
+Approx 70% complete for BF3_S3_L001_R1_001.fastq.gz
+Approx 75% complete for BF3_S3_L001_R1_001.fastq.gz
+Approx 80% complete for BF3_S3_L001_R1_001.fastq.gz
+Approx 85% complete for BF3_S3_L001_R1_001.fastq.gz
+Approx 90% complete for BF3_S3_L001_R1_001.fastq.gz
+Approx 95% complete for BF3_S3_L001_R1_001.fastq.gz
+Started analysis of BF3_S3_L001_R2_001.fastq.gz
+Approx 5% complete for BF3_S3_L001_R2_001.fastq.gz
+Approx 10% complete for BF3_S3_L001_R2_001.fastq.gz
+Approx 15% complete for BF3_S3_L001_R2_001.fastq.gz
+Approx 20% complete for BF3_S3_L001_R2_001.fastq.gz
+Approx 25% complete for BF3_S3_L001_R2_001.fastq.gz
+Approx 30% complete for BF3_S3_L001_R2_001.fastq.gz
+Approx 35% complete for BF3_S3_L001_R2_001.fastq.gz
+Approx 40% complete for BF3_S3_L001_R2_001.fastq.gz
+Approx 45% complete for BF3_S3_L001_R2_001.fastq.gz
+Approx 50% complete for BF3_S3_L001_R2_001.fastq.gz
+Approx 55% complete for BF3_S3_L001_R2_001.fastq.gz
+Approx 60% complete for BF3_S3_L001_R2_001.fastq.gz
+Approx 65% complete for BF3_S3_L001_R2_001.fastq.gz
+Approx 70% complete for BF3_S3_L001_R2_001.fastq.gz
+Approx 75% complete for BF3_S3_L001_R2_001.fastq.gz
+Approx 80% complete for BF3_S3_L001_R2_001.fastq.gz
+Approx 85% complete for BF3_S3_L001_R2_001.fastq.gz
+Approx 90% complete for BF3_S3_L001_R2_001.fastq.gz
+Approx 95% complete for BF3_S3_L001_R2_001.fastq.gz
+Started analysis of BF4_S4_L001_R1_001.fastq.gz
+Approx 5% complete for BF4_S4_L001_R1_001.fastq.gz
+Approx 10% complete for BF4_S4_L001_R1_001.fastq.gz
+Approx 15% complete for BF4_S4_L001_R1_001.fastq.gz
+Approx 20% complete for BF4_S4_L001_R1_001.fastq.gz
+Approx 25% complete for BF4_S4_L001_R1_001.fastq.gz
+Approx 30% complete for BF4_S4_L001_R1_001.fastq.gz
+Approx 35% complete for BF4_S4_L001_R1_001.fastq.gz
+Approx 40% complete for BF4_S4_L001_R1_001.fastq.gz
+Approx 45% complete for BF4_S4_L001_R1_001.fastq.gz
+Approx 50% complete for BF4_S4_L001_R1_001.fastq.gz
+Approx 55% complete for BF4_S4_L001_R1_001.fastq.gz
+Approx 60% complete for BF4_S4_L001_R1_001.fastq.gz
+Approx 65% complete for BF4_S4_L001_R1_001.fastq.gz
+Approx 70% complete for BF4_S4_L001_R1_001.fastq.gz
+Approx 75% complete for BF4_S4_L001_R1_001.fastq.gz
+Approx 80% complete for BF4_S4_L001_R1_001.fastq.gz
+Approx 85% complete for BF4_S4_L001_R1_001.fastq.gz
+Approx 90% complete for BF4_S4_L001_R1_001.fastq.gz
+Approx 95% complete for BF4_S4_L001_R1_001.fastq.gz
+Started analysis of BF4_S4_L001_R2_001.fastq.gz
+Approx 5% complete for BF4_S4_L001_R2_001.fastq.gz
+Approx 10% complete for BF4_S4_L001_R2_001.fastq.gz
+Approx 15% complete for BF4_S4_L001_R2_001.fastq.gz
+Approx 20% complete for BF4_S4_L001_R2_001.fastq.gz
+Approx 25% complete for BF4_S4_L001_R2_001.fastq.gz
+Approx 30% complete for BF4_S4_L001_R2_001.fastq.gz
+Approx 35% complete for BF4_S4_L001_R2_001.fastq.gz
+Approx 40% complete for BF4_S4_L001_R2_001.fastq.gz
+Approx 45% complete for BF4_S4_L001_R2_001.fastq.gz
+Approx 50% complete for BF4_S4_L001_R2_001.fastq.gz
+Approx 55% complete for BF4_S4_L001_R2_001.fastq.gz
+Approx 60% complete for BF4_S4_L001_R2_001.fastq.gz
+Approx 65% complete for BF4_S4_L001_R2_001.fastq.gz
+Approx 70% complete for BF4_S4_L001_R2_001.fastq.gz
+Approx 75% complete for BF4_S4_L001_R2_001.fastq.gz
+Approx 80% complete for BF4_S4_L001_R2_001.fastq.gz
+Approx 85% complete for BF4_S4_L001_R2_001.fastq.gz
+Approx 90% complete for BF4_S4_L001_R2_001.fastq.gz
+Approx 95% complete for BF4_S4_L001_R2_001.fastq.gz
+Started analysis of BF5_S5_L001_R1_001.fastq.gz
+Approx 5% complete for BF5_S5_L001_R1_001.fastq.gz
+Approx 10% complete for BF5_S5_L001_R1_001.fastq.gz
+Approx 15% complete for BF5_S5_L001_R1_001.fastq.gz
+Approx 20% complete for BF5_S5_L001_R1_001.fastq.gz
+Approx 25% complete for BF5_S5_L001_R1_001.fastq.gz
+Approx 30% complete for BF5_S5_L001_R1_001.fastq.gz
+Approx 35% complete for BF5_S5_L001_R1_001.fastq.gz
+Approx 40% complete for BF5_S5_L001_R1_001.fastq.gz
+Approx 45% complete for BF5_S5_L001_R1_001.fastq.gz
+Approx 50% complete for BF5_S5_L001_R1_001.fastq.gz
+Approx 55% complete for BF5_S5_L001_R1_001.fastq.gz
+Approx 60% complete for BF5_S5_L001_R1_001.fastq.gz
+Approx 65% complete for BF5_S5_L001_R1_001.fastq.gz
+Approx 70% complete for BF5_S5_L001_R1_001.fastq.gz
+Approx 75% complete for BF5_S5_L001_R1_001.fastq.gz
+Approx 80% complete for BF5_S5_L001_R1_001.fastq.gz
+Approx 85% complete for BF5_S5_L001_R1_001.fastq.gz
+Approx 90% complete for BF5_S5_L001_R1_001.fastq.gz
+Approx 95% complete for BF5_S5_L001_R1_001.fastq.gz
+Started analysis of BF5_S5_L001_R2_001.fastq.gz
+Approx 5% complete for BF5_S5_L001_R2_001.fastq.gz
+Approx 10% complete for BF5_S5_L001_R2_001.fastq.gz
+Approx 15% complete for BF5_S5_L001_R2_001.fastq.gz
+Approx 20% complete for BF5_S5_L001_R2_001.fastq.gz
+Approx 25% complete for BF5_S5_L001_R2_001.fastq.gz
+Approx 30% complete for BF5_S5_L001_R2_001.fastq.gz
+Approx 35% complete for BF5_S5_L001_R2_001.fastq.gz
+Approx 40% complete for BF5_S5_L001_R2_001.fastq.gz
+Approx 45% complete for BF5_S5_L001_R2_001.fastq.gz
+Approx 50% complete for BF5_S5_L001_R2_001.fastq.gz
+Approx 55% complete for BF5_S5_L001_R2_001.fastq.gz
+Approx 60% complete for BF5_S5_L001_R2_001.fastq.gz
+Approx 65% complete for BF5_S5_L001_R2_001.fastq.gz
+Approx 70% complete for BF5_S5_L001_R2_001.fastq.gz
+Approx 75% complete for BF5_S5_L001_R2_001.fastq.gz
+Approx 80% complete for BF5_S5_L001_R2_001.fastq.gz
+Approx 85% complete for BF5_S5_L001_R2_001.fastq.gz
+Approx 90% complete for BF5_S5_L001_R2_001.fastq.gz
+Approx 95% complete for BF5_S5_L001_R2_001.fastq.gz
+Started analysis of BF6_S6_L001_R1_001.fastq.gz
+Approx 5% complete for BF6_S6_L001_R1_001.fastq.gz
+Approx 10% complete for BF6_S6_L001_R1_001.fastq.gz
+Approx 15% complete for BF6_S6_L001_R1_001.fastq.gz
+Approx 20% complete for BF6_S6_L001_R1_001.fastq.gz
+Approx 25% complete for BF6_S6_L001_R1_001.fastq.gz
+Approx 30% complete for BF6_S6_L001_R1_001.fastq.gz
+Approx 35% complete for BF6_S6_L001_R1_001.fastq.gz
+Approx 40% complete for BF6_S6_L001_R1_001.fastq.gz
+Approx 45% complete for BF6_S6_L001_R1_001.fastq.gz
+Approx 50% complete for BF6_S6_L001_R1_001.fastq.gz
+Approx 55% complete for BF6_S6_L001_R1_001.fastq.gz
+Approx 60% complete for BF6_S6_L001_R1_001.fastq.gz
+Approx 65% complete for BF6_S6_L001_R1_001.fastq.gz
+Approx 70% complete for BF6_S6_L001_R1_001.fastq.gz
+Approx 75% complete for BF6_S6_L001_R1_001.fastq.gz
+Approx 80% complete for BF6_S6_L001_R1_001.fastq.gz
+Approx 85% complete for BF6_S6_L001_R1_001.fastq.gz
+Approx 90% complete for BF6_S6_L001_R1_001.fastq.gz
+Approx 95% complete for BF6_S6_L001_R1_001.fastq.gz
+Started analysis of BF6_S6_L001_R2_001.fastq.gz
+Approx 5% complete for BF6_S6_L001_R2_001.fastq.gz
+Approx 10% complete for BF6_S6_L001_R2_001.fastq.gz
+Approx 15% complete for BF6_S6_L001_R2_001.fastq.gz
+Approx 20% complete for BF6_S6_L001_R2_001.fastq.gz
+Approx 25% complete for BF6_S6_L001_R2_001.fastq.gz
+Approx 30% complete for BF6_S6_L001_R2_001.fastq.gz
+Approx 35% complete for BF6_S6_L001_R2_001.fastq.gz
+Approx 40% complete for BF6_S6_L001_R2_001.fastq.gz
+Approx 45% complete for BF6_S6_L001_R2_001.fastq.gz
+Approx 50% complete for BF6_S6_L001_R2_001.fastq.gz
+Approx 55% complete for BF6_S6_L001_R2_001.fastq.gz
+Approx 60% complete for BF6_S6_L001_R2_001.fastq.gz
+Approx 65% complete for BF6_S6_L001_R2_001.fastq.gz
+Approx 70% complete for BF6_S6_L001_R2_001.fastq.gz
+Approx 75% complete for BF6_S6_L001_R2_001.fastq.gz
+Approx 80% complete for BF6_S6_L001_R2_001.fastq.gz
+Approx 85% complete for BF6_S6_L001_R2_001.fastq.gz
+Approx 90% complete for BF6_S6_L001_R2_001.fastq.gz
+Approx 95% complete for BF6_S6_L001_R2_001.fastq.gz
+Started analysis of BF7_S7_L001_R1_001.fastq.gz
+Approx 5% complete for BF7_S7_L001_R1_001.fastq.gz
+Approx 10% complete for BF7_S7_L001_R1_001.fastq.gz
+Approx 15% complete for BF7_S7_L001_R1_001.fastq.gz
+Approx 20% complete for BF7_S7_L001_R1_001.fastq.gz
+Approx 25% complete for BF7_S7_L001_R1_001.fastq.gz
+Approx 30% complete for BF7_S7_L001_R1_001.fastq.gz
+Approx 35% complete for BF7_S7_L001_R1_001.fastq.gz
+Approx 40% complete for BF7_S7_L001_R1_001.fastq.gz
+Approx 45% complete for BF7_S7_L001_R1_001.fastq.gz
+Approx 50% complete for BF7_S7_L001_R1_001.fastq.gz
+Approx 55% complete for BF7_S7_L001_R1_001.fastq.gz
+Approx 60% complete for BF7_S7_L001_R1_001.fastq.gz
+Approx 65% complete for BF7_S7_L001_R1_001.fastq.gz
+Approx 70% complete for BF7_S7_L001_R1_001.fastq.gz
+Approx 75% complete for BF7_S7_L001_R1_001.fastq.gz
+Approx 80% complete for BF7_S7_L001_R1_001.fastq.gz
+Approx 85% complete for BF7_S7_L001_R1_001.fastq.gz
+Approx 90% complete for BF7_S7_L001_R1_001.fastq.gz
+Approx 95% complete for BF7_S7_L001_R1_001.fastq.gz
+Started analysis of BF7_S7_L001_R2_001.fastq.gz
+Approx 5% complete for BF7_S7_L001_R2_001.fastq.gz
+Approx 10% complete for BF7_S7_L001_R2_001.fastq.gz
+Approx 15% complete for BF7_S7_L001_R2_001.fastq.gz
+Approx 20% complete for BF7_S7_L001_R2_001.fastq.gz
+Approx 25% complete for BF7_S7_L001_R2_001.fastq.gz
+Approx 30% complete for BF7_S7_L001_R2_001.fastq.gz
+Approx 35% complete for BF7_S7_L001_R2_001.fastq.gz
+Approx 40% complete for BF7_S7_L001_R2_001.fastq.gz
+Approx 45% complete for BF7_S7_L001_R2_001.fastq.gz
+Approx 50% complete for BF7_S7_L001_R2_001.fastq.gz
+Approx 55% complete for BF7_S7_L001_R2_001.fastq.gz
+Approx 60% complete for BF7_S7_L001_R2_001.fastq.gz
+Approx 65% complete for BF7_S7_L001_R2_001.fastq.gz
+Approx 70% complete for BF7_S7_L001_R2_001.fastq.gz
+Approx 75% complete for BF7_S7_L001_R2_001.fastq.gz
+Approx 80% complete for BF7_S7_L001_R2_001.fastq.gz
+Approx 85% complete for BF7_S7_L001_R2_001.fastq.gz
+Approx 90% complete for BF7_S7_L001_R2_001.fastq.gz
+Approx 95% complete for BF7_S7_L001_R2_001.fastq.gz
+Started analysis of BF8_S8_L001_R1_001.fastq.gz
+Approx 5% complete for BF8_S8_L001_R1_001.fastq.gz
+Approx 10% complete for BF8_S8_L001_R1_001.fastq.gz
+Approx 15% complete for BF8_S8_L001_R1_001.fastq.gz
+Approx 20% complete for BF8_S8_L001_R1_001.fastq.gz
+Approx 25% complete for BF8_S8_L001_R1_001.fastq.gz
+Approx 30% complete for BF8_S8_L001_R1_001.fastq.gz
+Approx 35% complete for BF8_S8_L001_R1_001.fastq.gz
+Approx 40% complete for BF8_S8_L001_R1_001.fastq.gz
+Approx 45% complete for BF8_S8_L001_R1_001.fastq.gz
+Approx 50% complete for BF8_S8_L001_R1_001.fastq.gz
+Approx 55% complete for BF8_S8_L001_R1_001.fastq.gz
+Approx 60% complete for BF8_S8_L001_R1_001.fastq.gz
+Approx 65% complete for BF8_S8_L001_R1_001.fastq.gz
+Approx 70% complete for BF8_S8_L001_R1_001.fastq.gz
+Approx 75% complete for BF8_S8_L001_R1_001.fastq.gz
+Approx 80% complete for BF8_S8_L001_R1_001.fastq.gz
+Approx 85% complete for BF8_S8_L001_R1_001.fastq.gz
+Approx 90% complete for BF8_S8_L001_R1_001.fastq.gz
+Approx 95% complete for BF8_S8_L001_R1_001.fastq.gz
+Started analysis of BF8_S8_L001_R2_001.fastq.gz
+Approx 5% complete for BF8_S8_L001_R2_001.fastq.gz
+Approx 10% complete for BF8_S8_L001_R2_001.fastq.gz
+Approx 15% complete for BF8_S8_L001_R2_001.fastq.gz
+Approx 20% complete for BF8_S8_L001_R2_001.fastq.gz
+Approx 25% complete for BF8_S8_L001_R2_001.fastq.gz
+Approx 30% complete for BF8_S8_L001_R2_001.fastq.gz
+Approx 35% complete for BF8_S8_L001_R2_001.fastq.gz
+Approx 40% complete for BF8_S8_L001_R2_001.fastq.gz
+Approx 45% complete for BF8_S8_L001_R2_001.fastq.gz
+Approx 50% complete for BF8_S8_L001_R2_001.fastq.gz
+Approx 55% complete for BF8_S8_L001_R2_001.fastq.gz
+Approx 60% complete for BF8_S8_L001_R2_001.fastq.gz
+Approx 65% complete for BF8_S8_L001_R2_001.fastq.gz
+Approx 70% complete for BF8_S8_L001_R2_001.fastq.gz
+Approx 75% complete for BF8_S8_L001_R2_001.fastq.gz
+Approx 80% complete for BF8_S8_L001_R2_001.fastq.gz
+Approx 85% complete for BF8_S8_L001_R2_001.fastq.gz
+Approx 90% complete for BF8_S8_L001_R2_001.fastq.gz
+Approx 95% complete for BF8_S8_L001_R2_001.fastq.gz
+Started analysis of BF9_S9_L001_R1_001.fastq.gz
+Approx 5% complete for BF9_S9_L001_R1_001.fastq.gz
+Approx 10% complete for BF9_S9_L001_R1_001.fastq.gz
+Approx 15% complete for BF9_S9_L001_R1_001.fastq.gz
+Approx 20% complete for BF9_S9_L001_R1_001.fastq.gz
+Approx 25% complete for BF9_S9_L001_R1_001.fastq.gz
+Approx 30% complete for BF9_S9_L001_R1_001.fastq.gz
+Approx 35% complete for BF9_S9_L001_R1_001.fastq.gz
+Approx 40% complete for BF9_S9_L001_R1_001.fastq.gz
+Approx 45% complete for BF9_S9_L001_R1_001.fastq.gz
+Approx 50% complete for BF9_S9_L001_R1_001.fastq.gz
+Approx 55% complete for BF9_S9_L001_R1_001.fastq.gz
+Approx 60% complete for BF9_S9_L001_R1_001.fastq.gz
+Approx 65% complete for BF9_S9_L001_R1_001.fastq.gz
+Approx 70% complete for BF9_S9_L001_R1_001.fastq.gz
+Approx 75% complete for BF9_S9_L001_R1_001.fastq.gz
+Approx 80% complete for BF9_S9_L001_R1_001.fastq.gz
+Approx 85% complete for BF9_S9_L001_R1_001.fastq.gz
+Approx 90% complete for BF9_S9_L001_R1_001.fastq.gz
+Approx 95% complete for BF9_S9_L001_R1_001.fastq.gz
+Started analysis of BF9_S9_L001_R2_001.fastq.gz
+Approx 5% complete for BF9_S9_L001_R2_001.fastq.gz
+Approx 10% complete for BF9_S9_L001_R2_001.fastq.gz
+Approx 15% complete for BF9_S9_L001_R2_001.fastq.gz
+Approx 20% complete for BF9_S9_L001_R2_001.fastq.gz
+Approx 25% complete for BF9_S9_L001_R2_001.fastq.gz
+Approx 30% complete for BF9_S9_L001_R2_001.fastq.gz
+Approx 35% complete for BF9_S9_L001_R2_001.fastq.gz
+Approx 40% complete for BF9_S9_L001_R2_001.fastq.gz
+Approx 45% complete for BF9_S9_L001_R2_001.fastq.gz
+Approx 50% complete for BF9_S9_L001_R2_001.fastq.gz
+Approx 55% complete for BF9_S9_L001_R2_001.fastq.gz
+Approx 60% complete for BF9_S9_L001_R2_001.fastq.gz
+Approx 65% complete for BF9_S9_L001_R2_001.fastq.gz
+Approx 70% complete for BF9_S9_L001_R2_001.fastq.gz
+Approx 75% complete for BF9_S9_L001_R2_001.fastq.gz
+Approx 80% complete for BF9_S9_L001_R2_001.fastq.gz
+Approx 85% complete for BF9_S9_L001_R2_001.fastq.gz
+Approx 90% complete for BF9_S9_L001_R2_001.fastq.gz
+Approx 95% complete for BF9_S9_L001_R2_001.fastq.gz
+TrimmomaticPE: Started with arguments:
+ -phred33 -summary out/trim/Summary/BF10.summary out/cut/1/BF10.1.fastq.gz out/cut/2/BF10.2.fastq.gz out/trim/1/BF10.1.fastq.gz out/trim/singleton/BF10.1_unpaired.fq.gz out/trim/2/BF10.2.fastq.gz out/trim/singleton/BF10.2_unpaired.fq.gz LEADING:10 TRAILING:10 SLIDINGWINDOW:4:15 MINLEN:80
+Multiple cores found: Using 2 threads
+Input Read Pairs: 33577 Both Surviving: 32299 (96.19%) Forward Only Surviving: 454 (1.35%) Reverse Only Surviving: 660 (1.97%) Dropped: 164 (0.49%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments:
+ -phred33 -summary out/trim/Summary/BF1.summary out/cut/1/BF1.1.fastq.gz out/cut/2/BF1.2.fastq.gz out/trim/1/BF1.1.fastq.gz out/trim/singleton/BF1.1_unpaired.fq.gz out/trim/2/BF1.2.fastq.gz out/trim/singleton/BF1.2_unpaired.fq.gz LEADING:10 TRAILING:10 SLIDINGWINDOW:4:15 MINLEN:80
+Multiple cores found: Using 2 threads
+Input Read Pairs: 26485 Both Surviving: 25577 (96.57%) Forward Only Surviving: 359 (1.36%) Reverse Only Surviving: 462 (1.74%) Dropped: 87 (0.33%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments:
+ -phred33 -summary out/trim/Summary/BF2.summary out/cut/1/BF2.1.fastq.gz out/cut/2/BF2.2.fastq.gz out/trim/1/BF2.1.fastq.gz out/trim/singleton/BF2.1_unpaired.fq.gz out/trim/2/BF2.2.fastq.gz out/trim/singleton/BF2.2_unpaired.fq.gz LEADING:10 TRAILING:10 SLIDINGWINDOW:4:15 MINLEN:80
+Multiple cores found: Using 2 threads
+Input Read Pairs: 28008 Both Surviving: 26975 (96.31%) Forward Only Surviving: 418 (1.49%) Reverse Only Surviving: 516 (1.84%) Dropped: 99 (0.35%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments:
+ -phred33 -summary out/trim/Summary/BF3.summary out/cut/1/BF3.1.fastq.gz out/cut/2/BF3.2.fastq.gz out/trim/1/BF3.1.fastq.gz out/trim/singleton/BF3.1_unpaired.fq.gz out/trim/2/BF3.2.fastq.gz out/trim/singleton/BF3.2_unpaired.fq.gz LEADING:10 TRAILING:10 SLIDINGWINDOW:4:15 MINLEN:80
+Multiple cores found: Using 2 threads
+Input Read Pairs: 25840 Both Surviving: 24745 (95.76%) Forward Only Surviving: 447 (1.73%) Reverse Only Surviving: 505 (1.95%) Dropped: 143 (0.55%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments:
+ -phred33 -summary out/trim/Summary/BF4.summary out/cut/1/BF4.1.fastq.gz out/cut/2/BF4.2.fastq.gz out/trim/1/BF4.1.fastq.gz out/trim/singleton/BF4.1_unpaired.fq.gz out/trim/2/BF4.2.fastq.gz out/trim/singleton/BF4.2_unpaired.fq.gz LEADING:10 TRAILING:10 SLIDINGWINDOW:4:15 MINLEN:80
+Multiple cores found: Using 2 threads
+Input Read Pairs: 29520 Both Surviving: 28505 (96.56%) Forward Only Surviving: 392 (1.33%) Reverse Only Surviving: 545 (1.85%) Dropped: 78 (0.26%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments:
+ -phred33 -summary out/trim/Summary/BF5.summary out/cut/1/BF5.1.fastq.gz out/cut/2/BF5.2.fastq.gz out/trim/1/BF5.1.fastq.gz out/trim/singleton/BF5.1_unpaired.fq.gz out/trim/2/BF5.2.fastq.gz out/trim/singleton/BF5.2_unpaired.fq.gz LEADING:10 TRAILING:10 SLIDINGWINDOW:4:15 MINLEN:80
+Multiple cores found: Using 2 threads
+Input Read Pairs: 30472 Both Surviving: 29347 (96.31%) Forward Only Surviving: 455 (1.49%) Reverse Only Surviving: 533 (1.75%) Dropped: 137 (0.45%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments:
+ -phred33 -summary out/trim/Summary/BF6.summary out/cut/1/BF6.1.fastq.gz out/cut/2/BF6.2.fastq.gz out/trim/1/BF6.1.fastq.gz out/trim/singleton/BF6.1_unpaired.fq.gz out/trim/2/BF6.2.fastq.gz out/trim/singleton/BF6.2_unpaired.fq.gz LEADING:10 TRAILING:10 SLIDINGWINDOW:4:15 MINLEN:80
+Multiple cores found: Using 2 threads
+Input Read Pairs: 32025 Both Surviving: 30879 (96.42%) Forward Only Surviving: 444 (1.39%) Reverse Only Surviving: 589 (1.84%) Dropped: 113 (0.35%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments:
+ -phred33 -summary out/trim/Summary/BF7.summary out/cut/1/BF7.1.fastq.gz out/cut/2/BF7.2.fastq.gz out/trim/1/BF7.1.fastq.gz out/trim/singleton/BF7.1_unpaired.fq.gz out/trim/2/BF7.2.fastq.gz out/trim/singleton/BF7.2_unpaired.fq.gz LEADING:10 TRAILING:10 SLIDINGWINDOW:4:15 MINLEN:80
+Multiple cores found: Using 2 threads
+Input Read Pairs: 29455 Both Surviving: 28430 (96.52%) Forward Only Surviving: 391 (1.33%) Reverse Only Surviving: 524 (1.78%) Dropped: 110 (0.37%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments:
+ -phred33 -summary out/trim/Summary/BF8.summary out/cut/1/BF8.1.fastq.gz out/cut/2/BF8.2.fastq.gz out/trim/1/BF8.1.fastq.gz out/trim/singleton/BF8.1_unpaired.fq.gz out/trim/2/BF8.2.fastq.gz out/trim/singleton/BF8.2_unpaired.fq.gz LEADING:10 TRAILING:10 SLIDINGWINDOW:4:15 MINLEN:80
+Multiple cores found: Using 2 threads
+Input Read Pairs: 27293 Both Surviving: 26286 (96.31%) Forward Only Surviving: 308 (1.13%) Reverse Only Surviving: 609 (2.23%) Dropped: 90 (0.33%)
+TrimmomaticPE: Completed successfully
+TrimmomaticPE: Started with arguments:
+ -phred33 -summary out/trim/Summary/BF9.summary out/cut/1/BF9.1.fastq.gz out/cut/2/BF9.2.fastq.gz out/trim/1/BF9.1.fastq.gz out/trim/singleton/BF9.1_unpaired.fq.gz out/trim/2/BF9.2.fastq.gz out/trim/singleton/BF9.2_unpaired.fq.gz LEADING:10 TRAILING:10 SLIDINGWINDOW:4:15 MINLEN:80
+Multiple cores found: Using 2 threads
+Input Read Pairs: 26675 Both Surviving: 25558 (95.81%) Forward Only Surviving: 478 (1.79%) Reverse Only Surviving: 512 (1.92%) Dropped: 127 (0.48%)
+TrimmomaticPE: Completed successfully
+java -ea -Xmx7989m -cp /data/taylorlab/software/bbmap/current/ jgi.SplitPairsAndSingles rp in=out/fastq/AMA/1/BF10_AMA_1.fastq.gz in2=out/fastq/AMA/2/BF10_AMA_2.fastq.gz out=out/fastq/AMA/1/BF10_AMA_1.paired.fastq.gz out2=out/fastq/AMA/2/BF10_AMA_2.paired.fastq.gz outs=singletons.fq repair
+Executing jgi.SplitPairsAndSingles [rp, in=out/fastq/AMA/1/BF10_AMA_1.fastq.gz, in2=out/fastq/AMA/2/BF10_AMA_2.fastq.gz, out=out/fastq/AMA/1/BF10_AMA_1.paired.fastq.gz, out2=out/fastq/AMA/2/BF10_AMA_2.paired.fastq.gz, outs=singletons.fq, repair]
+
+Set INTERLEAVED to false
+Started output stream.
+
+Input:                  	29750 reads 		7890752 bases.
+Result:                 	29750 reads (100.00%) 	7890752 bases (100.00%)
+Pairs:                  	29750 reads (100.00%) 	7890752 bases (100.00%)
+Singletons:             	0 reads (0.00%) 	0 bases (0.00%)
+
+Time:                         	0.942 seconds.
+Reads Processed:       29750 	31.58k reads/sec
+Bases Processed:       7890k 	8.38m bases/sec
+java -ea -Xmx7989m -cp /data/taylorlab/software/bbmap/current/ jgi.SplitPairsAndSingles rp in=out/fastq/AMA/1/BF1_AMA_1.fastq.gz in2=out/fastq/AMA/2/BF1_AMA_2.fastq.gz out=out/fastq/AMA/1/BF1_AMA_1.paired.fastq.gz out2=out/fastq/AMA/2/BF1_AMA_2.paired.fastq.gz outs=singletons.fq repair
+Executing jgi.SplitPairsAndSingles [rp, in=out/fastq/AMA/1/BF1_AMA_1.fastq.gz, in2=out/fastq/AMA/2/BF1_AMA_2.fastq.gz, out=out/fastq/AMA/1/BF1_AMA_1.paired.fastq.gz, out2=out/fastq/AMA/2/BF1_AMA_2.paired.fastq.gz, outs=singletons.fq, repair]
+
+Set INTERLEAVED to false
+Started output stream.
+
+Input:                  	26144 reads 		7007467 bases.
+Result:                 	26144 reads (100.00%) 	7007467 bases (100.00%)
+Pairs:                  	26144 reads (100.00%) 	7007467 bases (100.00%)
+Singletons:             	0 reads (0.00%) 	0 bases (0.00%)
+
+Time:                         	0.915 seconds.
+Reads Processed:       26144 	28.56k reads/sec
+Bases Processed:       7007k 	7.65m bases/sec
+java -ea -Xmx7989m -cp /data/taylorlab/software/bbmap/current/ jgi.SplitPairsAndSingles rp in=out/fastq/AMA/1/BF2_AMA_1.fastq.gz in2=out/fastq/AMA/2/BF2_AMA_2.fastq.gz out=out/fastq/AMA/1/BF2_AMA_1.paired.fastq.gz out2=out/fastq/AMA/2/BF2_AMA_2.paired.fastq.gz outs=singletons.fq repair
+Executing jgi.SplitPairsAndSingles [rp, in=out/fastq/AMA/1/BF2_AMA_1.fastq.gz, in2=out/fastq/AMA/2/BF2_AMA_2.fastq.gz, out=out/fastq/AMA/1/BF2_AMA_1.paired.fastq.gz, out2=out/fastq/AMA/2/BF2_AMA_2.paired.fastq.gz, outs=singletons.fq, repair]
+
+Set INTERLEAVED to false
+Started output stream.
+
+Input:                  	30538 reads 		8209807 bases.
+Result:                 	30538 reads (100.00%) 	8209807 bases (100.00%)
+Pairs:                  	30538 reads (100.00%) 	8209807 bases (100.00%)
+Singletons:             	0 reads (0.00%) 	0 bases (0.00%)
+
+Time:                         	1.040 seconds.
+Reads Processed:       30538 	29.35k reads/sec
+Bases Processed:       8209k 	7.89m bases/sec
+java -ea -Xmx7989m -cp /data/taylorlab/software/bbmap/current/ jgi.SplitPairsAndSingles rp in=out/fastq/AMA/1/BF3_AMA_1.fastq.gz in2=out/fastq/AMA/2/BF3_AMA_2.fastq.gz out=out/fastq/AMA/1/BF3_AMA_1.paired.fastq.gz out2=out/fastq/AMA/2/BF3_AMA_2.paired.fastq.gz outs=singletons.fq repair
+Executing jgi.SplitPairsAndSingles [rp, in=out/fastq/AMA/1/BF3_AMA_1.fastq.gz, in2=out/fastq/AMA/2/BF3_AMA_2.fastq.gz, out=out/fastq/AMA/1/BF3_AMA_1.paired.fastq.gz, out2=out/fastq/AMA/2/BF3_AMA_2.paired.fastq.gz, outs=singletons.fq, repair]
+
+Set INTERLEAVED to false
+Started output stream.
+
+Input:                  	20232 reads 		5321998 bases.
+Result:                 	20232 reads (100.00%) 	5321998 bases (100.00%)
+Pairs:                  	20232 reads (100.00%) 	5321998 bases (100.00%)
+Singletons:             	0 reads (0.00%) 	0 bases (0.00%)
+
+Time:                         	0.815 seconds.
+Reads Processed:       20232 	24.83k reads/sec
+Bases Processed:       5321k 	6.53m bases/sec
+java -ea -Xmx7989m -cp /data/taylorlab/software/bbmap/current/ jgi.SplitPairsAndSingles rp in=out/fastq/AMA/1/BF4_AMA_1.fastq.gz in2=out/fastq/AMA/2/BF4_AMA_2.fastq.gz out=out/fastq/AMA/1/BF4_AMA_1.paired.fastq.gz out2=out/fastq/AMA/2/BF4_AMA_2.paired.fastq.gz outs=singletons.fq repair
+Executing jgi.SplitPairsAndSingles [rp, in=out/fastq/AMA/1/BF4_AMA_1.fastq.gz, in2=out/fastq/AMA/2/BF4_AMA_2.fastq.gz, out=out/fastq/AMA/1/BF4_AMA_1.paired.fastq.gz, out2=out/fastq/AMA/2/BF4_AMA_2.paired.fastq.gz, outs=singletons.fq, repair]
+
+Set INTERLEAVED to false
+Started output stream.
+
+Input:                  	27344 reads 		7332300 bases.
+Result:                 	27344 reads (100.00%) 	7332300 bases (100.00%)
+Pairs:                  	27344 reads (100.00%) 	7332300 bases (100.00%)
+Singletons:             	0 reads (0.00%) 	0 bases (0.00%)
+
+Time:                         	1.232 seconds.
+Reads Processed:       27344 	22.19k reads/sec
+Bases Processed:       7332k 	5.95m bases/sec
+java -ea -Xmx7989m -cp /data/taylorlab/software/bbmap/current/ jgi.SplitPairsAndSingles rp in=out/fastq/AMA/1/BF5_AMA_1.fastq.gz in2=out/fastq/AMA/2/BF5_AMA_2.fastq.gz out=out/fastq/AMA/1/BF5_AMA_1.paired.fastq.gz out2=out/fastq/AMA/2/BF5_AMA_2.paired.fastq.gz outs=singletons.fq repair
+Executing jgi.SplitPairsAndSingles [rp, in=out/fastq/AMA/1/BF5_AMA_1.fastq.gz, in2=out/fastq/AMA/2/BF5_AMA_2.fastq.gz, out=out/fastq/AMA/1/BF5_AMA_1.paired.fastq.gz, out2=out/fastq/AMA/2/BF5_AMA_2.paired.fastq.gz, outs=singletons.fq, repair]
+
+Set INTERLEAVED to false
+Started output stream.
+
+Input:                  	25300 reads 		6758124 bases.
+Result:                 	25300 reads (100.00%) 	6758124 bases (100.00%)
+Pairs:                  	25300 reads (100.00%) 	6758124 bases (100.00%)
+Singletons:             	0 reads (0.00%) 	0 bases (0.00%)
+
+Time:                         	0.945 seconds.
+Reads Processed:       25300 	26.78k reads/sec
+Bases Processed:       6758k 	7.15m bases/sec
+java -ea -Xmx7989m -cp /data/taylorlab/software/bbmap/current/ jgi.SplitPairsAndSingles rp in=out/fastq/AMA/1/BF6_AMA_1.fastq.gz in2=out/fastq/AMA/2/BF6_AMA_2.fastq.gz out=out/fastq/AMA/1/BF6_AMA_1.paired.fastq.gz out2=out/fastq/AMA/2/BF6_AMA_2.paired.fastq.gz outs=singletons.fq repair
+Executing jgi.SplitPairsAndSingles [rp, in=out/fastq/AMA/1/BF6_AMA_1.fastq.gz, in2=out/fastq/AMA/2/BF6_AMA_2.fastq.gz, out=out/fastq/AMA/1/BF6_AMA_1.paired.fastq.gz, out2=out/fastq/AMA/2/BF6_AMA_2.paired.fastq.gz, outs=singletons.fq, repair]
+
+Set INTERLEAVED to false
+Started output stream.
+
+Input:                  	29182 reads 		7840280 bases.
+Result:                 	29182 reads (100.00%) 	7840280 bases (100.00%)
+Pairs:                  	29182 reads (100.00%) 	7840280 bases (100.00%)
+Singletons:             	0 reads (0.00%) 	0 bases (0.00%)
+
+Time:                         	0.979 seconds.
+Reads Processed:       29182 	29.81k reads/sec
+Bases Processed:       7840k 	8.01m bases/sec
+java -ea -Xmx7989m -cp /data/taylorlab/software/bbmap/current/ jgi.SplitPairsAndSingles rp in=out/fastq/AMA/1/BF7_AMA_1.fastq.gz in2=out/fastq/AMA/2/BF7_AMA_2.fastq.gz out=out/fastq/AMA/1/BF7_AMA_1.paired.fastq.gz out2=out/fastq/AMA/2/BF7_AMA_2.paired.fastq.gz outs=singletons.fq repair
+Executing jgi.SplitPairsAndSingles [rp, in=out/fastq/AMA/1/BF7_AMA_1.fastq.gz, in2=out/fastq/AMA/2/BF7_AMA_2.fastq.gz, out=out/fastq/AMA/1/BF7_AMA_1.paired.fastq.gz, out2=out/fastq/AMA/2/BF7_AMA_2.paired.fastq.gz, outs=singletons.fq, repair]
+
+Set INTERLEAVED to false
+Started output stream.
+
+Input:                  	25520 reads 		6838594 bases.
+Result:                 	25520 reads (100.00%) 	6838594 bases (100.00%)
+Pairs:                  	25520 reads (100.00%) 	6838594 bases (100.00%)
+Singletons:             	0 reads (0.00%) 	0 bases (0.00%)
+
+Time:                         	0.866 seconds.
+Reads Processed:       25520 	29.46k reads/sec
+Bases Processed:       6838k 	7.89m bases/sec
+java -ea -Xmx7989m -cp /data/taylorlab/software/bbmap/current/ jgi.SplitPairsAndSingles rp in=out/fastq/AMA/1/BF8_AMA_1.fastq.gz in2=out/fastq/AMA/2/BF8_AMA_2.fastq.gz out=out/fastq/AMA/1/BF8_AMA_1.paired.fastq.gz out2=out/fastq/AMA/2/BF8_AMA_2.paired.fastq.gz outs=singletons.fq repair
+Executing jgi.SplitPairsAndSingles [rp, in=out/fastq/AMA/1/BF8_AMA_1.fastq.gz, in2=out/fastq/AMA/2/BF8_AMA_2.fastq.gz, out=out/fastq/AMA/1/BF8_AMA_1.paired.fastq.gz, out2=out/fastq/AMA/2/BF8_AMA_2.paired.fastq.gz, outs=singletons.fq, repair]
+
+Set INTERLEAVED to false
+Started output stream.
+
+Input:                  	22948 reads 		6170235 bases.
+Result:                 	22948 reads (100.00%) 	6170235 bases (100.00%)
+Pairs:                  	22948 reads (100.00%) 	6170235 bases (100.00%)
+Singletons:             	0 reads (0.00%) 	0 bases (0.00%)
+
+Time:                         	0.782 seconds.
+Reads Processed:       22948 	29.34k reads/sec
+Bases Processed:       6170k 	7.89m bases/sec
+java -ea -Xmx7989m -cp /data/taylorlab/software/bbmap/current/ jgi.SplitPairsAndSingles rp in=out/fastq/AMA/1/BF9_AMA_1.fastq.gz in2=out/fastq/AMA/2/BF9_AMA_2.fastq.gz out=out/fastq/AMA/1/BF9_AMA_1.paired.fastq.gz out2=out/fastq/AMA/2/BF9_AMA_2.paired.fastq.gz outs=singletons.fq repair
+Executing jgi.SplitPairsAndSingles [rp, in=out/fastq/AMA/1/BF9_AMA_1.fastq.gz, in2=out/fastq/AMA/2/BF9_AMA_2.fastq.gz, out=out/fastq/AMA/1/BF9_AMA_1.paired.fastq.gz, out2=out/fastq/AMA/2/BF9_AMA_2.paired.fastq.gz, outs=singletons.fq, repair]
+
+Set INTERLEAVED to false
+Started output stream.
+
+Input:                  	24864 reads 		6557508 bases.
+Result:                 	24864 reads (100.00%) 	6557508 bases (100.00%)
+Pairs:                  	24864 reads (100.00%) 	6557508 bases (100.00%)
+Singletons:             	0 reads (0.00%) 	0 bases (0.00%)
+
+Time:                         	0.863 seconds.
+Reads Processed:       24864 	28.83k reads/sec
+Bases Processed:       6557k 	7.60m bases/sec
+1 of 1 steps (100%) done

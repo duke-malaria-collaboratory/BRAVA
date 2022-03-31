@@ -1,0 +1,5 @@
+adapters/forwardPrimers.fasta
+adapters/reversePrimers.fasta
+raw_reads/1
+raw_reads/2
+refs/AMA/AMA.fasta

@@ -1,0 +1,3 @@
+NameError in line 36 of /gpfs/fs1/home/kh455/snakemake-tutorial/Snakefile:
+name 'refs' is not defined
+  File "/gpfs/fs1/home/kh455/snakemake-tutorial/Snakefile", line 36, in <module>

@@ -1,0 +1,4 @@
+Building DAG of jobs...
+MissingInputException in line 57 of /gpfs/fs1/home/kh455/snakemake-tutorial/Snakefile:
+Missing input files for rule call_haplotypes:
+out/fastq/AMA/all_samples/*.fastq.gz

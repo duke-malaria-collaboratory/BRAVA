@@ -1,0 +1,1 @@
+perl scripts/step1_splitSyncReadsMultiRef.pl 1 refs/AMA/AMA.fasta out raw_reads/1 raw_reads/2 adapters/forwardPrimers.fasta adapters/reversePrimers.fasta
