@@ -17,7 +17,7 @@ rule all:
 	 	expand("{out}/fastq/{target}/1/", out=OUT, target=TARGET),
  		expand("{out}/fastq/{target}/all_samples/", out=OUT, target=TARGET),
  		expand("{out}/haplotype_output/{target}_trimAndFilterTable", out=OUT, target=TARGET),
-		expand("{out}/haplotype_output/{target}_haplotype_table_censored_final_version.rds", out=OUT, target=TARGET),
+		expand("{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv", out=OUT, target=TARGET),
 
 rule clean_sequencing_reads:
 	input:

@@ -11,3 +11,4 @@ out: out
 
 # haplotype_censoring.R
 haplotype_length: 300 # length of the majority of haplotypes - AMA 300 bp, CSP 288 bp
+reverse_complement: FALSE # set to true if the sequence's reverse complement - needed for CSP because pfcsp reference is set up as the reverse complement

@@ -26,8 +26,20 @@ library(sjmisc)
 #### ------- read in the AMA haplotype output -------------- ####
 
 # read in the haplotype data set
-old_foo = read_rds(snakemake@params[["haplotypes"]])
 foo = read_rds(snakemake@params[["haplotypes"]])
+print(foo)
+# retain input info for summary comparison later
+old_foo = read_rds(snakemake@params[["haplotypes"]])
+old_newcolnames = c(1:ncol(old_foo))
+old_pastedcolnames = rep(NA,length(old_newcolnames))
+for (i in 1:length(old_newcolnames)){
+  old_pastedcolnames[i] = paste0("H",old_newcolnames[i])
+}
+colnames(old_foo) <- old_pastedcolnames
+old_foo = as.data.frame(old_foo)
+old_foo$`MiSeq.ID` = rownames(old_foo)
+
+
 # figure out how many rows and columns
 nrow(foo)
 ncol(foo)
