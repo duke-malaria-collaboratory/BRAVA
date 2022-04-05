@@ -490,16 +490,40 @@ colnames(foo) <- pastedcolnames
 # make the matrix a dataframe
 foo = as.data.frame(foo)
 
-
 # create a new column of foo that is the sample names (rownames)
 foo$`MiSeq.ID` = rownames(foo)
 colnames(foo)
 print("Original input:")
 print(old_foo)
+print("Output:")
+print(foo)
+print("Joining:")
+joined = old_foo[old_foo$`MiSeq.ID` %in% rownames(foo), ]
+print(joined)
+# we need to fix the column names to make them consistent
+print(haplotype_num_summary$total_reads_across_samples)
+tokeep = haplotype_num_summary$total_reads_across_samples
+# find the columns where the data is the same
+same_data = apply(joined, 2, function(r) any(r %in% tokeep))
+print(same_data)
+NCOL(same_data)
+NROW(same_data)
+print(which(same_data, arr.ind = TRUE))
+# store the column names where the data is the same
+new_joinedcolnames = which(same_data, arr.ind = TRUE)
+pasted_joinedcolnames = rep(NA,length(new_joinedcolnames))
+# add the new column names to foo
+for (i in 1:length(new_joinedcolnames)){
+  pasted_joinedcolnames[i] = paste0("H",new_joinedcolnames[i])
+}
+colnames(foo) = pasted_joinedcolnames
+# delete last column and replace
+foo = foo[,-ncol(foo)]
+foo$`MiSeq.ID` = rownames(foo)
 print("Final output:")
 print(foo)
-
 # output the censored rds file
+#print(lalaalal) uncomment to avoid having to delete all output files every time the program is run
 write_csv(foo, snakemake@output[["final_haplotype_table"]])
 
 
