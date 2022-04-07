@@ -1,9 +1,3 @@
-- [Running the haplotype calling pipeline with Snakemake](#running-the-haplotype-calling-pipeline-with-snakemake)
-  * [The Workflow](#the-workflow)
-  * [Quick Start](#quick-start)
-  * [Usage Examples](#usage-examples)
-  * [More resources](#more-resources)
-
 # Running the haplotype calling pipeline with Snakemake
 
 Overview: Using human or mosquito samples from Webuye, Kenya, evaluate the extent to which there are unique haplotypes among two polymorphic gene targets: AMA, CSP.
@@ -154,7 +148,7 @@ BF10_AMA_1.fastq.gz
 
 `organize_folders` should produce an all_samples folder within the out/fastq/{target} folder. It is essentially a combination of the **1** and **2** folders.
 
-`call_haplotypes` should produce a haplotype_output in the {out} folder. It will contain 3 files: {target}_trimAndFilterTable, {target}_haplotypes.rds, and {target}_trackReadsThroughPipeline.csv.
+`call_haplotypes` should produce a haplotype_output in the {out} folder. It will contain 3 files: `{target}_trimAndFilterTable`, `{target}_haplotypes.rds`, and `{target}_trackReadsThroughPipeline.csv`.
 
 With our small sample, the trimAndFilter table looked like this:
 |                      | reads.in | reads.out |
@@ -185,7 +179,7 @@ And the trackReadsThroughPipeline table looked like this:
 | BF8  | 7378   | 7378   | 7378    |
 | BF9  | 6317   | 6317   | 6317    |
 
-`censor_haplotypes` should add five files to the {out}/haplotype_output folder: {target}_snps_between_haps_within_samples.fasta, {target}_uniqueSeqs.fasta, {target}_aligned_seqs.fasta, {target}_uniqueSeqs_final_censored.fasta, and {target}_haplotype_table_censored_final_version.csv.
+`censor_haplotypes` should add five files to the {out}/haplotype_output folder: `{target}_snps_between_haps_within_samples.fasta`, `{target}_uniqueSeqs.fasta`, `{target}_aligned_seqs.fasta`, `{target}_uniqueSeqs_final_censored.fasta`, and `{target}_haplotype_table_censored_final_version.csv`.
 
 With our small sample, the snps_between_haps_within_samples file looked like this:
 ```
