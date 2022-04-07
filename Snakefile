@@ -1,5 +1,6 @@
 configfile: "config.yaml"
 
+# modifiable parameters
 ncores = config['ncores']
 TARGET = config['target']
 HAPLOTYPE_LENGTH = config['haplotype_length']

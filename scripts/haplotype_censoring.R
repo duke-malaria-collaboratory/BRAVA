@@ -300,21 +300,30 @@ uniquesToFasta(getUniques(foo), fout=snakemake@output[["unique_seqs"]], ids=past
 # when prompted, save the file as "ama_snp_table"
 
 # Aligning sequences
+
 input_seqs = snakemake@output[["unique_seqs"]]
 output_seqs = snakemake@output[["aligned_seqs"]]
+# use muscle package to align the sequences
 system(paste("muscle -align", input_seqs, "-output", output_seqs))
 
 # Filtering variant sequences
+
+# read in the aligned sequences file
 dnaMatrix = read.dna(snakemake@output[["aligned_seqs"]], format = "fasta", skip = 0, nlines = 0, comment.char = "#", as.character = TRUE, as.matrix = NULL)
+# convert to dataframe for easy data manipulation
 variant_table = as.data.frame(dnaMatrix)
+# initialize lists to store what columns contain variants
 column = list()
 variantList = list()
+# iterate through the table
 i = 1
 index = paste("V", i, sep="")
 for (col in 1:ncol(variant_table)) {
   index = paste("V", i, sep="")
+  # find the frequency of each letter in each column
   freq <- variant_table %>% group_by(across(all_of(index))) %>% count()
   #print(freq)
+  # if the variance only occurs in one haplotype, store the column and variant
   if (any(freq == 1)) {
     #print("variant")
     column = append(column, i)
@@ -323,14 +332,16 @@ for (col in 1:ncol(variant_table)) {
   }
   i = i + 1
 }
-foo_tibble = as_tibble(foo)
 #print(column)
 #print(variantList)
+# initialize a vector to store what sequences should be removed
 toRemove = vector()
+# look at each sequence
 for(row in 1:nrow(dnaMatrix)) {
   j = 1
   for (x in column) {
     col = as.numeric(unlist(x))
+    # add the sequences to toRemove if they contain a variant that only occurs in one haplotype
     if (dnaMatrix[row, col] == variantList[j]) {
       #print("deleting")
       #print(row)
@@ -341,23 +352,29 @@ for(row in 1:nrow(dnaMatrix)) {
   }
 }
 #print(toRemove)
+# remove any duplicates
 uniqueRemove = unique(toRemove)
 #print("removed duplicates")
 #print(uniqueRemove)
 #print(dnaMatrix)
+# look at original variant table
 print("Uncensored:")
 print(variant_table)
+# remove the sequences that contain variants
 #dnaMatrix = dnaMatrix[-toRemove, ]
 dnaMatrix = dnaMatrix[-c(1, 2, 4, 5, 6), ] # delete this and uncomment above line when using more data. placeholder
 # since right now only one sequence doesn't get filtered out
+# look at filtered variant table
 print("After:")
 filtered_variant_table = as.data.frame(dnaMatrix)
 
 print(dnaMatrix)
+# make a vector that contains the sequences in the filtered table
 dnaVector = apply(filtered_variant_table,1,paste,collapse="")
 dnaVector = lapply(dnaVector, toupper)
 print("Vector:")
 print(dnaVector)
+# enforce censoring to rds data set
 foo = foo[ , which(colnames(foo) %in% dnaVector)]
 print(foo)
 
@@ -493,10 +510,12 @@ foo = as.data.frame(foo)
 # create a new column of foo that is the sample names (rownames)
 foo$`MiSeq.ID` = rownames(foo)
 colnames(foo)
+# print original input
 print("Original input:")
 print(old_foo)
 print("Output:")
 print(foo)
+# copy the original input but with only the sequence IDs left after censoring
 print("Joining:")
 joined = old_foo[old_foo$`MiSeq.ID` %in% rownames(foo), ]
 print(joined)
@@ -522,6 +541,7 @@ foo = foo[,-ncol(foo)]
 foo$`MiSeq.ID` = rownames(foo)
 print("Final output:")
 print(foo)
+
 # output the censored rds file
 #print(lalaalal) uncomment to avoid having to delete all output files every time the program is run
 write_csv(foo, snakemake@output[["final_haplotype_table"]])
