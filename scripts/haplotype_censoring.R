@@ -322,22 +322,22 @@ for (col in 1:ncol(variant_table)) {
   index = paste("V", i, sep="")
   # find the frequency of each letter in each column
   freq <- variant_table %>% group_by(across(all_of(index))) %>% count()
-  #print(freq)
+  # print(freq)
   # if the variance only occurs in one haplotype, store the column and variant
   if (any(freq == 1)) {
-    #print("variant")
+    # print("variant")
     column = append(column, i)
     variant = freq[freq$n == 1, index]
     variantList = append(variantList, variant)
   }
   i = i + 1
 }
-#print(column)
-#print(variantList)
+# print(column)
+# print(variantList)
 # initialize a vector to store what sequences should be removed
 toRemove = vector()
 # look at each sequence
-for(row in 1:nrow(dnaMatrix)) {
+for (row in 1:nrow(dnaMatrix)) {
   j = 1
   for (x in column) {
     col = as.numeric(unlist(x))
@@ -351,17 +351,17 @@ for(row in 1:nrow(dnaMatrix)) {
     j = j + 1
   }
 }
-#print(toRemove)
+# print(toRemove)
 # remove any duplicates
 uniqueRemove = unique(toRemove)
-#print("removed duplicates")
-#print(uniqueRemove)
-#print(dnaMatrix)
+# print("removed duplicates")
+# print(uniqueRemove)
+# print(dnaMatrix)
 # look at original variant table
 print("Uncensored:")
 print(variant_table)
 # remove the sequences that contain variants
-#dnaMatrix = dnaMatrix[-toRemove, ]
+# dnaMatrix = dnaMatrix[-toRemove, ]
 dnaMatrix = dnaMatrix[-c(1, 2, 4, 5, 6), ] # delete this and uncomment above line when using more data. placeholder
 # since right now only one sequence doesn't get filtered out
 # look at filtered variant table
@@ -379,7 +379,7 @@ foo = foo[ , which(colnames(foo) %in% dnaVector)]
 print(foo)
 
 # Write filtered sequences to fasta
-#uniquesToFasta(getUniques(filtered_table), fout=snakemake@output[["unique_seqs"]], ids=paste0("Seq", seq(length(getUniques(foo)))))
+# uniquesToFasta(getUniques(filtered_table), fout=snakemake@output[["unique_seqs"]], ids=paste0("Seq", seq(length(getUniques(foo)))))
 
 ### ---- read back in that haplotype sequence file
 
