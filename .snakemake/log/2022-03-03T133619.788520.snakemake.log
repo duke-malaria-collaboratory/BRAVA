@@ -1,5 +1,0 @@
-Building DAG of jobs...
-ChildIOException:
-File/directory is a child to another output:
-('/gpfs/fs1/home/kh455/snakemake-tutorial/out/haplotype_output', organize_folders)
-('/gpfs/fs1/home/kh455/snakemake-tutorial/out/haplotype_output/AMA_haplotypes.rds', call_haplotypes)

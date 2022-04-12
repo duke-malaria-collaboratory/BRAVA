@@ -1,4 +1,0 @@
-Building DAG of jobs...
-MissingInputException in line 15 of /gpfs/fs1/home/kh455/snakemake-tutorial/Snakefile:
-Missing input files for rule all:
-out/haplotype_output/AMA_snp_table.fasta
