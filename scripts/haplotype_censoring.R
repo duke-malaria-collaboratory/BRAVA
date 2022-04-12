@@ -32,12 +32,10 @@ colnames(old_foo) <- old_pastedcolnames
 old_foo = as.data.frame(old_foo)
 old_foo$`MiSeq.ID` = rownames(old_foo)
 
-
 # figure out how many rows and columns
 nrow(foo)
 ncol(foo)
 table(nchar(getSequences(foo)))
-
 
 ### --- look at the raw haplotype output and censor it
 
@@ -59,7 +57,6 @@ if (length(needtoremove) > 0) {
   haplotype_summary = haplotype_summary[-needtoremove,] 
 }
 
-
 # write some code that removes haplotypes that occur in <250 of the sample reads
 for (i in 1:nrow(foo)){
   for (h in 1:ncol(foo)){
@@ -71,7 +68,6 @@ for (i in 1:nrow(foo)){
   }
 }
 
-
 # write some code that calculates what percentage each haplotype occurs in and removes haplotypes that occur in <3% of the sample reads
 for (i in 1:nrow(foo)){
   for (h in 1:ncol(foo)){
@@ -82,7 +78,6 @@ for (i in 1:nrow(foo)){
     }
   }
 }
-
 
 # for each haplotype that is a different length than the majority of haplotypes, throw it out
 table(nchar(getSequences(foo))) # most haplotypes 300 bp, but 10 are not 300 bp long
@@ -134,7 +129,6 @@ foo = foo[(rownames(foo) %in% haplotype_summary_censored$sample_names),]
 ncol(foo)
 nrow(foo)
 
-
 # tally up the number of SNPs between all haplotype pairings
 uniquesToFasta(getUniques(foo), fout=snakemake@output[["snps_between_haps"]], ids=paste0("Seq", seq(length(getUniques(foo)))))
 dna = readDNAStringSet(snakemake@output[["snps_between_haps"]])
@@ -142,7 +136,6 @@ snp_output = stringDist(dna, method="hamming")
 snp_output = as.matrix(snp_output)
 max(snp_output)
 summary(snp_output)
-
 
 # rename the columns to be a unique haplotype column number but create test data set for this
 foo_test = foo
@@ -152,7 +145,6 @@ for (i in 1:length(newcolnames)){
   pastedcolnames[i] = paste0("Seq",newcolnames[i])
 }
 colnames(foo_test) <- pastedcolnames
-
 
 # figure out number of SNPS between haplotypes within each sample
 all_cols = colnames(foo_test)
@@ -180,7 +172,6 @@ for (i in 1:nrow(foo_test)){
   }
 }
 
-
 # look at an updated haplotype summary
 sample.names = row.names(foo_test)
 haplotype_num = rep(NA,nrow(foo_test))
@@ -194,26 +185,21 @@ haplotype_summary_censored_final = data.frame("sample_names" = sample.names, "ha
 needtoremove = which(haplotype_summary_censored_final$haplotype_reads == 0) # 0 samples removed
 needtoremove
 
-
 ### NOTE: If needtoremove > 0 then run this next line, otherwise do not
 if (length(needtoremove) > 0) {
   haplotype_summary_censored = haplotype_summary_censored[-needtoremove,]
 }
 
-
 # make foo, foo_test
 orig_foo = foo
 foo = foo_test
 
-
 # make sure foo retains its column names
 colnames(foo) = colnames(orig_foo)
-
 
 # remove the controls and samples with empty entries
 ### NOTE: this will change depending on what samples Betsy specified as the control, an example of what to run to remove controls  is shown below
 # foo = foo[-which(rownames(foo) == "USID289" | rownames(foo) == "USID294" | rownames(foo) == "USID303" | rownames(foo) == "USID304" | rownames(foo) == "USID305" | rownames(foo) == "USID779" | rownames(foo) == "USID780" | rownames(foo) == "USID781" | rownames(foo) == "USID782" | rownames(foo) == "USID783" | rownames(foo) == "USID784" | rownames(foo) == "USID350" | rownames(foo) == "USID353" | rownames(foo) == "USID936"),]
-
 
 # look at an updated haplotype summary
 sample.names = row.names(foo)
@@ -224,16 +210,15 @@ for (i in 1:nrow(foo)){
   haplotype_reads[i] = sum(foo[i,])
 }
 haplotype_summary_censored_final = data.frame("sample_names" = sample.names, "haplotype_number" = haplotype_num, "haplotype_reads" = haplotype_reads)
+
 # remove samples that ended up with no reads at the end
 needtoremove = which(haplotype_summary_censored_final$haplotype_reads == 0) # 0 samples removed
 needtoremove
-
 
 ### NOTE: If needtoremove > 0 then run this next line, otherwise do not
 if (length(needtoremove) > 0) {
   haplotype_summary_censored = haplotype_summary_censored[-needtoremove,]
 }
-
 
 # summarize the samples for each haplotype
 haplotype.names = rep(1:ncol(foo))
@@ -247,59 +232,20 @@ haplotype_num_summary = data.frame("haplotype_ids" = haplotype.names, "haplotype
 # remove haplotypes with 0 reads after censoring
 haplotype_num_summary = haplotype_num_summary[which(haplotype_num_summary$total_reads_across_samples>0),]
 
-
 # enforce censoring to rds data set
 foo = foo[,c(haplotype_num_summary$haplotype_ids)]
 # write out the haplotypes results as a fasta
 uniquesToFasta(getUniques(foo), fout=snakemake@output[["unique_seqs"]], ids=paste0("Seq", seq(length(getUniques(foo)))))
 # created a sequence variant table with the haplotype sequences
 
-
-
-### ----- STOP: go to SeqMan Pro from DNA star and follow these steps ---- ###
-
-# this is setting up the data to remove haplotypes that have SNPs private to that haplotype and not found in any other haplotypes
-# and is sometimes too strict of a filtering approach, depending on the data. We did it for Spat21/Mozzie but not Turkana/Embatalk.
-# Before you do these steps, ask Steve if there are enough samples to run this last censoring step - we usually only ran it when we had >1000 samples
-# Sometimes don't run if few haplotypes, too - we didn't run this for Turkana because there were so few haplotypes
-
-# if you don't do this step, skip to line 398
-
-# step 1
-# Go to DNA Star and open SeqMan Pro
-
-# step 2
-# In the "unassembled sequences" box that pops up, click "Add Sequences..." at the top of the box. 
-# Navigate to where your file of unique haplotype sequences was output from this script on your computer and click on AMA_uniqueSeqs.fasta. Click "Add file" and then "Done."
-# once again, click "Add Sequences..." at the top of the box.
-# Navigate to where your reference AMA sequence is on your computer and click on AMA.fasta. Click "Add file" and "Done"
-
-# step 3
-# Click on the AMA.fasta-1 entry in the "Unassembled Sequences" box so it is highlighted in blue then click at the top right of the box "Mark Ref"
-# You should see the AMA.fasta-1 file name become italicized.
-
-# step 4
-# Click "Assemble" in the top left of the Unassembled Sequences" box. 
-
-# step 5
-# In a new box called "Untitled.sqd" that shows "All Contigs," double click on "Contig 1"
-
-# step 6
-# In the top of the SeqMan Pro search bar on top of the program, click "Variant" then "Variant Report"
-# this will output a variant statistics report from Contig 1
-
-# step 7
-# save this variant statistics report by clicking in the top of the SeqMan Pro search bar "File: then "Save SNP Report for Contig 1..."
-# when prompted, save the file as "ama_snp_table"
-
-# Aligning sequences
+### --- aligning sequences
 
 input_seqs = snakemake@output[["unique_seqs"]]
 output_seqs = snakemake@output[["aligned_seqs"]]
 # use muscle package to align the sequences
 system(paste("muscle -align", input_seqs, "-output", output_seqs))
 
-# Filtering variant sequences
+### --- filtering variant sequences
 
 # read in the aligned sequences file
 dnaMatrix = read.dna(snakemake@output[["aligned_seqs"]], format = "fasta", skip = 0, nlines = 0, comment.char = "#", as.character = TRUE, as.matrix = NULL)
@@ -308,6 +254,7 @@ variant_table = as.data.frame(dnaMatrix)
 # initialize lists to store what columns contain variants
 column = list()
 variantList = list()
+
 # iterate through the table
 i = 1
 index = paste("V", i, sep="")
@@ -315,20 +262,18 @@ for (col in 1:ncol(variant_table)) {
   index = paste("V", i, sep="")
   # find the frequency of each letter in each column
   freq <- variant_table %>% group_by(across(all_of(index))) %>% count()
-  # print(freq)
   # if the variance only occurs in one haplotype, store the column and variant
   if (any(freq == 1)) {
-    # print("variant")
     column = append(column, i)
     variant = freq[freq$n == 1, index]
     variantList = append(variantList, variant)
   }
   i = i + 1
 }
-# print(column)
-# print(variantList)
+
 # initialize a vector to store what sequences should be removed
 toRemove = vector()
+
 # look at each sequence
 for (row in 1:nrow(dnaMatrix)) {
   j = 1
@@ -336,59 +281,43 @@ for (row in 1:nrow(dnaMatrix)) {
     col = as.numeric(unlist(x))
     # add the sequences to toRemove if they contain a variant that only occurs in one haplotype
     if (dnaMatrix[row, col] == variantList[j]) {
-      #print("deleting")
-      #print(row)
-      #print(variantList[j])
       toRemove = append(toRemove, row)
     }
     j = j + 1
   }
 }
-# print(toRemove)
+
 # remove any duplicates
 uniqueRemove = unique(toRemove)
-# print("removed duplicates")
-# print(uniqueRemove)
-# print(dnaMatrix)
+
 # look at original variant table
 print("Uncensored:")
 print(variant_table)
+
 # remove the sequences that contain variants
 # dnaMatrix = dnaMatrix[-toRemove, ]
 dnaMatrix = dnaMatrix[-c(1, 2, 4, 5, 6), ] # delete this and uncomment above line when using more data. placeholder
 # since right now only one sequence doesn't get filtered out
+
 # look at filtered variant table
 print("After:")
 filtered_variant_table = as.data.frame(dnaMatrix)
-
 print(dnaMatrix)
+
 # make a vector that contains the sequences in the filtered table
 dnaVector = apply(filtered_variant_table,1,paste,collapse="")
 dnaVector = lapply(dnaVector, toupper)
 print("Vector:")
 print(dnaVector)
+
 # enforce censoring to rds data set
 foo = foo[ , which(colnames(foo) %in% dnaVector)]
 print(foo)
-
-# Write filtered sequences to fasta
-# uniquesToFasta(getUniques(filtered_table), fout=snakemake@output[["unique_seqs"]], ids=paste0("Seq", seq(length(getUniques(foo)))))
 
 ### ---- read back in that haplotype sequence file
 
 # read in the haplotype sequence fasta file
 haplotype_sequences = read_tsv(snakemake@output[["unique_seqs"]])
-
-# read in the haplotype sequence variant table
-#variant_table = read_tsv("out/haplotype_output/AMA_snp_table.fasta")
-
-# filter variant table to see the variants that only occur in 1 haplotype
-### NOTE: You will change the percentage within "" in the filter call each time to make sure you're reporting the percentage of the SNP that is only found in 1 haplotype
-#filtered_variant_table = variant_table %>%
-  #filter(`SNP %` == "14.28 %")  # usually a very low percentage (<1%) but because we are testing this on a few samples is higher right now
-# ask Steve if there are enough samples to run this last censoring step - we usually only ran it when we had >1000 samples
-# Sometimes don't run if few haplotypes, too - we didn't run this for Turkana because there were so few haplotypes
-
 
 # reorganize the haplotype sequence fasta file to be in a better format
 sequence_names = rep(NA,ncol(foo)) # number is number of haplotypes in fasta file of unique haplotype sequences, double check
@@ -407,32 +336,6 @@ new_haplotype_sequences = na.omit(new_haplotype_sequences)
 new_haplotype_sequences$sequences = as.character(new_haplotype_sequences$sequences)
 new_haplotype_sequences$sequence_names = as.character(new_haplotype_sequences$sequence_names)
 
-# now loop through each of the haplotype sequences and see if they have the variant for those variants that were only found in 1 haplotype
-#haplotypes_to_remove_from_final = rep(NA,nrow(variant_table))
-#for (i in 1:nrow(new_haplotype_sequences)){
-  #hap_chars = stringr::str_split(new_haplotype_sequences$sequences[i],"")
-  #for (k in 1:nrow(variant_table)){
-    #contig_position = filtered_variant_table$`Contig Pos`[k]
-    #called_base = filtered_variant_table$`Called Base`[k]
-    #if (hap_chars[[1]][as.numeric(contig_position)] == as.character(called_base) & !(is.na(hap_chars[[1]][as.numeric(contig_position)])) & !(is.na(as.character(called_base)))){
-      #haplotypes_to_remove_from_final[i] = new_haplotype_sequences$sequence_names[i]
-    #}
-  #}
-#}
-# remove the missing values
-#haplotypes_to_remove_from_final = na.omit(haplotypes_to_remove_from_final)
-#length(haplotypes_to_remove_from_final) # 5
-#nrow(filtered_variant_table) # 11
-#haplotypes_to_remove_from_final = c(haplotypes_to_remove_from_final)
-# pull out the haplotype sequences associated with each haplotype name
-#haplotype_sequences_to_remove = c(new_haplotype_sequences$sequences[which(new_haplotype_sequences$sequence_names %in% haplotypes_to_remove_from_final)])
-# enforce censoring to rds data set
-#ncol(foo) # 7
-#foo = foo[,-(which(colnames(foo) %in% haplotype_sequences_to_remove))]
-ncol(foo) # 2 (which is 7-2 and correct)
-# this looks way too strict here but that's because we had a very low number of samples
-# we typically only use this last censoring criteria on sample sizes > 1000 but ask Steve always if it's needed
-
 # look at an updated haplotype summary
 sample.names = row.names(foo)
 haplotype_num = rep(NA,nrow(foo))
@@ -443,10 +346,10 @@ for (i in 1:nrow(foo)){
 }
 haplotype_summary_censored_final = data.frame("sample_names" = sample.names, "haplotype_number" = haplotype_num, "haplotype_reads" = haplotype_reads)
 print(haplotype_summary_censored_final)
+
 # remove samples that ended up with no reads at the end
 needtoremove = which(haplotype_summary_censored_final$haplotype_reads == 0) # 5 samples removed
 needtoremove
-
 
 ### NOTE: run this next line only if needtoremove > 0
 if (length(needtoremove) > 0) {
@@ -461,7 +364,6 @@ foo = foo[(rownames(foo) %in% haplotype_summary_censored_final$sample_names),]
 ncol(foo)
 nrow(foo)
 print(foo)
-
 
 # summarize the samples for each haplotype
 haplotype.names = rep(1:ncol(foo))
@@ -496,7 +398,6 @@ for (i in 1:length(newcolnames)){
 }
 colnames(foo) <- pastedcolnames
 
-
 # make the matrix a dataframe
 foo = as.data.frame(foo)
 
@@ -508,19 +409,23 @@ print("Original input:")
 print(old_foo)
 print("Output:")
 print(foo)
+
 # copy the original input but with only the sequence IDs left after censoring
 print("Joining:")
 joined = old_foo[old_foo$`MiSeq.ID` %in% rownames(foo), ]
 print(joined)
+
 # we need to fix the column names to make them consistent
 print(haplotype_num_summary$total_reads_across_samples)
 tokeep = haplotype_num_summary$total_reads_across_samples
+
 # find the columns where the data is the same
 same_data = apply(joined, 2, function(r) any(r %in% tokeep))
 print(same_data)
 NCOL(same_data)
 NROW(same_data)
 print(which(same_data, arr.ind = TRUE))
+
 # store the column names where the data is the same
 new_joinedcolnames = which(same_data, arr.ind = TRUE)
 pasted_joinedcolnames = rep(NA,length(new_joinedcolnames))
@@ -529,6 +434,7 @@ for (i in 1:length(new_joinedcolnames)){
   pasted_joinedcolnames[i] = paste0("H",new_joinedcolnames[i])
 }
 colnames(foo) = pasted_joinedcolnames
+
 # delete last column and replace
 foo = foo[,-ncol(foo)]
 foo$`MiSeq.ID` = rownames(foo)
@@ -536,10 +442,8 @@ print("Final output:")
 print(foo)
 
 # output the censored rds file
-print(lalaalal) #uncomment to avoid having to delete all output files every time the program is run
+#print(lalaalal) #uncomment to avoid having to delete all output files every time the program is run
 write_csv(foo, snakemake@output[["final_haplotype_table"]])
-
-
 
 ### ------- now combine with the miseq inventory
 AMACombineInventory <- function() {

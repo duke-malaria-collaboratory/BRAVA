@@ -3,6 +3,8 @@ configfile: "config.yaml"
 # modifiable parameters
 ncores = config['ncores']
 TARGET = config['target']
+CUTOFF = config['cutoff']
+SEED = config['seed']
 HAPLOTYPE_LENGTH = config['haplotype_length']
 
 # paths
@@ -65,7 +67,9 @@ rule call_haplotypes:
 		reads_table=expand("{out}/haplotype_output/{target}_trackReadsThroughPipeline.csv", out=OUT, target=TARGET)
 	params:
 		all_samples=expand("{out}/fastq/{target}/all_samples", out=OUT, target=TARGET),
-		rscript="scripts/step2a_dada2.R"
+		rscript="scripts/step2a_dada2.R",
+		cutoff = CUTOFF,
+		seed = SEED,
 	priority:
 		30
 	script:

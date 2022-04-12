@@ -78,7 +78,9 @@ This workflow processes the data set by cleaning the sequencing reads, performin
     - `forward`: the path to the file with the list of forward primers.
     - `rev`: the path to the file with the list of reverse primers.
     - `out`: the name of desired output folder.
-    - `length`: the length of the majority of haplotypes for the target.
+    - `cutoff`: cutoff for which samples with less than this number of reads after sampling should be removed.
+    - `seed`: seed of R's random number generator for the purpose of obtaining a reproducible random result.
+    - `haplotype_length`: the length of the majority of haplotypes for the target.
 
     You can leave these options as-is if you'd like to first make sure the
     workflow runs without error on your machine before using your own dataset

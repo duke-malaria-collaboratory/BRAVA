@@ -9,6 +9,10 @@ forward: adapters/forwardPrimers
 rev: adapters/reversePrimers
 out: out
 
+# step2a_dada2.R
+cutoff: 50 # cutoff for # of reads - remove samples that have less than this number of reads after sampling
+seed: 100 # set the seed of R's random number generator
+
 # haplotype_censoring.R
 haplotype_length: 300 # length of the majority of haplotypes - AMA 300 bp, CSP 288 bp
 reverse_complement: FALSE # set to true if the sequence's reverse complement - needed for CSP because pfcsp reference is set up as the reverse complement
