@@ -8,16 +8,9 @@
 #### --------- load packages ----------------- ####
 library(readr)
 library(dplyr)
-library(tidyr)
-library(lubridate)
-library(data.table)
-#library(tableone)
-#library(MHCtools)
 library(dada2)
-library(ggplot2)
 library(stringr)
 library(Biostrings)
-#library(schoolmath)
 library(ape)
 library(sjmisc)
 
@@ -543,7 +536,7 @@ print("Final output:")
 print(foo)
 
 # output the censored rds file
-#print(lalaalal) uncomment to avoid having to delete all output files every time the program is run
+print(lalaalal) #uncomment to avoid having to delete all output files every time the program is run
 write_csv(foo, snakemake@output[["final_haplotype_table"]])
 
 
