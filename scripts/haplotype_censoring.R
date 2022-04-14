@@ -281,9 +281,7 @@ print("Uncensored variants:")
 print(variant_table)
 
 # remove the sequences that contain variants
-# dnaMatrix = dnaMatrix[-toRemove, ]
-dnaMatrix = dnaMatrix[-c(1, 2, 4, 5, 6), ] # delete this and uncomment above line when using more data. placeholder
-# since right now only one sequence doesn't get filtered out
+dnaMatrix = dnaMatrix[-toRemove, , drop = FALSE]
 
 # look at filtered variant table
 print("Filtered variants:")
@@ -295,10 +293,13 @@ dnaVector = apply(filtered_variant_table,1,paste,collapse="")
 dnaVector = lapply(dnaVector, toupper)
 
 # enforce censoring to rds data set
-foo = foo[ , which(colnames(foo) %in% dnaVector)]
+print(foo)
+print(which(colnames(foo) %in% dnaVector))
+print("after")
+foo = foo[ , which(colnames(foo) %in% dnaVector), drop = FALSE]
 
 ### ---- read back in that haplotype sequence file
-
+print(foo)
 # read in the haplotype sequence fasta file
 haplotype_sequences = read_tsv(snakemake@output[["unique_seqs"]])
 
@@ -343,7 +344,7 @@ print("Summary of censored haplotypes after removal of samples with no reads:")
 print(haplotype_summary_censored_final)
 
 # remove any samples that have no haplotypes anymore
-foo = foo[(rownames(foo) %in% haplotype_summary_censored_final$sample_names),]
+foo = foo[(rownames(foo) %in% haplotype_summary_censored_final$sample_names), , drop = FALSE]
 
 # summarize the samples for each haplotype
 haplotype.names = rep(1:ncol(foo))
@@ -358,7 +359,7 @@ haplotype_num_summary = data.frame("haplotype_ids" = haplotype.names, "haplotype
 haplotype_num_summary = haplotype_num_summary[which(haplotype_num_summary$total_reads_across_samples>0),]
 
 # enforce censoring to rds data set
-foo = foo[,c(haplotype_num_summary$haplotype_ids)]
+foo = foo[,c(haplotype_num_summary$haplotype_ids), drop = FALSE]
 
 # write out the haplotypes results as a fasta
 uniquesToFasta(getUniques(foo), fout=snakemake@output[["final_censored"]], ids=paste0("Seq", seq(length(getUniques(foo)))))
@@ -381,12 +382,15 @@ print("Original input:")
 print(old_foo)
 print("Output:")
 print(foo)
-
+numHaplotypes = list()
+for (i in 1:(ncol(foo) - 1)) {
+  numHaplotypes = append(numHaplotypes, foo[, i])
+}
 # copy the original input but with only the sequence IDs left after censoring
-joined = old_foo[old_foo$`MiSeq.ID` %in% rownames(foo), ]
+joined = old_foo[old_foo$`MiSeq.ID` %in% rownames(foo), , drop = FALSE]
 
 # we need to fix the column names to make them consistent
-tokeep = haplotype_num_summary$total_reads_across_samples
+tokeep = c(numHaplotypes)
 
 # find the columns where the data is the same
 same_data = apply(joined, 2, function(r) any(r %in% tokeep))
@@ -401,7 +405,7 @@ for (i in 1:length(new_joinedcolnames)){
 colnames(foo) = pasted_joinedcolnames
 
 # delete last column and replace
-foo = foo[,-ncol(foo)]
+foo = foo[,-ncol(foo), drop = FALSE]
 foo$`MiSeq.ID` = rownames(foo)
 print("Final output:")
 print(foo)
