@@ -286,20 +286,16 @@ dnaMatrix = dnaMatrix[-toRemove, , drop = FALSE]
 # look at filtered variant table
 print("Filtered variants:")
 filtered_variant_table = as.data.frame(dnaMatrix)
-print(dnaMatrix)
+print(filtered_variant_table)
 
 # make a vector that contains the sequences in the filtered table
 dnaVector = apply(filtered_variant_table,1,paste,collapse="")
 dnaVector = lapply(dnaVector, toupper)
 
 # enforce censoring to rds data set
-print(foo)
-print(which(colnames(foo) %in% dnaVector))
-print("after")
 foo = foo[ , which(colnames(foo) %in% dnaVector), drop = FALSE]
 
 ### ---- read back in that haplotype sequence file
-print(foo)
 # read in the haplotype sequence fasta file
 haplotype_sequences = read_tsv(snakemake@output[["unique_seqs"]])
 
