@@ -31,6 +31,7 @@ for (i in 1:length(old_newcolnames)){
 colnames(old_foo) <- old_pastedcolnames
 old_foo = as.data.frame(old_foo)
 old_foo$`MiSeq.ID` = rownames(old_foo)
+write_csv(old_foo, snakemake@output[["precensored_haplotype_table"]])
 
 # figure out how many rows and columns
 nrow(foo)

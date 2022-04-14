@@ -79,6 +79,7 @@ rule censor_haplotypes:
 	input:
 		expand("{out}/haplotype_output/{target}_haplotypes.rds", out=OUT, target=TARGET),
 	output:
+		precensored_haplotype_table=expand("{out}/haplotype_output/{target}_haplotype_table_precensored.csv", out=OUT, target=TARGET),
 		snps_between_haps=expand("{out}/haplotype_output/{target}_snps_between_haps_within_samples.fasta", out=OUT, target=TARGET),
 		unique_seqs=expand("{out}/haplotype_output/{target}_uniqueSeqs.fasta", out=OUT, target=TARGET),
 		aligned_seqs=expand("{out}/haplotype_output/{target}_aligned_seqs.fasta", out=OUT, target=TARGET),
