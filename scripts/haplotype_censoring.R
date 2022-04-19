@@ -15,7 +15,7 @@ library(sjmisc)
 
 
 
-#### ------- read in the AMA haplotype output -------------- ####
+#### ------- read in haplotype output -------------- ####
 
 # read in the haplotype data set
 foo = read_rds(snakemake@params[["haplotypes"]])
@@ -407,5 +407,4 @@ print("Final output:")
 print(foo)
 
 # output the censored rds file
-#print(lalaalal) # uncomment to avoid having to delete all output files every time the program is run
 write_csv(foo, snakemake@output[["final_haplotype_table"]])
