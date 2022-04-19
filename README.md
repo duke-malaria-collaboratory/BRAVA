@@ -62,8 +62,8 @@ This workflow processes the data set by cleaning the sequencing reads, performin
     1. Finally, create the environment and activate it:
     
        ``` sh
-       mamba env create -f environment.yaml
-       conda activate haplotype_calling
+       mamba env create -f environment.yaml # you only have to do this once
+       conda activate haplotype_calling # you have to do this every time
        ```
        
     - Alternatively, you can install the dependencies listed in
