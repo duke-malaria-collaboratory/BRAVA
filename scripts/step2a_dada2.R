@@ -14,7 +14,7 @@
 # load the dada2 library
 library("dada2")
 
-# read in the path to your folder of fastq files for AMA
+# read in the path to your folder of fastq files
 path <- snakemake@params[["all_samples"]]
 print("Fastq files:")
 list.files(path)
