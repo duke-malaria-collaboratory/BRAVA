@@ -47,7 +47,7 @@ if (!any(duplicated(c(fnFs, fnRs)))) {
   filtFs <- file.path(filt_path, paste0(sample.names, "_F_filt.fastq.gz"))
   filtRs <- file.path(filt_path, paste0(sample.names, "_R_filt.fastq.gz"))
   # filter the forward and reverse reads
-  # remember that dada2 requires no Ns
+  # remember that dada2 requires no Ns, so maxN makes sure sequences with more than maxN Ns will be discarded
   out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, maxN=0, maxEE=c(1,1), truncQ=2, rm.phix=FALSE,
                       compress=TRUE, multithread=FALSE, matchIDs = TRUE) 
 
