@@ -69,7 +69,7 @@ This workflow processes the data set by cleaning the sequencing reads, performin
     - Alternatively, you can install the dependencies listed in
     [`environment.yaml`](environment.yaml) however you like.
 
-1. Edit the configuration file [`config.yml`](config.yml).
+1. Edit the configuration file [`config.yaml`](config.yaml).
     - `target`: the polymorphic gene target.
     - `refs`: the path to the folder containing reference sequences for the polymorphic gene target that will be used to map the raw reads to the appropriate gene targets of interest
     - `pair1`: the path to the folder containing the forward reads.
