@@ -117,7 +117,7 @@ This workflow processes the data set by cleaning the sequencing reads, performin
 
 ## Usage Examples
 
-Below delineates what output files looked like after running this pipeline with a small sample of haplotypes.
+Below shows what output files looked like after running this pipeline with a small sample of haplotypes.
 
 `clean_sequencing_reads` should produce two folders in the {out}/fastq/{target} folder labeled **1** and **2** containing the cleaned and mapped fastq files. **1** contains the forward reads, **2** contains the reverse reads.
 
