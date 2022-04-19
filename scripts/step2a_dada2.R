@@ -11,15 +11,8 @@
 
 #### --------- load packages ----------------- ####
 
-# set up the libpaths
-#.libPaths(c("/gpfs/fs1/data/itlab/helmod/apps/Core/R_packages/3.5.1-gcb01", .libPaths()))
-#.libPaths( c("~/Rlibs", .libPaths() ) )
-
 # load the dada2 library
 library("dada2")
-
-
-#### ----------------- AMA -------------------- ####
 
 # read in the path to your folder of fastq files for AMA
 path <- snakemake@params[["all_samples"]]
