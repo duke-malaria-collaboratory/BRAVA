@@ -1,7 +1,6 @@
 configfile: "config.yaml"
 
 # modifiable parameters
-ncores = config['ncores']
 TARGET = config['target']
 CUTOFF = config['cutoff']
 SEED = config['seed']

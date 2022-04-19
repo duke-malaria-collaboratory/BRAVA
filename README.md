@@ -99,7 +99,7 @@ This workflow processes the data set by cleaning the sequencing reads, performin
 
     Run it **locally** with:
     ``` sh
-    snakemake
+    snakemake --cores NCORES # NCORES = # cores, ie. without parallelization use snakemake --cores 1
     ```
 
     To run the workflow on an **HPC with Slurm**:
