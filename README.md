@@ -70,7 +70,6 @@ This workflow processes the data set by cleaning the sequencing reads, performin
     [`environment.yaml`](environment.yaml) however you like.
 
 1. Edit the configuration file [`config.yml`](config.yml).
-    - `ncores`: the number of cores to use. Do not exceed the number of cores you have available.
     - `target`: the polymorphic gene target.
     - `refs`: the path to the folder containing reference sequences for the polymorphic gene target that will be used to map the raw reads to the appropriate gene targets of interest
     - `pair1`: the path to the folder containing the forward reads.
@@ -85,9 +84,6 @@ This workflow processes the data set by cleaning the sequencing reads, performin
     You can leave these options as-is if you'd like to first make sure the
     workflow runs without error on your machine before using your own dataset
     and custom parameters.
-
-    The default config file is suitable for initial testing,
-    but we recommend using more cores if available.
 
 1. Do a dry run to make sure the snakemake workflow is valid.
 
