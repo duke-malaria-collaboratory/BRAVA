@@ -1,2 +1,3 @@
 .snakemake/
 refs/.DS_Store
+out/fastq/AMA/all_samples/.snakemake_timestamp

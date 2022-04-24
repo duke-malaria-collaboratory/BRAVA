@@ -54,10 +54,10 @@ if (length(needtoremove) > 0) {
   haplotype_summary = haplotype_summary[-needtoremove,] 
 }
 
-# remove haplotypes that occur in <250 of the sample reads
+# remove haplotypes that occur in < snakemake@params[["depth"]] of the sample reads
 for (i in 1:nrow(data)){
   for (h in 1:ncol(data)){
-    if (data[i,h] < 250 & !(is.na(data[i,h])) & sum(data[i,]) != 0){
+    if (data[i,h] < snakemake@params[["depth"]] & !(is.na(data[i,h])) & sum(data[i,]) != 0){
       data[i,h] = 0
     } else {
       data[i,h] = data[i,h]
@@ -68,7 +68,7 @@ for (i in 1:nrow(data)){
 # calculate what percentage each haplotype occurs in and remove haplotypes that occur in <3% of the sample reads
 for (i in 1:nrow(data)){
   for (h in 1:ncol(data)){
-    if ((data[i,h]/sum(data[i,])) < 0.03 & !(is.na(data[i,h])) & sum(data[i,]) != 0){
+    if ((data[i,h]/sum(data[i,])) < snakemake@params[["proportion"]] & !(is.na(data[i,h])) & sum(data[i,]) != 0){
       data[i,h] = 0
     } else {
       data[i,h] = data[i,h]
@@ -109,7 +109,7 @@ if (length(needtoremove) > 0) {
 
 # remove any samples that have no haplotypes anymore
 data = data[(rownames(data) %in% haplotype_summary_censored$sample_names),]
-print("Haplotypes that occur in less than 250 or 3% of the reads have been removed.")
+cat("Haplotypes that occur in less than ", snakemake@params[["depth"]], " or ", snakemake@params[["proportion"]] * 100, "% of the reads have been removed.\n", sep = "")
 print("Haplotypes that are a different length than the majority of haplotypes have been removed.")
 print("Number of haplotypes:")
 nrow(data)

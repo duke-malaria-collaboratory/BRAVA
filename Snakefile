@@ -4,6 +4,8 @@ configfile: "config.yaml"
 TARGET = config['target']
 CUTOFF = config['cutoff']
 SEED = config['seed']
+READ_DEPTH = config['read_depth']
+PROPORTION = config['proportion']
 HAPLOTYPE_LENGTH = config['haplotype_length']
 
 # paths
@@ -54,8 +56,10 @@ rule organize_folders:
 		20
 	shell:
 		"mkdir {params.output} &&"
-		" cp {params.forward_samples}/*.fastq.gz {params.out} &&"
-		" cp {params.reverse_samples}/*.fastq.gz {params.out}"
+		" mv {params.forward_samples}/*.fastq.gz {params.out} &&"
+		" mv {params.reverse_samples}/*.fastq.gz {params.out} &&"
+		" rm -r {params.forward_samples} &&"
+		" rm -r {params.reverse_samples}"
 
 rule call_haplotypes:
 	input:
@@ -66,7 +70,7 @@ rule call_haplotypes:
 		reads_table=expand("{out}/haplotype_output/{target}_trackReadsThroughPipeline.csv", out=OUT, target=TARGET)
 	params:
 		all_samples=expand("{out}/fastq/{target}/all_samples", out=OUT, target=TARGET),
-		rscript="scripts/step2a_dada2.R",
+		rscript="scripts/step2_dada2.R",
 		cutoff = CUTOFF,
 		seed = SEED,
 	priority:
@@ -85,8 +89,10 @@ rule censor_haplotypes:
 		final_censored=expand("{out}/haplotype_output/{target}_uniqueSeqs_final_censored.fasta", out=OUT, target=TARGET),
 		final_haplotype_table=expand("{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv", out=OUT, target=TARGET),
 	params:
-		rscript="scripts/haplotype_censoring.R",
+		rscript="scripts/step3_haplotype_censoring.R",
 		haplotypes=expand("{out}/haplotype_output/{target}_haplotypes.rds", out=OUT, target=TARGET),
+		depth=READ_DEPTH,
+		proportion=PROPORTION,
 		length=HAPLOTYPE_LENGTH,
 	priority:
 		40
