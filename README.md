@@ -188,7 +188,22 @@ And the trackReadsThroughPipeline table looked like this:
 - `{target}_uniqueSeqs_final_censored.fasta`: fasta file of the haplotype results after all five steps of the censoring process are completed. 
 - `{target}_haplotype_table_censored_final_version.csv`: outputs the final censored haplotype data set in a formatted table.
 
-With our small sample, the snps_between_haps_within_samples file looked like this:
+With our small sample, the haplotype_table_precensored file looked like this:
+
+| H1    | H2   | H3   | H4   | H5   | H6   | H7   | H8 | MiSeq.ID |
+|-------|------|------|------|------|------|------|----|----------|
+| 0     | 0    | 0    | 0    | 8296 | 0    | 0    | 0  | BF1      |
+| 0     | 0    | 0    | 9241 | 0    | 0    | 0    | 0  | BF10     |
+| 10218 | 0    | 0    | 13   | 0    | 0    | 0    | 8  | BF2      |
+| 0     | 5056 | 0    | 0    | 0    | 0    | 0    | 0  | BF3      |
+| 11    | 8833 | 6    | 0    | 0    | 0    | 0    | 0  | BF4      |
+| 180   | 0    | 6872 | 0    | 0    | 158  | 0    | 0  | BF5      |
+| 9748  | 0    | 0    | 4    | 0    | 0    | 0    | 0  | BF6      |
+| 0     | 444  | 7351 | 0    | 0    | 0    | 0    | 0  | BF7      |
+| 0     | 0    | 0    | 0    | 0    | 7378 | 0    | 0  | BF8      |
+| 32    | 0    | 0    | 0    | 0    | 0    | 6285 | 0  | BF9      |
+
+The snps_between_haps_within_samples file looked like this:
 ```
 >Seq1
 GTAAAGGTATAATTATTGAGAATTCAAATACTACTTTTTTAACACCGGTAGCTACGGGAAATCAATATTTAAAAGATGGAGGTTTTGCTTTTCCTCCAACAGAACCTCATATGTCACCAATGACATTAGATGAAATGAGACATTTTTATAAAGATAATAAATATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGATTCCAGATAATGATAAAAATTCAAATTATAAATATCCAGCTGTTTATGATGACAAAGATAAAAAGTGTCATATATTATATATTG
