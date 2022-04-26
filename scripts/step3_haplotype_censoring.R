@@ -385,7 +385,7 @@ for (i in 1:(ncol(data) - 1)) {
 # copy the original input but with only the sequence IDs left after censoring
 joined = old_data[old_data$`MiSeq.ID` %in% rownames(data), , drop = FALSE]
 
-# we need to fix the column names to make them consistent
+# fix the column names to make them consistent
 tokeep = c(numHaplotypes)
 
 # find the columns where the data is the same
@@ -406,5 +406,5 @@ data$`MiSeq.ID` = rownames(data)
 print("Final output:")
 print(data)
 
-# output the censored rds file
+# output the censored csv file
 write_csv(data, snakemake@output[["final_haplotype_table"]])
