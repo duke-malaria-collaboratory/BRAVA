@@ -184,8 +184,8 @@ And the trackReadsThroughPipeline table looked like this:
 - `{target}_haplotype_table_precensored.csv`: outputs the haplotype data set prior to beginning the censoring process (essentially `{target}_haplotypes.rds` in a formatted csv file). 
 - `{target}_snps_between_haps_within_samples.fasta`: fasta file of the haplotypes after the first three steps of the censoring process are completed. This is used to tally up the number of SNPs between all haplotype pairings. 
 - `{target}_uniqueSeqs.fasta`: fasta file of the haplotypes after the fourth step of the censoring process is completed. 
-`{target}_aligned_seqs.fasta`: fasta file of the sequences after alignment. 
-`{target}_uniqueSeqs_final_censored.fasta`: fasta file of the haplotype results after all five steps of the censoring process are completed. 
+- `{target}_aligned_seqs.fasta`: fasta file of the sequences after alignment. 
+- `{target}_uniqueSeqs_final_censored.fasta`: fasta file of the haplotype results after all five steps of the censoring process are completed. 
 - `{target}_haplotype_table_censored_final_version.csv`: outputs the final censored haplotype data set in a formatted table.
 
 With our small sample, the snps_between_haps_within_samples file looked like this:
