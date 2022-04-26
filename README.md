@@ -147,8 +147,9 @@ BF10_AMA_1.fastq.gz
 `organize_folders` should produce an all_samples folder within the out/fastq/{target} folder. It is essentially a combination of the **1** and **2** folders.
 
 `call_haplotypes` should produce a haplotype_output in the {out} folder. It will contain 3 files: `{target}_trimAndFilterTable`, `{target}_haplotypes.rds`, and `{target}_trackReadsThroughPipeline.csv`. 
-    - `{target}_trimAndFilterTable`: summarizes read trimming and filtering
-    - `{target}_haplotypes.rds` is an R file that stores the haplotype results data set for furthermore manipulation in `censor_haplotypes`. `{target}_trackReadsThroughPipeline.csv` tracks the reads, looking at the number of reads that made it through each step of the pipeline.
+- `{target}_trimAndFilterTable`: summarizes read trimming and filtering
+- `{target}_haplotypes.rds` is an R file that stores the haplotype results data set for furthermore manipulation in `censor_haplotypes`. 
+- `{target}_trackReadsThroughPipeline.csv` tracks the reads, looking at the number of reads that made it through each step of the pipeline.
 
 With our small sample, the trimAndFilter table looked like this:
 |                      | reads.in | reads.out |
