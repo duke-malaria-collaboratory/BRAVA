@@ -23,6 +23,8 @@ Snakemake automatically builds a directed acyclic graph (DAG) of jobs to figure
 out the dependencies of each of the rules and what order to run them in.
 This workflow processes the data set by cleaning the sequencing reads, performing haplotype calling, and censoring the haplotypes to render numerous data analysis outputs, resulting in a final table that contains the resulting haplotypes after censoring.
 
+![dag](dag.png)
+
 `clean_sequencing_reads` cleans, filters, and maps the raw reads. It uses BBmap to map all reads from the reference sequences to differentiate between the two targets, CutAdapt to trim the primers and adapter sequences from sequencing reads, and Trimmomatic to quality filter reads if average of every 4 nucleotides had a Phred Quality Score < 15 or was less than 80 nucleotides long. This is the first step in read processing on the cluster.
 
 `organize_folders` creates an all_samples folder within the out/fastq/{target} folder and moves all forward and reverse sequences into that folder.
@@ -100,20 +102,17 @@ This workflow processes the data set by cleaning the sequencing reads, performin
 
     To run the workflow on an **HPC with Slurm**:
 
-    1. Edit your email (`YOUR_EMAIL_HERE`), Slurm account (`YOUR_ACCOUNT_HERE`), and other Slurm parameters as needed in:
+    1. Edit your email address (`YOUR_EMAIL_HERE`) in:
 
-        - [`code/submit_slurm.sh`](code/submit_slurm.sh)
-        - [`config/cluster.json`](config/cluster.json)
+        - [`scripts/submit_slurm.sh`](scripts/submit_slurm.sh)
 
     1. Submit the snakemake workflow with:
 
         ``` sh
-        sbatch code/submit_slurm.sh
+        sbatch scripts/submit_slurm.sh
         ```
 
-        The main job will then submit all other snakemake jobs, allowing
-        independent steps of the workflow to run on different nodes in parallel.
-        Slurm output files will be written to `log/hpc/`.
+        Slurm output files will be written to `logs/`. You will receive an email when the job is finished.
 
 ## Usage Examples
 
