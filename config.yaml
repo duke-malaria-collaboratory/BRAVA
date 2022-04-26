@@ -16,3 +16,4 @@ seed: 100 # set the seed of R's random number generator
 read_depth: 250 # remove haplotypes that occur in less than this amount of the sample reads, ie. less than 250 of the sample reads
 proportion: 0.03 # remove haplotypes that occur in less than this percentage of the sample reads, ie. occur in less than 3% of the sample reads
 haplotype_length: 300 # length of the majority of haplotypes - (300 nucleotides for pfama1, 288 nucleotides for pfcsp)
+read_depth_ratio: 8 # for haplotypes that have 1 SNP difference, occur in the same sample, and have a greater than this amount times read depth difference between them within that sample, removed the hapltoype with the lower read depth from that sample, ie. > 8 times read depth difference

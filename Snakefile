@@ -7,6 +7,7 @@ SEED = config['seed']
 READ_DEPTH = config['read_depth']
 PROPORTION = config['proportion']
 HAPLOTYPE_LENGTH = config['haplotype_length']
+READ_DEPTH_RATIO = config['read_depth_ratio']
 
 # paths
 REFS = config['refs']
@@ -94,6 +95,7 @@ rule censor_haplotypes:
 		depth=READ_DEPTH,
 		proportion=PROPORTION,
 		length=HAPLOTYPE_LENGTH,
+		ratio=READ_DEPTH_RATIO,
 	priority:
 		40
 	script:

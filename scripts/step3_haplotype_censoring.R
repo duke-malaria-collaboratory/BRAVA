@@ -147,12 +147,12 @@ for (i in 1:nrow(data_test)){
   hap_list = unique(hap_list)
   for (k in 1:(length(hap_list))){
     if (length(hap_list) > 1){
-      for (l in 1:(length(hap_list)-1)){
-        if (!(is.null(hap_list)) & snp_output[hap_list[k],hap_list[l+1]] == 1 & data_test[i,hap_list[k]]*8 < data_test[i,hap_list[l+1]]) { 
+      for (l in 1:(length(hap_list)-1)){ # read depth ratio
+        if (!(is.null(hap_list)) & snp_output[hap_list[k],hap_list[l+1]] == 1 & data_test[i,hap_list[k]]*snakemake@params[["ratio"]] < data_test[i,hap_list[l+1]]) { 
           print(paste(rownames(data_test)[i],hap_list[k]))
           data_test[i,hap_list[k]] = 0
         } 
-        if (!(is.null(hap_list)) & snp_output[hap_list[k],hap_list[l+1]] == 1 & data_test[i,hap_list[l+1]]*8 < data_test[i,hap_list[k]]) {
+        if (!(is.null(hap_list)) & snp_output[hap_list[k],hap_list[l+1]] == 1 & data_test[i,hap_list[l+1]]*snakemake@params[["ratio"]] < data_test[i,hap_list[k]]) {
           print(paste(rownames(data_test)[i],hap_list[l+1]))
           data_test[i,hap_list[l+1]] = 0
         }
