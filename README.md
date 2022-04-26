@@ -147,6 +147,7 @@ BF10_AMA_1.fastq.gz
 `organize_folders` should produce an all_samples folder within the out/fastq/{target} folder. It is essentially a combination of the **1** and **2** folders.
 
 `call_haplotypes` should produce a haplotype_output in the {out} folder. It will contain 3 files: `{target}_trimAndFilterTable`, `{target}_haplotypes.rds`, and `{target}_trackReadsThroughPipeline.csv`. 
+
 `{target}_trimAndFilterTable` summarizes read trimming and filtering, `{target}_haplotypes.rds` is an R file that stores the haplotype results data set for furthermore manipulation in `censor_haplotypes`. `{target}_trackReadsThroughPipeline.csv` tracks the reads, looking at the number of reads that made it through each step of the pipeline.
 
 With our small sample, the trimAndFilter table looked like this:
@@ -179,6 +180,7 @@ And the trackReadsThroughPipeline table looked like this:
 | BF9  | 6317   | 6317   | 6317    |
 
 `censor_haplotypes` should add six files to the {out}/haplotype_output folder: `{target}_haplotype_table_precensored.csv`, `{target}_snps_between_haps_within_samples.fasta`, `{target}_uniqueSeqs.fasta`, `{target}_aligned_seqs.fasta`, `{target}_uniqueSeqs_final_censored.fasta`, and `{target}_haplotype_table_censored_final_version.csv`. 
+
 `{target}_haplotype_table_precensored.csv` outputs the haplotype data set prior to beginning the censoring process (essentially `{target}_haplotypes.rds` in a formatted csv file). `{target}_snps_between_haps_within_samples.fasta` is a fasta file of the haplotypes after the first three steps of the censoring process are completed. This is used to tally up the number of SNPs between all haplotype pairings. `{target}_uniqueSeqs.fasta` is a fasta file of the haplotypes after the fourth step of the censoring process is completed. `{target}_aligned_seqs.fasta` is a fasta file of the sequences after alignment. `{target}_uniqueSeqs_final_censored.fasta` is a fasta file of the haplotype results after all five steps of the censoring process are completed. `{target}_haplotype_table_censored_final_version.csv` outputs the final censored haplotype data set in a formatted table.
 
 With our small sample, the snps_between_haps_within_samples file looked like this:
