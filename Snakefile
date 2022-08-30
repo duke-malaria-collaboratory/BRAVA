@@ -26,7 +26,7 @@ rule all:
 
 rule clean_sequencing_reads:
 	input:
-		refs=expand("refs/{target}/{target}.fasta", target=TARGET),
+		refs=expand("refs/{target}.fasta", target=TARGET),
 		pair1=PAIR1,
 		pair2=PAIR2,
 		forward=expand("{forward}.fasta", forward=FOWARD),
