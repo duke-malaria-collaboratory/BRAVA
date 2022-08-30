@@ -52,7 +52,15 @@ This workflow processes the data set by cleaning the sequencing reads, performin
 1. Install the dependencies.
 
     1. If you don't have conda yet, we recommend installing 
-       [miniconda](https://docs.conda.io/en/latest/miniconda.html).
+       [miniconda](https://docs.conda.io/en/latest/miniconda.html). 
+       
+       If you use a Macbook that has an M1 Chip, you will need to install Rosetta2:
+
+       ``` sh
+       softwareupdate --install-rosetta
+       ```
+
+       Download the x86-64 bit version of miniconda instead of the M1 version.
        
     1. Next, install [mamba](https://mamba.readthedocs.io/en/latest/), 
        a fast drop-in replacement for conda:

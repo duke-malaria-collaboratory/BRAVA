@@ -3,7 +3,7 @@ Executing align2.BBSplitter [ow=t, fastareadlen=500, minhits=1, minratio=0.56, m
 
 Converted arguments to [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=out/trim/1/BF6.1.fastq.gz, in2=out/trim/2/BF6.2.fastq.gz, basename=BF6_%_#.fastq, ref_AMA=refs/AMA/AMA.fasta]
 Merged reference file ref/genome/1/merged_ref_64917.fa.gz already exists; skipping merge.
-Ref merge time:     	0.034 seconds.
+Ref merge time:     	0.025 seconds.
 Executing align2.BBMap [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=out/trim/1/BF6.1.fastq.gz, in2=out/trim/2/BF6.2.fastq.gz, ref=ref/genome/1/merged_ref_64917.fa.gz, out_AMA=BF6_AMA_#.fastq]
 Version 38.18
 
@@ -13,15 +13,15 @@ NOTE:	Ignoring reference file because it already appears to have been processed.
 NOTE:	If you wish to regenerate the index, please manually delete ref/genome/1/summary.txt
 Set genome to 1
 
-Loaded Reference:	0.019 seconds.
+Loaded Reference:	0.016 seconds.
 Loading index for chunk 1-1, build 1
-Generated Index:	0.602 seconds.
-Analyzed Index:   	3.024 seconds.
-Cleared Memory:    	0.129 seconds.
+Generated Index:	0.753 seconds.
+Analyzed Index:   	3.575 seconds.
+Cleared Memory:    	0.174 seconds.
 Processing reads in paired-ended mode.
 Started read stream.
-Started 1 mapping thread.
-Detecting finished threads: 0
+Started 56 mapping threads.
+Detecting finished threads: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55
 
    ------------------   Results   ------------------   
 
@@ -32,9 +32,9 @@ Minimum Score Ratio:  	0.56
 Mapping Mode:         	normal
 Reads Used:           	61758	(16371543 bases)
 
-Mapping:          	15.001 seconds.
-Reads/sec:       	4117.01
-kBases/sec:      	1091.38
+Mapping:          	7.835 seconds.
+Reads/sec:       	7882.30
+kBases/sec:      	2089.53
 
 
 Pairing data:   	pct pairs	num pairs 	pct bases	   num bases
@@ -53,7 +53,7 @@ low-Q discards:  	  0.0000% 	        0 	  0.0000% 	           0
 
 perfect best site:	  0.2235% 	       69 	  0.0807% 	        6670
 semiperfect site:	  0.2235% 	       69 	  0.0807% 	        6670
-rescued:         	  0.0000% 	        0
+rescued:         	  0.0518% 	       16
 
 Match Rate:      	      NA 	       NA 	 99.3892% 	     3950433
 Error Rate:      	 99.5271% 	    14522 	  0.6108% 	       24278
@@ -72,7 +72,7 @@ low-Q discards:  	  0.0000% 	        0 	  0.0000% 	           0
 
 perfect best site:	  0.3595% 	      111 	  0.2073% 	       16812
 semiperfect site:	  0.3595% 	      111 	  0.2073% 	       16812
-rescued:         	  0.0259% 	        8
+rescued:         	  0.0745% 	       23
 
 Match Rate:      	      NA 	       NA 	 99.1562% 	     3832453
 Error Rate:      	 99.2391% 	    14477 	  0.8438% 	       32612
@@ -81,4 +81,4 @@ Del Rate:        	  0.5621% 	       82 	  0.0023% 	          89
 Ins Rate:        	  0.0137% 	        2 	  0.0001% 	           2
 N Rate:          	  0.0000% 	        0 	  0.0000% 	           0
 
-Total time:     	18.838 seconds.
+Total time:     	12.402 seconds.
