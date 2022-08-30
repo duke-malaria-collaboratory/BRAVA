@@ -1,9 +1,9 @@
-java -Djava.library.path=/home/kh455/miniconda3/envs/haplotype_calling/opt/bbmap-38.18/jni/ -ea -Xmx8000m -cp /home/kh455/miniconda3/envs/haplotype_calling/opt/bbmap-38.18/current/ align2.BBSplitter ow=t fastareadlen=500 minhits=1 minratio=0.56 maxindel=20 qtrim=rl untrim=t trimq=6 -Xmx8000m in=out/trim/1/BF3.1.fastq.gz in2=out/trim/2/BF3.2.fastq.gz ref=refs/AMA/AMA.fasta basename=BF3_%_#.fastq
-Executing align2.BBSplitter [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, -Xmx8000m, in=out/trim/1/BF3.1.fastq.gz, in2=out/trim/2/BF3.2.fastq.gz, ref=refs/AMA/AMA.fasta, basename=BF3_%_#.fastq]
+java -Djava.library.path=/home/kh455/miniconda3/envs/haplotype_calling/opt/bbmap-38.18/jni/ -ea -Xmx8000m -cp /home/kh455/miniconda3/envs/haplotype_calling/opt/bbmap-38.18/current/ align2.BBSplitter ow=t fastareadlen=500 minhits=1 minratio=0.56 maxindel=20 qtrim=rl untrim=t trimq=6 -Xmx8000m in=out/trim/1/BF3.1.fastq.gz in2=out/trim/2/BF3.2.fastq.gz ref=refs/AMA.fasta basename=BF3_%_#.fastq
+Executing align2.BBSplitter [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, -Xmx8000m, in=out/trim/1/BF3.1.fastq.gz, in2=out/trim/2/BF3.2.fastq.gz, ref=refs/AMA.fasta, basename=BF3_%_#.fastq]
 
-Converted arguments to [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=out/trim/1/BF3.1.fastq.gz, in2=out/trim/2/BF3.2.fastq.gz, basename=BF3_%_#.fastq, ref_AMA=refs/AMA/AMA.fasta]
+Converted arguments to [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=out/trim/1/BF3.1.fastq.gz, in2=out/trim/2/BF3.2.fastq.gz, basename=BF3_%_#.fastq, ref_AMA=refs/AMA.fasta]
 Merged reference file ref/genome/1/merged_ref_64917.fa.gz already exists; skipping merge.
-Ref merge time:     	0.034 seconds.
+Ref merge time:     	0.031 seconds.
 Executing align2.BBMap [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=out/trim/1/BF3.1.fastq.gz, in2=out/trim/2/BF3.2.fastq.gz, ref=ref/genome/1/merged_ref_64917.fa.gz, out_AMA=BF3_AMA_#.fastq]
 Version 38.18
 
@@ -13,11 +13,11 @@ NOTE:	Ignoring reference file because it already appears to have been processed.
 NOTE:	If you wish to regenerate the index, please manually delete ref/genome/1/summary.txt
 Set genome to 1
 
-Loaded Reference:	0.022 seconds.
+Loaded Reference:	0.021 seconds.
 Loading index for chunk 1-1, build 1
-Generated Index:	0.669 seconds.
-Analyzed Index:   	3.578 seconds.
-Cleared Memory:    	0.167 seconds.
+Generated Index:	0.798 seconds.
+Analyzed Index:   	4.125 seconds.
+Cleared Memory:    	0.164 seconds.
 Processing reads in paired-ended mode.
 Started read stream.
 Started 56 mapping threads.
@@ -32,9 +32,9 @@ Minimum Score Ratio:  	0.56
 Mapping Mode:         	normal
 Reads Used:           	49490	(12861767 bases)
 
-Mapping:          	10.000 seconds.
-Reads/sec:       	4949.22
-kBases/sec:      	1286.23
+Mapping:          	7.356 seconds.
+Reads/sec:       	6727.60
+kBases/sec:      	1748.41
 
 
 Pairing data:   	pct pairs	num pairs 	pct bases	   num bases
@@ -81,4 +81,4 @@ Del Rate:        	  0.6723% 	       68 	  0.0030% 	          78
 Ins Rate:        	  0.0395% 	        4 	  0.0003% 	           8
 N Rate:          	  0.0000% 	        0 	  0.0000% 	           0
 
-Total time:     	14.496 seconds.
+Total time:     	12.524 seconds.

@@ -19,7 +19,6 @@ OUT = config['out']
 
 rule all:
  	input:
-	 	expand("{out}/fastq/{target}/1/", out=OUT, target=TARGET),
  		expand("{out}/fastq/{target}/all_samples/", out=OUT, target=TARGET),
  		expand("{out}/haplotype_output/{target}_trimAndFilterTable", out=OUT, target=TARGET),
 		expand("{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv", out=OUT, target=TARGET),
@@ -32,30 +31,20 @@ rule clean_sequencing_reads:
 		forward=expand("{forward}.fasta", forward=FOWARD),
 		rev=expand("{rev}.fasta", rev=REV)
 	output:
-		directory(expand("{out}/fastq/{target}/1/", out=OUT, target=TARGET)),
-		directory(expand("{out}/fastq/{target}/2/", out=OUT, target=TARGET)),
-	params:
-		folder=OUT
-	priority:
-		10
-	shell:
-		"perl scripts/step1_splitSyncReadsMultiRef.pl 1 {input.refs} {params.folder} {input.pair1} {input.pair2} {input.forward} {input.rev}"
-
-rule organize_folders:
-	input:
-		expand("{out}/fastq/{target}/1/", out=OUT, target=TARGET),
-		expand("{out}/fastq/{target}/2/", out=OUT, target=TARGET),
-	output:
+		#directory(expand("{out}/fastq/{target}/1/", out=OUT, target=TARGET)),
+		#directory(expand("{out}/fastq/{target}/2/", out=OUT, target=TARGET)),
 		out=directory(expand("{out}/fastq/{target}/all_samples/", out=OUT, target=TARGET))
 	params:
+		folder=OUT,
 		output=expand("{out}/fastq/{target}/all_samples", out=OUT, target=TARGET),
 		forward_samples=expand("{out}/fastq/{target}/1", out=OUT, target=TARGET),
 		reverse_samples=expand("{out}/fastq/{target}/2", out=OUT, target=TARGET),
 		haplotype_output=expand("{out}/haplotype_output", out=OUT),
 		out=expand("{out}/fastq/{target}/all_samples", out=OUT, target=TARGET)
 	priority:
-		20
+			10
 	shell:
+		"perl scripts/step1_splitSyncReadsMultiRef.pl 1 {input.refs} {params.folder} {input.pair1} {input.pair2} {input.forward} {input.rev} &&"
 		"mkdir {params.output} &&"
 		" mv {params.forward_samples}/*.fastq.gz {params.out} &&"
 		" mv {params.reverse_samples}/*.fastq.gz {params.out} &&"
