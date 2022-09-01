@@ -195,7 +195,7 @@ sub trimReads
         {
 	    system "cutadapt -g file:$forward -G file:$reverse -o $outDir/cut/1/$prefix.1.fastq.gz -p $outDir/cut/2/$prefix.2.fastq.gz $read1Dir/$Reads1[$i] $read2Dir/$Reads2[$i]";
 
-        system "java -jar /gpfs/fs1/data/taylorlab/software/Trimmomatic-0.38/trimmomatic-0.38.jar PE -phred33 -summary $out/trim/Summary/$prefix.summary $outDir/cut/1/$prefix.1.fastq.gz $outDir/cut/2/$prefix.2.fastq.gz $outDir/trim/1/$prefix.1.fastq.gz $outDir/trim/singleton/$prefix.1_unpaired.fq.gz $outDir/trim/2/$prefix.2.fastq.gz $outDir/trim/singleton/$prefix.2_unpaired.fq.gz LEADING:10 TRAILING:10 SLIDINGWINDOW:4:15 MINLEN:80";
+        system "trimmomatic PE -phred33 -summary $out/trim/Summary/$prefix.summary $outDir/cut/1/$prefix.1.fastq.gz $outDir/cut/2/$prefix.2.fastq.gz $outDir/trim/1/$prefix.1.fastq.gz $outDir/trim/singleton/$prefix.1_unpaired.fq.gz $outDir/trim/2/$prefix.2.fastq.gz $outDir/trim/singleton/$prefix.2_unpaired.fq.gz LEADING:10 TRAILING:10 SLIDINGWINDOW:4:15 MINLEN:80";
 
 	    system "rm $outDir/cut/1/$prefix.1.fastq.gz $outDir/cut/2/$prefix.2.fastq.gz";
         }

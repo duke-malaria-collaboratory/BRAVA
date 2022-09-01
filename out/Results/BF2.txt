@@ -15,9 +15,9 @@ Set genome to 1
 
 Loaded Reference:	0.021 seconds.
 Loading index for chunk 1-1, build 1
-Generated Index:	0.762 seconds.
-Analyzed Index:   	3.478 seconds.
-Cleared Memory:    	0.152 seconds.
+Generated Index:	0.919 seconds.
+Analyzed Index:   	3.560 seconds.
+Cleared Memory:    	0.174 seconds.
 Processing reads in paired-ended mode.
 Started read stream.
 Started 56 mapping threads.
@@ -32,9 +32,9 @@ Minimum Score Ratio:  	0.56
 Mapping Mode:         	normal
 Reads Used:           	53950	(14333167 bases)
 
-Mapping:          	7.846 seconds.
-Reads/sec:       	6876.27
-kBases/sec:      	1826.85
+Mapping:          	4.876 seconds.
+Reads/sec:       	11065.43
+kBases/sec:      	2939.81
 
 
 Pairing data:   	pct pairs	num pairs 	pct bases	   num bases
@@ -81,4 +81,4 @@ Del Rate:        	  0.7141% 	      109 	  0.0033% 	         133
 Ins Rate:        	  0.0131% 	        2 	  0.0000% 	           2
 N Rate:          	  0.0000% 	        0 	  0.0000% 	           0
 
-Total time:     	12.318 seconds.
+Total time:     	9.608 seconds.

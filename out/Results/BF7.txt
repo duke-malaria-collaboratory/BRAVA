@@ -13,11 +13,11 @@ NOTE:	Ignoring reference file because it already appears to have been processed.
 NOTE:	If you wish to regenerate the index, please manually delete ref/genome/1/summary.txt
 Set genome to 1
 
-Loaded Reference:	0.015 seconds.
+Loaded Reference:	0.016 seconds.
 Loading index for chunk 1-1, build 1
-Generated Index:	0.744 seconds.
-Analyzed Index:   	3.401 seconds.
-Cleared Memory:    	0.240 seconds.
+Generated Index:	0.792 seconds.
+Analyzed Index:   	3.468 seconds.
+Cleared Memory:    	0.196 seconds.
 Processing reads in paired-ended mode.
 Started read stream.
 Started 56 mapping threads.
@@ -32,9 +32,9 @@ Minimum Score Ratio:  	0.56
 Mapping Mode:         	normal
 Reads Used:           	56860	(15089255 bases)
 
-Mapping:          	10.130 seconds.
-Reads/sec:       	5612.98
-kBases/sec:      	1489.55
+Mapping:          	11.339 seconds.
+Reads/sec:       	5014.66
+kBases/sec:      	1330.77
 
 
 Pairing data:   	pct pairs	num pairs 	pct bases	   num bases
@@ -81,4 +81,4 @@ Del Rate:        	  0.6348% 	       81 	  0.0025% 	          85
 Ins Rate:        	  0.0235% 	        3 	  0.0001% 	           3
 N Rate:          	  0.0000% 	        0 	  0.0000% 	           0
 
-Total time:     	14.574 seconds.
+Total time:     	15.858 seconds.
