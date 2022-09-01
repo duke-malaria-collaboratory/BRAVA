@@ -2,22 +2,29 @@ java -Djava.library.path=/home/kh455/miniconda3/envs/haplotype_calling/opt/bbmap
 Executing align2.BBSplitter [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, -Xmx8000m, in=out/trim/1/BF1.1.fastq.gz, in2=out/trim/2/BF1.2.fastq.gz, ref=refs/AMA.fasta, basename=BF1_%_#.fastq]
 
 Converted arguments to [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=out/trim/1/BF1.1.fastq.gz, in2=out/trim/2/BF1.2.fastq.gz, basename=BF1_%_#.fastq, ref_AMA=refs/AMA.fasta]
-Merged reference file ref/genome/1/merged_ref_64917.fa.gz already exists; skipping merge.
-Ref merge time:     	0.204 seconds.
+Creating merged reference file ref/genome/1/merged_ref_64917.fa.gz
+Ref merge time:     	0.083 seconds.
 Executing align2.BBMap [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=out/trim/1/BF1.1.fastq.gz, in2=out/trim/2/BF1.2.fastq.gz, ref=ref/genome/1/merged_ref_64917.fa.gz, out_AMA=BF1_AMA_#.fastq]
 Version 38.18
 
 Set MINIMUM_ALIGNMENT_SCORE_RATIO to 0.560
 Retaining first best site only for ambiguous mappings.
-NOTE:	Ignoring reference file because it already appears to have been processed.
-NOTE:	If you wish to regenerate the index, please manually delete ref/genome/1/summary.txt
+NOTE:	Deleting contents of ref/genome/1 because reference is specified and overwrite=true
+Writing reference.
+Executing dna.FastaToChromArrays2 [ref/genome/1/merged_ref_64917.fa.gz, 1, writeinthread=false, genscaffoldinfo=true, retain, waitforwriting=false, gz=true, maxlen=536670912, writechroms=true, minscaf=1, midpad=300, startpad=8000, stoppad=8000, nodisk=false]
+
+Set genScaffoldInfo=true
+Writing chunk 1
 Set genome to 1
 
-Loaded Reference:	0.053 seconds.
+Loaded Reference:	0.003 seconds.
 Loading index for chunk 1-1, build 1
-Generated Index:	0.866 seconds.
-Analyzed Index:   	4.199 seconds.
-Cleared Memory:    	0.413 seconds.
+No index available; generating from reference genome: /gpfs/fs1/home/kh455/haplotype_calling_pipeline/ref/index/1/chr1_index_k13_c16_b1.block
+Indexing threads started for block 0-1
+Indexing threads finished for block 0-1
+Generated Index:	1.599 seconds.
+Analyzed Index:   	3.578 seconds.
+Cleared Memory:    	0.240 seconds.
 Processing reads in paired-ended mode.
 Started read stream.
 Started 56 mapping threads.
@@ -32,9 +39,9 @@ Minimum Score Ratio:  	0.56
 Mapping Mode:         	normal
 Reads Used:           	51154	(13572036 bases)
 
-Mapping:          	7.614 seconds.
-Reads/sec:       	6718.25
-kBases/sec:      	1782.47
+Mapping:          	9.053 seconds.
+Reads/sec:       	5650.45
+kBases/sec:      	1499.16
 
 
 Pairing data:   	pct pairs	num pairs 	pct bases	   num bases
@@ -81,4 +88,4 @@ Del Rate:        	  0.5661% 	       74 	  0.0026% 	          90
 Ins Rate:        	  0.0229% 	        3 	  0.0002% 	           7
 N Rate:          	  0.0000% 	        0 	  0.0000% 	           0
 
-Total time:     	13.472 seconds.
+Total time:     	14.749 seconds.

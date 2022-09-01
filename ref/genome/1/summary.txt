@@ -1,5 +1,5 @@
 #Summary
-#Generated on	Tue Apr 12 13:51:47 EDT 2022
+#Generated on	Thu Sep 01 12:24:35 EDT 2022
 #Version	5
 chroms	1
 bases	16344
@@ -10,5 +10,5 @@ scaffolds	1
 interpad	300
 source	/gpfs/fs1/home/kh455/haplotype_calling_pipeline/ref/genome/1/merged_ref_64917.fa.gz
 bytes	260
-last modified	1644950696807
+last modified	1662049474960
 scafprefixes	true

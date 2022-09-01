@@ -2,6 +2,7 @@ configfile: "config.yaml"
 
 # modifiable parameters
 TARGET = config['target']
+RECREATEREFFOLDER = config['recreateRefFolder']
 CUTOFF = config['cutoff']
 SEED = config['seed']
 READ_DEPTH = config['read_depth']
@@ -35,6 +36,7 @@ rule clean_sequencing_reads:
 		#directory(expand("{out}/fastq/{target}/2/", out=OUT, target=TARGET)),
 		out=directory(expand("{out}/fastq/{target}/all_samples/", out=OUT, target=TARGET))
 	params:
+		recreate_ref_folder=RECREATEREFFOLDER,
 		folder=OUT,
 		output=expand("{out}/fastq/{target}/all_samples", out=OUT, target=TARGET),
 		forward_samples=expand("{out}/fastq/{target}/1", out=OUT, target=TARGET),
@@ -43,13 +45,13 @@ rule clean_sequencing_reads:
 		out=expand("{out}/fastq/{target}/all_samples", out=OUT, target=TARGET)
 	priority:
 			10
-	shell:
-		"perl scripts/step1_splitSyncReadsMultiRef.pl 1 {input.refs} {params.folder} {input.pair1} {input.pair2} {input.forward} {input.rev} &&"
-		"mkdir {params.output} &&"
-		" mv {params.forward_samples}/*.fastq.gz {params.out} &&"
-		" mv {params.reverse_samples}/*.fastq.gz {params.out} &&"
-		" rm -r {params.forward_samples} &&"
-		" rm -r {params.reverse_samples}"
+	run:
+		if params.recreate_ref_folder == True:
+			shell("rm -r ref")
+		shell("perl scripts/step1_splitSyncReadsMultiRef.pl 1 {input.refs} {params.folder} {input.pair1} {input.pair2} {input.forward} {input.rev}")
+		shell("mkdir {params.output}")
+		shell("mv {params.forward_samples}/*.fastq.gz {params.out} && mv {params.reverse_samples}/*.fastq.gz {params.out}")
+		shell("rm -r {params.forward_samples} && rm -r {params.reverse_samples}")
 
 rule call_haplotypes:
 	input:

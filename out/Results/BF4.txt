@@ -3,7 +3,7 @@ Executing align2.BBSplitter [ow=t, fastareadlen=500, minhits=1, minratio=0.56, m
 
 Converted arguments to [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=out/trim/1/BF4.1.fastq.gz, in2=out/trim/2/BF4.2.fastq.gz, basename=BF4_%_#.fastq, ref_AMA=refs/AMA.fasta]
 Merged reference file ref/genome/1/merged_ref_64917.fa.gz already exists; skipping merge.
-Ref merge time:     	0.024 seconds.
+Ref merge time:     	0.033 seconds.
 Executing align2.BBMap [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=out/trim/1/BF4.1.fastq.gz, in2=out/trim/2/BF4.2.fastq.gz, ref=ref/genome/1/merged_ref_64917.fa.gz, out_AMA=BF4_AMA_#.fastq]
 Version 38.18
 
@@ -13,11 +13,11 @@ NOTE:	Ignoring reference file because it already appears to have been processed.
 NOTE:	If you wish to regenerate the index, please manually delete ref/genome/1/summary.txt
 Set genome to 1
 
-Loaded Reference:	0.023 seconds.
+Loaded Reference:	0.022 seconds.
 Loading index for chunk 1-1, build 1
-Generated Index:	0.593 seconds.
-Analyzed Index:   	4.078 seconds.
-Cleared Memory:    	0.328 seconds.
+Generated Index:	0.847 seconds.
+Analyzed Index:   	4.037 seconds.
+Cleared Memory:    	0.161 seconds.
 Processing reads in paired-ended mode.
 Started read stream.
 Started 56 mapping threads.
@@ -32,9 +32,9 @@ Minimum Score Ratio:  	0.56
 Mapping Mode:         	normal
 Reads Used:           	57008	(15112083 bases)
 
-Mapping:          	10.152 seconds.
-Reads/sec:       	5615.37
-kBases/sec:      	1488.56
+Mapping:          	8.111 seconds.
+Reads/sec:       	7028.11
+kBases/sec:      	1863.06
 
 
 Pairing data:   	pct pairs	num pairs 	pct bases	   num bases
@@ -81,4 +81,4 @@ Del Rate:        	  0.7096% 	       97 	  0.0034% 	         123
 Ins Rate:        	  0.0366% 	        5 	  0.0002% 	           9
 N Rate:          	  0.0000% 	        0 	  0.0000% 	           0
 
-Total time:     	15.232 seconds.
+Total time:     	13.239 seconds.

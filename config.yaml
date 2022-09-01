@@ -1,3 +1,4 @@
+# You can also specify multiple targets to run in parallel, ie. target: ["AMA", "CSP"]
 target: AMA
 
 # Default pathnames, change if needed
@@ -8,11 +9,15 @@ forward: adapters/forwardPrimers
 rev: adapters/reversePrimers
 out: out
 
+# step1_splitSyncReadsMultiRef.pl
+recreateRefFolder: True # automatically delete and recreate ref folder for every run (this ensures it gets updated when the reference sequences are changed)
+# this is a Python Boolean, so either True or False
+
 # step2a_dada2.R
 cutoff: 50 # cutoff for # of reads - remove samples that have less than this number of reads after sampling
 seed: 100 # set the seed of R's random number generator
 
-# haplotype_censoring.R
+# step3_haplotype_censoring.R
 read_depth: 250 # remove haplotypes that occur in less than this amount of the sample reads, ie. less than 250 of the sample reads
 proportion: 0.03 # remove haplotypes that occur in less than this percentage of the sample reads, ie. occur in less than 3% of the sample reads
 haplotype_length: 300 # length of the majority of haplotypes - (300 nucleotides for pfama1, 288 nucleotides for pfcsp)

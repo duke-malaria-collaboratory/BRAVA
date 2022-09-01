@@ -27,8 +27,6 @@ This workflow processes the data set by cleaning the sequencing reads, performin
 
 `clean_sequencing_reads` cleans, filters, and maps the raw reads. It uses BBmap to map all reads from the reference sequences to differentiate between the two targets, CutAdapt to trim the primers and adapter sequences from sequencing reads, and Trimmomatic to quality filter reads if average of every 4 nucleotides had a Phred Quality Score < 15 or was less than 80 nucleotides long. This is the first step in read processing on the cluster.
 
-`organize_folders` creates an all_samples folder within the out/fastq/{target} folder and moves all forward and reverse sequences into that folder.
-
 `call_haplotypes` call haplotypes for your target using the DADA2 program. This is the second step in the read processing on the cluster.
 
 `censor_haplotypes` censors falsely detected haplotypes. Censoring criteria is applied in this order:
@@ -81,12 +79,13 @@ This workflow processes the data set by cleaning the sequencing reads, performin
 
 1. Edit the configuration file [`config.yaml`](config.yaml).
     - `target`: the polymorphic gene target.
-    - `refs`: the path to the folder containing reference sequences for the polymorphic gene target that will be used to map the raw reads to the appropriate gene targets of interest
+    - `refs`: the path to the folder containing reference sequences for the polymorphic gene target that will be used to map the raw reads to the appropriate gene targets of interest.
     - `pair1`: the path to the folder containing the forward reads.
     - `pair2`: the path to the folder containing the reverse reads.
     - `forward`: the path to the file with the list of forward primers.
     - `rev`: the path to the file with the list of reverse primers.
     - `out`: the name of desired output folder.
+    - `recreateRefFolder`: option to recreate the `ref` folder for every run - deleting and creating it again makes sure it gets updated if you change the reference sequences you want to use.
     - `cutoff`: cutoff for which samples with less than this number of reads after sampling should be removed.
     - `seed`: seed of R's random number generator for the purpose of obtaining a reproducible random result.
     - `haplotype_length`: the length of the majority of haplotypes for the target.
@@ -126,7 +125,7 @@ This workflow processes the data set by cleaning the sequencing reads, performin
 
 Below shows what output files looked like after running this pipeline with a small sample of haplotypes.
 
-`clean_sequencing_reads` should produce two folders in the {out}/fastq/{target} folder labeled **1** and **2** containing the cleaned and mapped fastq files. **1** contains the forward reads, **2** contains the reverse reads. It also produces {out}/fastqc_in, a folder that contains the FastQC reports for each input fastq file. To open the .zip files, download and extract the files.
+`clean_sequencing_reads` should produce an all_samples folder within the out/fastq/{target} folder containing the cleaned and mapped fastq files. It also produces {out}/fastqc_in, a folder that contains the FastQC reports for each input fastq file. To open the .zip files, download and extract the files.
 
 After running this rule with a small sample of haplotypes, the **1** folder contained these files:
 ```
@@ -150,8 +149,6 @@ BF9_AMA_1.fastq.gz
 
 BF10_AMA_1.fastq.gz
 ```
-
-`organize_folders` should produce an all_samples folder within the out/fastq/{target} folder. It is essentially a combination of the **1** and **2** folders.
 
 `call_haplotypes` should produce a haplotype_output in the {out} folder. It will contain 3 files: `{target}_trimAndFilterTable`, `{target}_haplotypes.rds`, and `{target}_trackReadsThroughPipeline.csv`. 
 - `{target}_trimAndFilterTable`: summarizes read trimming and filtering
