@@ -26,7 +26,7 @@ rule all:
 
 rule clean_sequencing_reads:
 	input:
-		refs=expand("refs/{target}.fasta", target=TARGET),
+		refs="refs/{target}.fasta",
 		pair1=PAIR1,
 		pair2=PAIR2,
 		forward=expand("{forward}.fasta", forward=FOWARD),
@@ -34,20 +34,20 @@ rule clean_sequencing_reads:
 	output:
 		#directory(expand("{out}/fastq/{target}/1/", out=OUT, target=TARGET)),
 		#directory(expand("{out}/fastq/{target}/2/", out=OUT, target=TARGET)),
-		out=directory(expand("{out}/fastq/{target}/all_samples/", out=OUT, target=TARGET))
+		out=directory("{out}/fastq/{target}/all_samples/")
 	params:
 		recreate_ref_folder=RECREATEREFFOLDER,
 		folder=OUT,
-		output=expand("{out}/fastq/{target}/all_samples", out=OUT, target=TARGET),
-		forward_samples=expand("{out}/fastq/{target}/1", out=OUT, target=TARGET),
-		reverse_samples=expand("{out}/fastq/{target}/2", out=OUT, target=TARGET),
-		haplotype_output=expand("{out}/haplotype_output", out=OUT),
-		out=expand("{out}/fastq/{target}/all_samples", out=OUT, target=TARGET)
-	priority:
-			10
+		output="{out}/fastq/{target}/all_samples",
+		forward_samples="{out}/fastq/{target}/1",
+		reverse_samples="{out}/fastq/{target}/2",
+		haplotype_output="{out}/haplotype_output",
+		out="{out}/fastq/{target}/all_samples"
 	run:
+		print(input.refs)
 		if params.recreate_ref_folder == True:
-			shell("rm -r ref")
+			if os.path.exists("ref"):
+				shell("rm -r ref")
 		shell("perl scripts/step1_splitSyncReadsMultiRef.pl 1 {input.refs} {params.folder} {input.pair1} {input.pair2} {input.forward} {input.rev}")
 		shell("mkdir {params.output}")
 		shell("mv {params.forward_samples}/*.fastq.gz {params.out} && mv {params.reverse_samples}/*.fastq.gz {params.out}")
@@ -55,39 +55,35 @@ rule clean_sequencing_reads:
 
 rule call_haplotypes:
 	input:
-		expand("{out}/fastq/{target}/all_samples/", out=OUT, target=TARGET),
+		"{out}/fastq/{target}/all_samples/",
 	output:
-		trim_filter_table=expand("{out}/haplotype_output/{target}_trimAndFilterTable", out=OUT, target=TARGET),
-		results=expand("{out}/haplotype_output/{target}_haplotypes.rds", out=OUT, target=TARGET),
-		reads_table=expand("{out}/haplotype_output/{target}_trackReadsThroughPipeline.csv", out=OUT, target=TARGET)
+		trim_filter_table="{out}/haplotype_output/{target}_trimAndFilterTable",
+		results="{out}/haplotype_output/{target}_haplotypes.rds",
+		reads_table="{out}/haplotype_output/{target}_trackReadsThroughPipeline.csv",
 	params:
-		all_samples=expand("{out}/fastq/{target}/all_samples", out=OUT, target=TARGET),
+		all_samples="{out}/fastq/{target}/all_samples",
 		rscript="scripts/step2_dada2.R",
-		cutoff = CUTOFF,
-		seed = SEED,
-	priority:
-		30
+		cutoff=CUTOFF,
+		seed=SEED,
 	script:
 		"{params.rscript}"
 
 rule censor_haplotypes:
 	input:
-		expand("{out}/haplotype_output/{target}_haplotypes.rds", out=OUT, target=TARGET),
+		"{out}/haplotype_output/{target}_haplotypes.rds",
 	output:
-		precensored_haplotype_table=expand("{out}/haplotype_output/{target}_haplotype_table_precensored.csv", out=OUT, target=TARGET),
-		snps_between_haps=expand("{out}/haplotype_output/{target}_snps_between_haps_within_samples.fasta", out=OUT, target=TARGET),
-		unique_seqs=expand("{out}/haplotype_output/{target}_uniqueSeqs.fasta", out=OUT, target=TARGET),
-		aligned_seqs=expand("{out}/haplotype_output/{target}_aligned_seqs.fasta", out=OUT, target=TARGET),
-		final_censored=expand("{out}/haplotype_output/{target}_uniqueSeqs_final_censored.fasta", out=OUT, target=TARGET),
-		final_haplotype_table=expand("{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv", out=OUT, target=TARGET),
+		precensored_haplotype_table="{out}/haplotype_output/{target}_haplotype_table_precensored.csv",
+		snps_between_haps="{out}/haplotype_output/{target}_snps_between_haps_within_samples.fasta",
+		unique_seqs="{out}/haplotype_output/{target}_uniqueSeqs.fasta",
+		aligned_seqs="{out}/haplotype_output/{target}_aligned_seqs.fasta",
+		final_censored="{out}/haplotype_output/{target}_uniqueSeqs_final_censored.fasta",
+		final_haplotype_table="{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv",
 	params:
 		rscript="scripts/step3_haplotype_censoring.R",
-		haplotypes=expand("{out}/haplotype_output/{target}_haplotypes.rds", out=OUT, target=TARGET),
+		haplotypes="{out}/haplotype_output/{target}_haplotypes.rds",
 		depth=READ_DEPTH,
 		proportion=PROPORTION,
 		length=HAPLOTYPE_LENGTH,
 		ratio=READ_DEPTH_RATIO,
-	priority:
-		40
 	script:
 		"{params.rscript}"

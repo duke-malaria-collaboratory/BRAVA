@@ -9,6 +9,7 @@ if ($#ARGV != 6) {
     print "usage: Enter an integer for the number of reference targets, a comma separated list of the reference fasta files (without spaces), output directory, directory with R1 reads, directory with R2 reads, the fasta file containing the forward primers to be trimmed, and the fasta file containing the reverse primers to be trimmed.\ne.g. splitReadsMultiRef.pl.pl 2 /home/refs/ref1/ref1.fasta,/home/refs/ref2/ref2.fasta /home/out /home/reads/1 /home/reads/2 /home/primers/forward.fasta /home/primers/reverse.fasta\n";
     exit;
 }
+
 my $numRef = $ARGV[0];
 my $refs = $ARGV[1];
 my $out = $ARGV[2];

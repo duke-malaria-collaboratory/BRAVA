@@ -9,15 +9,23 @@ Version 38.18
 
 Set MINIMUM_ALIGNMENT_SCORE_RATIO to 0.560
 Retaining first best site only for ambiguous mappings.
-NOTE:	Ignoring reference file because it already appears to have been processed.
-NOTE:	If you wish to regenerate the index, please manually delete ref/genome/1/summary.txt
+NOTE:	Deleting contents of ref/genome/1 because reference is specified and overwrite=true
+NOTE:	Deleting contents of ref/index/1 because reference is specified and overwrite=true
+Writing reference.
+Executing dna.FastaToChromArrays2 [ref/genome/1/merged_ref_64917.fa.gz, 1, writeinthread=false, genscaffoldinfo=true, retain, waitforwriting=false, gz=true, maxlen=536670912, writechroms=true, minscaf=1, midpad=300, startpad=8000, stoppad=8000, nodisk=false]
+
+Set genScaffoldInfo=true
+Writing chunk 1
 Set genome to 1
 
-Loaded Reference:	0.022 seconds.
+Loaded Reference:	0.001 seconds.
 Loading index for chunk 1-1, build 1
-Generated Index:	0.818 seconds.
-Analyzed Index:   	4.077 seconds.
-Cleared Memory:    	0.151 seconds.
+No index available; generating from reference genome: /gpfs/fs1/home/kh455/haplotype_calling_pipeline/ref/index/1/chr1_index_k13_c16_b1.block
+Indexing threads started for block 0-1
+Indexing threads finished for block 0-1
+Generated Index:	1.725 seconds.
+Analyzed Index:   	3.542 seconds.
+Cleared Memory:    	0.442 seconds.
 Processing reads in paired-ended mode.
 Started read stream.
 Started 56 mapping threads.
@@ -32,9 +40,9 @@ Minimum Score Ratio:  	0.56
 Mapping Mode:         	normal
 Reads Used:           	52572	(13933942 bases)
 
-Mapping:          	11.894 seconds.
-Reads/sec:       	4419.87
-kBases/sec:      	1171.46
+Mapping:          	14.724 seconds.
+Reads/sec:       	3570.51
+kBases/sec:      	946.35
 
 
 Pairing data:   	pct pairs	num pairs 	pct bases	   num bases
@@ -81,4 +89,4 @@ Del Rate:        	  0.6712% 	       77 	  0.0033% 	         101
 Ins Rate:        	  0.0174% 	        2 	  0.0001% 	           3
 N Rate:          	  0.0000% 	        0 	  0.0000% 	           0
 
-Total time:     	17.022 seconds.
+Total time:     	20.533 seconds.

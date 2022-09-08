@@ -1,23 +1,31 @@
-java -Djava.library.path=/home/kh455/miniconda3/envs/haplotype_calling/opt/bbmap-38.18/jni/ -ea -Xmx8000m -cp /home/kh455/miniconda3/envs/haplotype_calling/opt/bbmap-38.18/current/ align2.BBSplitter ow=t fastareadlen=500 minhits=1 minratio=0.56 maxindel=20 qtrim=rl untrim=t trimq=6 -Xmx8000m in=out/trim/1/BF4.1.fastq.gz in2=out/trim/2/BF4.2.fastq.gz ref=refs/AMA.fasta basename=BF4_%_#.fastq
-Executing align2.BBSplitter [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, -Xmx8000m, in=out/trim/1/BF4.1.fastq.gz, in2=out/trim/2/BF4.2.fastq.gz, ref=refs/AMA.fasta, basename=BF4_%_#.fastq]
+java -Djava.library.path=/home/kh455/miniconda3/envs/haplotype_calling/opt/bbmap-38.18/jni/ -ea -Xmx8000m -cp /home/kh455/miniconda3/envs/haplotype_calling/opt/bbmap-38.18/current/ align2.BBSplitter ow=t fastareadlen=500 minhits=1 minratio=0.56 maxindel=20 qtrim=rl untrim=t trimq=6 -Xmx8000m in=out/trim/1/BF4.1.fastq.gz in2=out/trim/2/BF4.2.fastq.gz ref=refs/CSP.fasta basename=BF4_%_#.fastq
+Executing align2.BBSplitter [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, -Xmx8000m, in=out/trim/1/BF4.1.fastq.gz, in2=out/trim/2/BF4.2.fastq.gz, ref=refs/CSP.fasta, basename=BF4_%_#.fastq]
 
-Converted arguments to [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=out/trim/1/BF4.1.fastq.gz, in2=out/trim/2/BF4.2.fastq.gz, basename=BF4_%_#.fastq, ref_AMA=refs/AMA.fasta]
-Merged reference file ref/genome/1/merged_ref_64917.fa.gz already exists; skipping merge.
-Ref merge time:     	0.033 seconds.
-Executing align2.BBMap [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=out/trim/1/BF4.1.fastq.gz, in2=out/trim/2/BF4.2.fastq.gz, ref=ref/genome/1/merged_ref_64917.fa.gz, out_AMA=BF4_AMA_#.fastq]
+Converted arguments to [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=out/trim/1/BF4.1.fastq.gz, in2=out/trim/2/BF4.2.fastq.gz, basename=BF4_%_#.fastq, ref_CSP=refs/CSP.fasta]
+Merged reference file ref/genome/1/merged_ref_67040.fa.gz already exists; skipping merge.
+Ref merge time:     	0.032 seconds.
+Executing align2.BBMap [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=out/trim/1/BF4.1.fastq.gz, in2=out/trim/2/BF4.2.fastq.gz, ref=ref/genome/1/merged_ref_67040.fa.gz, out_CSP=BF4_CSP_#.fastq]
 Version 38.18
 
 Set MINIMUM_ALIGNMENT_SCORE_RATIO to 0.560
 Retaining first best site only for ambiguous mappings.
-NOTE:	Ignoring reference file because it already appears to have been processed.
-NOTE:	If you wish to regenerate the index, please manually delete ref/genome/1/summary.txt
+NOTE:	Deleting contents of ref/genome/1 because reference is specified and overwrite=true
+NOTE:	Deleting contents of ref/index/1 because reference is specified and overwrite=true
+Writing reference.
+Executing dna.FastaToChromArrays2 [ref/genome/1/merged_ref_67040.fa.gz, 1, writeinthread=false, genscaffoldinfo=true, retain, waitforwriting=false, gz=true, maxlen=536670912, writechroms=true, minscaf=1, midpad=300, startpad=8000, stoppad=8000, nodisk=false]
+
+Set genScaffoldInfo=true
+Writing chunk 1
 Set genome to 1
 
-Loaded Reference:	0.022 seconds.
+Loaded Reference:	0.001 seconds.
 Loading index for chunk 1-1, build 1
-Generated Index:	0.847 seconds.
-Analyzed Index:   	4.037 seconds.
-Cleared Memory:    	0.161 seconds.
+No index available; generating from reference genome: /gpfs/fs1/home/kh455/haplotype_calling_pipeline/ref/index/1/chr1_index_k13_c16_b1.block
+Indexing threads started for block 0-1
+Indexing threads finished for block 0-1
+Generated Index:	1.815 seconds.
+Analyzed Index:   	3.731 seconds.
+Cleared Memory:    	0.418 seconds.
 Processing reads in paired-ended mode.
 Started read stream.
 Started 56 mapping threads.
@@ -32,53 +40,54 @@ Minimum Score Ratio:  	0.56
 Mapping Mode:         	normal
 Reads Used:           	57008	(15112083 bases)
 
-Mapping:          	8.111 seconds.
-Reads/sec:       	7028.11
-kBases/sec:      	1863.06
+Mapping:          	9.808 seconds.
+Reads/sec:       	5812.51
+kBases/sec:      	1540.82
 
 
 Pairing data:   	pct pairs	num pairs 	pct bases	   num bases
 
-mated pairs:     	 47.9512% 	    13668 	 49.2974% 	     7449862
+mated pairs:     	 52.0032% 	    14823 	 51.8851% 	     7840916
 bad pairs:       	  0.0000% 	        0 	  0.0000% 	           0
-insert size avg: 	  381.61
+insert size avg: 	  371.94
 
 
 Read 1 data:      	pct reads	num reads 	pct bases	   num bases
 
-mapped:          	 47.9617% 	    13671 	 48.7152% 	     3725602
-unambiguous:     	 47.9617% 	    13671 	 48.7152% 	     3725602
+mapped:          	 52.0173% 	    14827 	 51.2737% 	     3921270
+unambiguous:     	 52.0173% 	    14827 	 51.2737% 	     3921270
 ambiguous:       	  0.0000% 	        0 	  0.0000% 	           0
 low-Q discards:  	  0.0000% 	        0 	  0.0000% 	           0
 
-perfect best site:	  0.0000% 	        0 	  0.0000% 	           0
-semiperfect site:	  0.0000% 	        0 	  0.0000% 	           0
-rescued:         	  0.1158% 	       33
+perfect best site:	  0.0982% 	       28 	  0.0297% 	        2271
+semiperfect site:	  0.0982% 	       28 	  0.0297% 	        2271
+rescued:         	  0.0386% 	       11
 
-Match Rate:      	      NA 	       NA 	 95.0901% 	     3542794
-Error Rate:      	100.0000% 	    13671 	  4.9099% 	      182930
-Sub Rate:        	100.0000% 	    13671 	  4.9064% 	      182798
-Del Rate:        	  0.7461% 	      102 	  0.0033% 	         122
-Ins Rate:        	  0.0366% 	        5 	  0.0003% 	          10
+Match Rate:      	      NA 	       NA 	 97.1892% 	     3811385
+Error Rate:      	 99.8112% 	    14799 	  2.8108% 	      110227
+Sub Rate:        	 99.8044% 	    14798 	  2.7903% 	      109423
+Del Rate:        	  2.2594% 	      335 	  0.0087% 	         342
+Ins Rate:        	  3.0485% 	      452 	  0.0118% 	         462
 N Rate:          	  0.0000% 	        0 	  0.0000% 	           0
 
 
 Read 2 data:      	pct reads	num reads 	pct bases	   num bases
 
-mapped:          	 47.9547% 	    13669 	 48.3053% 	     3605684
-unambiguous:     	 47.9547% 	    13669 	 48.3053% 	     3605684
+mapped:          	 52.0067% 	    14824 	 51.6715% 	     3856950
+unambiguous:     	 52.0067% 	    14824 	 51.6715% 	     3856950
 ambiguous:       	  0.0000% 	        0 	  0.0000% 	           0
 low-Q discards:  	  0.0000% 	        0 	  0.0000% 	           0
 
 perfect best site:	  0.0000% 	        0 	  0.0000% 	           0
 semiperfect site:	  0.0000% 	        0 	  0.0000% 	           0
-rescued:         	  0.1824% 	       52
+rescued:         	  1.2770% 	      364
 
-Match Rate:      	      NA 	       NA 	 94.8658% 	     3420677
-Error Rate:      	100.0000% 	    13669 	  5.1342% 	      185130
-Sub Rate:        	100.0000% 	    13669 	  5.1306% 	      184998
-Del Rate:        	  0.7096% 	       97 	  0.0034% 	         123
-Ins Rate:        	  0.0366% 	        5 	  0.0002% 	           9
-N Rate:          	  0.0000% 	        0 	  0.0000% 	           0
+Match Rate:      	      NA 	       NA 	 96.9191% 	     3738398
+Error Rate:      	100.0000% 	    14824 	  3.0797% 	      118793
+Sub Rate:        	100.0000% 	    14824 	  3.0625% 	      118129
+Del Rate:        	  1.9023% 	      282 	  0.0074% 	         286
+Ins Rate:        	  2.4960% 	      370 	  0.0098% 	         378
+N Rate:          	  0.0067% 	        1 	  0.0012% 	          45
 
-Total time:     	13.239 seconds.
+Total time:     	15.870 seconds.
+

@@ -384,13 +384,12 @@ for (i in 1:(ncol(data) - 1)) {
 }
 # copy the original input but with only the sequence IDs left after censoring
 joined = old_data[old_data$`MiSeq.ID` %in% rownames(data), , drop = FALSE]
-
+#print(joined %>% select_if(colSums(.[, -length(joined)]) != 0))
+joined = joined %>% select(where(~ any(. != 0)))
 # fix the column names to make them consistent
 tokeep = c(numHaplotypes)
-
 # find the columns where the data is the same
 same_data = apply(joined, 2, function(r) any(r %in% tokeep))
-
 # store the column names where the data is the same
 new_joinedcolnames = which(same_data, arr.ind = TRUE)
 pasted_joinedcolnames = rep(NA,length(new_joinedcolnames))

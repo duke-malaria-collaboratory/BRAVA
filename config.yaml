@@ -1,5 +1,5 @@
 # You can also specify multiple targets to run in parallel, ie. target: ["AMA", "CSP"]
-target: AMA
+target: ["AMA", "CSP"]
 
 # Default pathnames, change if needed
 refs: refs
