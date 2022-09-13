@@ -1,17 +1,18 @@
-java -Djava.library.path=/home/kh455/miniconda3/envs/haplotype_calling/opt/bbmap-38.18/jni/ -ea -Xmx8000m -cp /home/kh455/miniconda3/envs/haplotype_calling/opt/bbmap-38.18/current/ align2.BBSplitter ow=t fastareadlen=500 minhits=1 minratio=0.56 maxindel=20 qtrim=rl untrim=t trimq=6 -Xmx8000m in=out/trim/1/BF2.1.fastq.gz in2=out/trim/2/BF2.2.fastq.gz ref=refs/CSP.fasta basename=BF2_%_#.fastq
-Executing align2.BBSplitter [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, -Xmx8000m, in=out/trim/1/BF2.1.fastq.gz, in2=out/trim/2/BF2.2.fastq.gz, ref=refs/CSP.fasta, basename=BF2_%_#.fastq]
+java -Djava.library.path=/home/kh455/miniconda3/envs/haplotype_calling/opt/bbmap-38.18/jni/ -ea -Xmx8000m -cp /home/kh455/miniconda3/envs/haplotype_calling/opt/bbmap-38.18/current/ align2.BBSplitter ow=t fastareadlen=500 minhits=1 minratio=0.56 maxindel=20 qtrim=rl untrim=t trimq=6 -Xmx8000m in=out/trim/1/BF2.1.fastq.gz in2=out/trim/2/BF2.2.fastq.gz ref=refs/AMA.fasta basename=BF2_%_#.fastq
+Executing align2.BBSplitter [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, -Xmx8000m, in=out/trim/1/BF2.1.fastq.gz, in2=out/trim/2/BF2.2.fastq.gz, ref=refs/AMA.fasta, basename=BF2_%_#.fastq]
 
-Converted arguments to [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=out/trim/1/BF2.1.fastq.gz, in2=out/trim/2/BF2.2.fastq.gz, basename=BF2_%_#.fastq, ref_CSP=refs/CSP.fasta]
-Merged reference file ref/genome/1/merged_ref_67040.fa.gz already exists; skipping merge.
-Ref merge time:     	0.033 seconds.
-Executing align2.BBMap [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=out/trim/1/BF2.1.fastq.gz, in2=out/trim/2/BF2.2.fastq.gz, ref=ref/genome/1/merged_ref_67040.fa.gz, out_CSP=BF2_CSP_#.fastq]
+Converted arguments to [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=out/trim/1/BF2.1.fastq.gz, in2=out/trim/2/BF2.2.fastq.gz, basename=BF2_%_#.fastq, ref_AMA=refs/AMA.fasta]
+Merged reference file ref/genome/1/merged_ref_64917.fa.gz already exists; skipping merge.
+Ref merge time:     	0.031 seconds.
+Executing align2.BBMap [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=out/trim/1/BF2.1.fastq.gz, in2=out/trim/2/BF2.2.fastq.gz, ref=ref/genome/1/merged_ref_64917.fa.gz, out_AMA=BF2_AMA_#.fastq]
 Version 38.18
 
 Set MINIMUM_ALIGNMENT_SCORE_RATIO to 0.560
 Retaining first best site only for ambiguous mappings.
 NOTE:	Deleting contents of ref/genome/1 because reference is specified and overwrite=true
+NOTE:	Deleting contents of ref/index/1 because reference is specified and overwrite=true
 Writing reference.
-Executing dna.FastaToChromArrays2 [ref/genome/1/merged_ref_67040.fa.gz, 1, writeinthread=false, genscaffoldinfo=true, retain, waitforwriting=false, gz=true, maxlen=536670912, writechroms=true, minscaf=1, midpad=300, startpad=8000, stoppad=8000, nodisk=false]
+Executing dna.FastaToChromArrays2 [ref/genome/1/merged_ref_64917.fa.gz, 1, writeinthread=false, genscaffoldinfo=true, retain, waitforwriting=false, gz=true, maxlen=536670912, writechroms=true, minscaf=1, midpad=300, startpad=8000, stoppad=8000, nodisk=false]
 
 Set genScaffoldInfo=true
 Writing chunk 1
@@ -22,9 +23,9 @@ Loading index for chunk 1-1, build 1
 No index available; generating from reference genome: /gpfs/fs1/home/kh455/haplotype_calling_pipeline/ref/index/1/chr1_index_k13_c16_b1.block
 Indexing threads started for block 0-1
 Indexing threads finished for block 0-1
-Generated Index:	1.701 seconds.
-Analyzed Index:   	3.704 seconds.
-Cleared Memory:    	0.184 seconds.
+Generated Index:	1.767 seconds.
+Analyzed Index:   	3.656 seconds.
+Cleared Memory:    	0.189 seconds.
 Processing reads in paired-ended mode.
 Started read stream.
 Started 56 mapping threads.
@@ -39,9 +40,9 @@ Minimum Score Ratio:  	0.56
 Mapping Mode:         	normal
 Reads Used:           	53950	(14333167 bases)
 
-Mapping:          	10.988 seconds.
-Reads/sec:       	4910.02
-kBases/sec:      	1304.47
+Mapping:          	10.078 seconds.
+Reads/sec:       	5353.48
+kBases/sec:      	1422.29
 
 
 Pairing data:   	pct pairs	num pairs 	pct bases	   num bases
@@ -88,7 +89,4 @@ Del Rate:        	  2.1014% 	      245 	  0.0083% 	         254
 Ins Rate:        	  2.5388% 	      296 	  0.0101% 	         307
 N Rate:          	  0.0000% 	        0 	  0.0000% 	           0
 
-Total time:     	16.680 seconds.
-       	  0.0000% 	        0 	  0.0000% 	           0
-
-Total time:     	12.535 seconds.
+Total time:     	15.297 seconds.

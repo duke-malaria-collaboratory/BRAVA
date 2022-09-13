@@ -3,14 +3,13 @@ Executing align2.BBSplitter [ow=t, fastareadlen=500, minhits=1, minratio=0.56, m
 
 Converted arguments to [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=out/trim/1/BF7.1.fastq.gz, in2=out/trim/2/BF7.2.fastq.gz, basename=BF7_%_#.fastq, ref_AMA=refs/AMA.fasta]
 Merged reference file ref/genome/1/merged_ref_64917.fa.gz already exists; skipping merge.
-Ref merge time:     	0.024 seconds.
+Ref merge time:     	0.027 seconds.
 Executing align2.BBMap [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=out/trim/1/BF7.1.fastq.gz, in2=out/trim/2/BF7.2.fastq.gz, ref=ref/genome/1/merged_ref_64917.fa.gz, out_AMA=BF7_AMA_#.fastq]
 Version 38.18
 
 Set MINIMUM_ALIGNMENT_SCORE_RATIO to 0.560
 Retaining first best site only for ambiguous mappings.
 NOTE:	Deleting contents of ref/genome/1 because reference is specified and overwrite=true
-NOTE:	Deleting contents of ref/index/1 because reference is specified and overwrite=true
 Writing reference.
 Executing dna.FastaToChromArrays2 [ref/genome/1/merged_ref_64917.fa.gz, 1, writeinthread=false, genscaffoldinfo=true, retain, waitforwriting=false, gz=true, maxlen=536670912, writechroms=true, minscaf=1, midpad=300, startpad=8000, stoppad=8000, nodisk=false]
 
@@ -18,14 +17,14 @@ Set genScaffoldInfo=true
 Writing chunk 1
 Set genome to 1
 
-Loaded Reference:	0.001 seconds.
+Loaded Reference:	0.002 seconds.
 Loading index for chunk 1-1, build 1
 No index available; generating from reference genome: /gpfs/fs1/home/kh455/haplotype_calling_pipeline/ref/index/1/chr1_index_k13_c16_b1.block
 Indexing threads started for block 0-1
 Indexing threads finished for block 0-1
-Generated Index:	1.782 seconds.
-Analyzed Index:   	4.239 seconds.
-Cleared Memory:    	0.429 seconds.
+Generated Index:	1.452 seconds.
+Analyzed Index:   	3.548 seconds.
+Cleared Memory:    	0.180 seconds.
 Processing reads in paired-ended mode.
 Started read stream.
 Started 56 mapping threads.
@@ -40,9 +39,9 @@ Minimum Score Ratio:  	0.56
 Mapping Mode:         	normal
 Reads Used:           	56860	(15089255 bases)
 
-Mapping:          	13.546 seconds.
-Reads/sec:       	4197.46
-kBases/sec:      	1113.90
+Mapping:          	12.638 seconds.
+Reads/sec:       	4499.03
+kBases/sec:      	1193.93
 
 
 Pairing data:   	pct pairs	num pairs 	pct bases	   num bases
@@ -89,4 +88,7 @@ Del Rate:        	  0.6348% 	       81 	  0.0025% 	          85
 Ins Rate:        	  0.0235% 	        3 	  0.0001% 	           3
 N Rate:          	  0.0000% 	        0 	  0.0000% 	           0
 
-Total time:     	20.075 seconds.
+Total time:     	17.906 seconds.
+        	  0.0128% 	        2 	  0.0016% 	          65
+
+Total time:     	16.853 seconds.

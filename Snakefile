@@ -1,13 +1,15 @@
+import pandas as pd
+
 configfile: "config.yaml"
 
-# modifiable parameters
-TARGET = config['target']
-RECREATEREFFOLDER = config['recreateRefFolder']
+# modifiable parameters - change in config.yaml file
+TARGET_TABLE = pd.read_table(config['target_file'])
+TARGET = list(TARGET_TABLE.target.unique())
+RECREATE_REF_FOLDER = config['recreate_ref_folder']
 CUTOFF = config['cutoff']
 SEED = config['seed']
 READ_DEPTH = config['read_depth']
 PROPORTION = config['proportion']
-HAPLOTYPE_LENGTH = config['haplotype_length']
 READ_DEPTH_RATIO = config['read_depth_ratio']
 
 # paths
@@ -36,7 +38,7 @@ rule clean_sequencing_reads:
 		#directory(expand("{out}/fastq/{target}/2/", out=OUT, target=TARGET)),
 		out=directory("{out}/fastq/{target}/all_samples/")
 	params:
-		recreate_ref_folder=RECREATEREFFOLDER,
+		recreate_ref_folder=RECREATE_REF_FOLDER,
 		folder=OUT,
 		output="{out}/fastq/{target}/all_samples",
 		forward_samples="{out}/fastq/{target}/1",
@@ -44,7 +46,6 @@ rule clean_sequencing_reads:
 		haplotype_output="{out}/haplotype_output",
 		out="{out}/fastq/{target}/all_samples"
 	run:
-		print(input.refs)
 		if params.recreate_ref_folder == True:
 			if os.path.exists("ref"):
 				shell("rm -r ref")
@@ -83,7 +84,7 @@ rule censor_haplotypes:
 		haplotypes="{out}/haplotype_output/{target}_haplotypes.rds",
 		depth=READ_DEPTH,
 		proportion=PROPORTION,
-		length=HAPLOTYPE_LENGTH,
+		length=lambda wildcards: list(TARGET_TABLE.length[TARGET_TABLE.target == wildcards.target]),
 		ratio=READ_DEPTH_RATIO,
 	script:
 		"{params.rscript}"

@@ -78,6 +78,7 @@ for (i in 1:nrow(data)){
 
 # for each haplotype that is a different length than the majority of haplotypes, throw it out
 haps_to_remove = rep(NA,ncol(data))
+print(snakemake@params[["length"]])
 for (i in 1:ncol(data)) {
   if (nchar(getSequences(data))[i] != snakemake@params[["length"]]) {
     haps_to_remove[i] = i
