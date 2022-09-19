@@ -27,7 +27,9 @@ This workflow processes the data set by cleaning the sequencing reads, performin
 
 `clean_sequencing_reads` cleans, filters, and maps the raw reads. It uses BBmap to map all reads from the reference sequences to differentiate between the two targets, CutAdapt to trim the primers and adapter sequences from sequencing reads, and Trimmomatic to quality filter reads if average of every 4 nucleotides had a Phred Quality Score < 15 or was less than 80 nucleotides long. This is the first step in read processing on the cluster.
 
-`call_haplotypes` call haplotypes for your target using the DADA2 program. This is the second step in the read processing on the cluster.
+`trim_and_filter` filters and trims the forward and reverse reads using the DADA2 program and outputs them into a `filtered` folder.
+
+`call_haplotypes` calls haplotypes for your target and writes the results out into a reads table.
 
 `censor_haplotypes` censors falsely detected haplotypes. Censoring criteria is applied in this order:
 1. Haplotypes that occur in < 250 of the sample’s reads are removed. You can change this criteria in the config file ("read_depth").
@@ -78,7 +80,7 @@ This workflow processes the data set by cleaning the sequencing reads, performin
     [`environment.yaml`](environment.yaml) however you like.
 
 1. Edit the configuration file [`config.yaml`](config.yaml).
-    - `target`: the polymorphic gene target.
+    - `target_file`: the TSV File that contains a table with your target(s) and length(s) of majority of haplotypes.
     - `refs`: the path to the folder containing reference sequences for the polymorphic gene target that will be used to map the raw reads to the appropriate gene targets of interest.
     - `pair1`: the path to the folder containing the forward reads.
     - `pair2`: the path to the folder containing the reverse reads.
@@ -88,6 +90,8 @@ This workflow processes the data set by cleaning the sequencing reads, performin
     - `recreateRefFolder`: option to recreate the `ref` folder for every run - deleting and creating it again makes sure it gets updated if you change the reference sequences you want to use.
     - `cutoff`: cutoff for which samples with less than this number of reads after sampling should be removed.
     - `seed`: seed of R's random number generator for the purpose of obtaining a reproducible random result.
+    - `read_depth`: cutoff for which haplotypes that occur in less than this amount of the sample reads should be removed.
+    - `proportion`: cutoff for which haplotypes that occur in less than this percentage of the sample reads should be removed.
     - `haplotype_length`: the length of the majority of haplotypes for the target.
 
     You can leave these options as-is if you'd like to first make sure the
@@ -150,10 +154,7 @@ BF9_AMA_1.fastq.gz
 BF10_AMA_1.fastq.gz
 ```
 
-`call_haplotypes` should produce a haplotype_output in the {out} folder. It will contain 3 files: `{target}_trimAndFilterTable`, `{target}_haplotypes.rds`, and `{target}_trackReadsThroughPipeline.csv`. 
-- `{target}_trimAndFilterTable`: summarizes read trimming and filtering
-- `{target}_haplotypes.rds`: R file that stores the haplotype results data set for furthermore manipulation in `censor_haplotypes`. 
-- `{target}_trackReadsThroughPipeline.csv`: tracks the reads, looking at the number of reads that made it through each step of the pipeline.
+`trim_and_filter` should produce a haplotype_output in the {out} folder that contains one file, `{target}_trimAndFilterTable`, which summarizes read trimming and filtering.
 
 With our small sample, the trimAndFilter table looked like this:
 |                      | reads.in | reads.out |
@@ -169,7 +170,11 @@ With our small sample, the trimAndFilter table looked like this:
 | BF8_AMA_1.fastq.gz   | 11474    | 7382      |
 | BF9_AMA_1.fastq.gz   | 12432    | 6318      |
 
-And the trackReadsThroughPipeline table looked like this:
+`call_haplotypes` should add two files to the haplotype_output folder: `{target}_haplotypes.rds` and `{target}_trackReadsThroughPipeline.csv`. 
+- `{target}_haplotypes.rds`: R file that stores the haplotype results data set for furthermore manipulation in `censor_haplotypes`. 
+- `{target}_trackReadsThroughPipeline.csv`: tracks the reads, looking at the number of reads that made it through each step of the pipeline.
+
+With our small sample, the trackReadsThroughPipeline table looked like this:
 
 |      | merged | tabled | nonchim |
 |------|--------|--------|---------|

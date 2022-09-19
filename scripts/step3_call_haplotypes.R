@@ -20,7 +20,6 @@ trim_filter_table <- read.csv(snakemake@params[["trim_filter_table"]])
 print("Fastq files:")
 list.files(path)
 
-# filter and trim the fastq files
 # Sort ensures forward/reverse reads are in same order
 fnFs <- sort(list.files(path, pattern="_1.fastq.gz"))
 fnRs <- sort(list.files(path, pattern="_2.fastq.gz"))
@@ -35,7 +34,6 @@ if (!any(duplicated(c(fnFs, fnRs)))) {
   fnFs <- file.path(path, fnFs)
   fnRs <- file.path(path, fnRs)
 
-  # performing filtering and trimming
   # first define the filenames for the filtered fastq.gz files
   filt_path <- file.path(path, "filtered") # Place filtered files in filtered/ subdirectory
   filtFs <- file.path(filt_path, paste0(sample.names, "_F_filt.fastq.gz"))
