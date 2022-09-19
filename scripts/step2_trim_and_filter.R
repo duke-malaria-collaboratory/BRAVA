@@ -1,0 +1,49 @@
+# ----------------------------------------- #
+#       Haplotype Calling - Embatalk        #
+#                Phase 1 and 2              #
+#               March 31, 2020              #
+#                K. Sumner                  #
+# ----------------------------------------- #
+
+
+# directions for this tutorial can be found at: http://benjjneb.github.io/dada2/tutorial.html
+
+
+#### --------- load packages ----------------- ####
+
+# load the dada2 library
+library("dada2")
+
+# read in the path to your folder of fastq files
+path <- snakemake@params[["all_samples"]]
+print("Fastq files:")
+list.files(path)
+
+# filter and trim the fastq files
+# Sort ensures forward/reverse reads are in same order
+fnFs <- sort(list.files(path, pattern="_1.fastq.gz"))
+fnRs <- sort(list.files(path, pattern="_2.fastq.gz"))
+
+# check the files first
+if (!any(duplicated(c(fnFs, fnRs)))) {
+
+  # Extract sample names, assuming filenames have format: SAMPLENAME_X.fastq
+  # note: the string manipulations may have to be modified, especially the extraction of sample names from the file names
+  sample.names <- sapply(strsplit(fnFs, "_"), `[`, 1)
+  # Specify the full path to the fnFs and fnRs
+  fnFs <- file.path(path, fnFs)
+  fnRs <- file.path(path, fnRs)
+
+  # performing filtering and trimming
+  # first define the filenames for the filtered fastq.gz files
+  filt_path <- file.path(path, "filtered") # Place filtered files in filtered/ subdirectory
+  filtFs <- file.path(filt_path, paste0(sample.names, "_F_filt.fastq.gz"))
+  filtRs <- file.path(filt_path, paste0(sample.names, "_R_filt.fastq.gz"))
+  # filter the forward and reverse reads
+  # remember that dada2 requires no Ns, so maxN makes sure sequences with more than maxN Ns will be discarded
+  out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, maxN=0, maxEE=c(1,1), truncQ=2, rm.phix=FALSE,
+                      compress=TRUE, multithread=FALSE, matchIDs = TRUE) 
+
+  # output summary of read trimming and filtering
+  write.csv(out,snakemake@output[["trim_filter_table"]])
+}

@@ -22,9 +22,10 @@ OUT = config['out']
 
 rule all:
  	input:
- 		expand("{out}/fastq/{target}/all_samples/", out=OUT, target=TARGET),
- 		expand("{out}/haplotype_output/{target}_trimAndFilterTable", out=OUT, target=TARGET),
-		expand("{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv", out=OUT, target=TARGET),
+ 		expand("{target}/{out}/fastq/{target}/all_samples/", out=OUT, target=TARGET),
+ 		expand("{target}/{out}/haplotype_output/{target}_trimAndFilterTable", out=OUT, target=TARGET),
+		expand("{target}/{out}/haplotype_output/{target}_trackReadsThroughPipeline.csv", out=OUT, target=TARGET),
+		expand("{target}/{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv", out=OUT, target=TARGET),
 
 rule clean_sequencing_reads:
 	input:
@@ -36,34 +37,45 @@ rule clean_sequencing_reads:
 	output:
 		#directory(expand("{out}/fastq/{target}/1/", out=OUT, target=TARGET)),
 		#directory(expand("{out}/fastq/{target}/2/", out=OUT, target=TARGET)),
-		out=directory("{out}/fastq/{target}/all_samples/")
+		out=directory("{target}/{out}/fastq/{target}/all_samples/")
 	params:
 		recreate_ref_folder=RECREATE_REF_FOLDER,
-		folder=OUT,
-		output="{out}/fastq/{target}/all_samples",
-		forward_samples="{out}/fastq/{target}/1",
-		reverse_samples="{out}/fastq/{target}/2",
-		haplotype_output="{out}/haplotype_output",
-		out="{out}/fastq/{target}/all_samples"
+		folder="{target}/{out}",
+		output="{target}/{out}/fastq/{target}/all_samples",
+		forward_samples="{target}/{out}/fastq/{target}/1",
+		reverse_samples="{target}/{out}/fastq/{target}/2",
+		haplotype_output="{target}/{out}/haplotype_output",
+		out="{target}/{out}/fastq/{target}/all_samples"
 	run:
 		if params.recreate_ref_folder == True:
-			if os.path.exists("ref"):
-				shell("rm -r ref")
+			shell("rm -rf ref")
 		shell("perl scripts/step1_splitSyncReadsMultiRef.pl 1 {input.refs} {params.folder} {input.pair1} {input.pair2} {input.forward} {input.rev}")
 		shell("mkdir {params.output}")
 		shell("mv {params.forward_samples}/*.fastq.gz {params.out} && mv {params.reverse_samples}/*.fastq.gz {params.out}")
 		shell("rm -r {params.forward_samples} && rm -r {params.reverse_samples}")
 
+rule trim_and_filter:
+	input:
+		"{target}/{out}/fastq/{target}/all_samples/",
+	output:
+		trim_filter_table="{target}/{out}/haplotype_output/{target}_trimAndFilterTable",
+	params:
+		all_samples="{target}/{out}/fastq/{target}/all_samples",
+		rscript="scripts/step2_trim_and_filter.R",
+	script:
+		"{params.rscript}"
+
 rule call_haplotypes:
 	input:
-		"{out}/fastq/{target}/all_samples/",
+		all_samples="{target}/{out}/fastq/{target}/all_samples/",
+		trim_filter_table="{target}/{out}/haplotype_output/{target}_trimAndFilterTable",
 	output:
-		trim_filter_table="{out}/haplotype_output/{target}_trimAndFilterTable",
-		results="{out}/haplotype_output/{target}_haplotypes.rds",
-		reads_table="{out}/haplotype_output/{target}_trackReadsThroughPipeline.csv",
+		results="{target}/{out}/haplotype_output/{target}_haplotypes.rds",
+		reads_table="{target}/{out}/haplotype_output/{target}_trackReadsThroughPipeline.csv",
 	params:
-		all_samples="{out}/fastq/{target}/all_samples",
-		rscript="scripts/step2_dada2.R",
+		all_samples="{target}/{out}/fastq/{target}/all_samples",
+		trim_filter_table="{target}/{out}/haplotype_output/{target}_trimAndFilterTable",
+		rscript="scripts/step3_call_haplotypes.R",
 		cutoff=CUTOFF,
 		seed=SEED,
 	script:
@@ -71,17 +83,17 @@ rule call_haplotypes:
 
 rule censor_haplotypes:
 	input:
-		"{out}/haplotype_output/{target}_haplotypes.rds",
+		"{target}/{out}/haplotype_output/{target}_haplotypes.rds",
 	output:
-		precensored_haplotype_table="{out}/haplotype_output/{target}_haplotype_table_precensored.csv",
-		snps_between_haps="{out}/haplotype_output/{target}_snps_between_haps_within_samples.fasta",
-		unique_seqs="{out}/haplotype_output/{target}_uniqueSeqs.fasta",
-		aligned_seqs="{out}/haplotype_output/{target}_aligned_seqs.fasta",
-		final_censored="{out}/haplotype_output/{target}_uniqueSeqs_final_censored.fasta",
-		final_haplotype_table="{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv",
+		precensored_haplotype_table="{target}/{out}/haplotype_output/{target}_haplotype_table_precensored.csv",
+		snps_between_haps="{target}/{out}/haplotype_output/{target}_snps_between_haps_within_samples.fasta",
+		unique_seqs="{target}/{out}/haplotype_output/{target}_uniqueSeqs.fasta",
+		aligned_seqs="{target}/{out}/haplotype_output/{target}_aligned_seqs.fasta",
+		final_censored="{target}/{out}/haplotype_output/{target}_uniqueSeqs_final_censored.fasta",
+		final_haplotype_table="{target}/{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv",
 	params:
-		rscript="scripts/step3_haplotype_censoring.R",
-		haplotypes="{out}/haplotype_output/{target}_haplotypes.rds",
+		rscript="scripts/step4_haplotype_censoring.R",
+		haplotypes="{target}/{out}/haplotype_output/{target}_haplotypes.rds",
 		depth=READ_DEPTH,
 		proportion=PROPORTION,
 		length=lambda wildcards: list(TARGET_TABLE.length[TARGET_TABLE.target == wildcards.target]),

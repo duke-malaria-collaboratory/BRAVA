@@ -1,5 +1,5 @@
 #Chromosome sizes
-#Generated on	Tue Sep 13 11:31:01 EDT 2022
+#Generated on	Thu Sep 15 12:43:57 EDT 2022
 #Version	5
 #chrom	scaffolds	contigs	length	defined	undefined	startPad	stopPad
 1	1	1	16344	344	16000	8000	8000
