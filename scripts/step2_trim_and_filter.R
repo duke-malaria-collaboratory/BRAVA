@@ -37,13 +37,22 @@ if (!any(duplicated(c(fnFs, fnRs)))) {
   # performing filtering and trimming
   # first define the filenames for the filtered fastq.gz files
   filt_path <- file.path(path, "filtered") # Place filtered files in filtered/ subdirectory
-  filtFs <- file.path(filt_path, paste0(sample.names, "_F_filt.fastq.gz"))
-  filtRs <- file.path(filt_path, paste0(sample.names, "_R_filt.fastq.gz"))
+  filtFs <- file.path(filt_path, paste0(sample.names, "_", snakemake@params[["q_values"]], "_F_filt.fastq.gz"))
+  filtRs <- file.path(filt_path, paste0(sample.names, "_", snakemake@params[["q_values"]], "_R_filt.fastq.gz"))
   # filter the forward and reverse reads
   # remember that dada2 requires no Ns, so maxN makes sure sequences with more than maxN Ns will be discarded
-  out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, maxN=0, maxEE=c(1,1), truncQ=2, rm.phix=FALSE,
-                      compress=TRUE, multithread=FALSE, matchIDs = TRUE) 
-
+  out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, maxN=0, maxEE=c(1,1), truncQ=strtoi(snakemake@params[["q_values"]]), rm.phix=FALSE,
+                      compress=TRUE, multithread=FALSE, matchIDs = TRUE)
+  # sum read counts and output it into a file
+  sum <- colSums(out)
+  read_count <- sum[['reads.out']]
+  print("Number of reads:")
+  print(read_count)
+  q_values <- snakemake@params[["q_values"]]
+  to_write <- data.frame(q_values, read_count)
+  #to_write <- paste(snakemake@params[["q_values"]], read_count)
+  print(to_write)
+  write.table(to_write, file=snakemake@params[["read_count"]], append=TRUE, col.names = FALSE, row.names = FALSE)
   # output summary of read trimming and filtering
   write.csv(out,snakemake@output[["trim_filter_table"]])
 }

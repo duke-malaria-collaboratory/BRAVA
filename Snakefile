@@ -6,6 +6,7 @@ configfile: "config.yaml"
 TARGET_TABLE = pd.read_table(config['target_file'])
 TARGET = list(TARGET_TABLE.target.unique())
 RECREATE_REF_FOLDER = config['recreate_ref_folder']
+TRUNCQ_VALUES = config['truncQ_values']
 CUTOFF = config['cutoff']
 SEED = config['seed']
 READ_DEPTH = config['read_depth']
@@ -23,9 +24,10 @@ OUT = config['out']
 rule all:
  	input:
  		expand("{target}/{out}/fastq/{target}/all_samples/", out=OUT, target=TARGET),
- 		expand("{target}/{out}/haplotype_output/{target}_trimAndFilterTable", out=OUT, target=TARGET),
-		expand("{target}/{out}/haplotype_output/{target}_trackReadsThroughPipeline.csv", out=OUT, target=TARGET),
-		expand("{target}/{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv", out=OUT, target=TARGET),
+ 		expand("{target}/{out}/temp_haplotype_output/{target}_{q_values}_trimAndFilterTable", out=OUT, target=TARGET, q_values=TRUNCQ_VALUES),
+		expand("{target}/{out}/haplotype_output/{target}_finalTrimAndFilterTable", out=OUT, target=TARGET),
+		#expand("{target}/{out}/haplotype_output/{target}_trackReadsThroughPipeline.csv", out=OUT, target=TARGET),
+		#expand("{target}/{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv", out=OUT, target=TARGET),
 
 rule clean_sequencing_reads:
 	input:
@@ -54,14 +56,33 @@ rule clean_sequencing_reads:
 		shell("mv {params.forward_samples}/*.fastq.gz {params.out} && mv {params.reverse_samples}/*.fastq.gz {params.out}")
 		shell("rm -r {params.forward_samples} && rm -r {params.reverse_samples}")
 
-rule trim_and_filter:
+checkpoint rule trim_and_filter:
 	input:
 		"{target}/{out}/fastq/{target}/all_samples/",
 	output:
-		trim_filter_table="{target}/{out}/haplotype_output/{target}_trimAndFilterTable",
+		trim_filter_table="{target}/{out}/temp_haplotype_output/{target}_{q_values}_trimAndFilterTable",
 	params:
 		all_samples="{target}/{out}/fastq/{target}/all_samples",
+		read_count="{target}/{out}/haplotype_output/{target}_read_count",
 		rscript="scripts/step2_trim_and_filter.R",
+		q_values="{q_values}",
+	script:
+		"{params.rscript}"
+
+rule optimize_reads:
+	input:
+		"{target}/{out}/fastq/{target}/all_samples/",
+	output:
+		max_read_count="{target}/{out}/haplotype_output/{target}_max_read_count",
+		final_trim_filter_table="{target}/{out}/haplotype_output/{target}_finalTrimAndFilterTable",
+		final_q_value="{target}/{out}/haplotype_output/{target}_final_q_value",
+	params:
+		read_count="{target}/{out}/haplotype_output/{target}_read_count",
+		max_read_count="{target}/{out}/haplotype_output/{target}_max_read_count",
+		rscript="scripts/step2a_optimize_reads.R",
+		target="{target}",
+		out="{out}",
+		all_samples="{target}/{out}/fastq/{target}/all_samples",
 	script:
 		"{params.rscript}"
 
