@@ -56,7 +56,7 @@ rule clean_sequencing_reads:
 		shell("mv {params.forward_samples}/*.fastq.gz {params.out} && mv {params.reverse_samples}/*.fastq.gz {params.out}")
 		shell("rm -r {params.forward_samples} && rm -r {params.reverse_samples}")
 
-checkpoint rule trim_and_filter:
+rule trim_and_filter:
 	input:
 		"{target}/{out}/fastq/{target}/all_samples/",
 	output:
@@ -66,12 +66,14 @@ checkpoint rule trim_and_filter:
 		read_count="{target}/{out}/haplotype_output/{target}_read_count",
 		rscript="scripts/step2_trim_and_filter.R",
 		q_values="{q_values}",
+		haplotype_output="{target}/{out}/haplotype_output",
 	script:
 		"{params.rscript}"
 
 rule optimize_reads:
 	input:
-		"{target}/{out}/fastq/{target}/all_samples/",
+		all_samples="{target}/{out}/fastq/{target}/all_samples/",
+		q_trim_filter=expand("{target}/{out}/temp_haplotype_output/{target}_{q_values}_trimAndFilterTable", out=OUT, target=TARGET, q_values=TRUNCQ_VALUES),
 	output:
 		max_read_count="{target}/{out}/haplotype_output/{target}_max_read_count",
 		final_trim_filter_table="{target}/{out}/haplotype_output/{target}_finalTrimAndFilterTable",
@@ -83,6 +85,7 @@ rule optimize_reads:
 		target="{target}",
 		out="{out}",
 		all_samples="{target}/{out}/fastq/{target}/all_samples",
+		final_filtered="{target}/{out}/fastq/{target}/all_samples/final_filtered",
 	script:
 		"{params.rscript}"
 

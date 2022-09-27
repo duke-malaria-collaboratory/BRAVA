@@ -52,7 +52,23 @@ if (!any(duplicated(c(fnFs, fnRs)))) {
   to_write <- data.frame(q_values, read_count)
   #to_write <- paste(snakemake@params[["q_values"]], read_count)
   print(to_write)
-  write.table(to_write, file=snakemake@params[["read_count"]], append=TRUE, col.names = FALSE, row.names = FALSE)
+  if (!dir.exists(snakemake@params[["haplotype_output"]])) {
+    dir.create(snakemake@params[["haplotype_output"]])
+    write.table(to_write, file=snakemake@params[["read_count"]], append=FALSE, col.names = FALSE, row.names = FALSE)
+  } else {
+    if (!file.exists(snakemake@params[["read_count"]])) {
+      file.create(snakemake@params[["read_count"]])
+      write.table(to_write, file=snakemake@params[["read_count"]], append=FALSE, col.names = FALSE, row.names = FALSE)
+    } else {
+      write.table(to_write, file=snakemake@params[["read_count"]], append=TRUE, col.names = FALSE, row.names = FALSE)
+    }
+  }
+  # if (file.exists(snakemake@params[["read_count"]])) {
+  #   write.table(to_write, file=snakemake@params[["read_count"]], append=TRUE, col.names = FALSE, row.names = FALSE)
+  # } else {
+  #   file.create(snakemake@params[["read_count"]])
+  #   write.table(to_write, file=snakemake@params[["read_count"]], append=FALSE, col.names = FALSE, row.names = FALSE)
+  # }
   # output summary of read trimming and filtering
   write.csv(out,snakemake@output[["trim_filter_table"]])
 }
