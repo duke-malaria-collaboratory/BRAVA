@@ -3,7 +3,7 @@ Executing align2.BBSplitter [ow=t, fastareadlen=500, minhits=1, minratio=0.56, m
 
 Converted arguments to [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=AMA/out/trim/1/BF1.1.fastq.gz, in2=AMA/out/trim/2/BF1.2.fastq.gz, basename=BF1_%_#.fastq, ref_AMA=refs/AMA.fasta]
 Creating merged reference file ref/genome/1/merged_ref_64917.fa.gz
-Ref merge time:     	0.100 seconds.
+Ref merge time:     	0.128 seconds.
 Executing align2.BBMap [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=AMA/out/trim/1/BF1.1.fastq.gz, in2=AMA/out/trim/2/BF1.2.fastq.gz, ref=ref/genome/1/merged_ref_64917.fa.gz, out_AMA=BF1_AMA_#.fastq]
 Version 38.18
 
@@ -17,14 +17,14 @@ Set genScaffoldInfo=true
 Writing chunk 1
 Set genome to 1
 
-Loaded Reference:	0.002 seconds.
+Loaded Reference:	0.004 seconds.
 Loading index for chunk 1-1, build 1
 No index available; generating from reference genome: /gpfs/fs1/home/kh455/haplotype_calling_pipeline/ref/index/1/chr1_index_k13_c16_b1.block
 Indexing threads started for block 0-1
 Indexing threads finished for block 0-1
-Generated Index:	1.948 seconds.
-Analyzed Index:   	4.457 seconds.
-Cleared Memory:    	0.286 seconds.
+Generated Index:	1.957 seconds.
+Analyzed Index:   	3.898 seconds.
+Cleared Memory:    	0.224 seconds.
 Processing reads in paired-ended mode.
 Started read stream.
 Started 56 mapping threads.
@@ -39,9 +39,9 @@ Minimum Score Ratio:  	0.56
 Mapping Mode:         	normal
 Reads Used:           	51154	(13572036 bases)
 
-Mapping:          	7.121 seconds.
-Reads/sec:       	7183.93
-kBases/sec:      	1906.02
+Mapping:          	11.298 seconds.
+Reads/sec:       	4527.84
+kBases/sec:      	1201.31
 
 
 Pairing data:   	pct pairs	num pairs 	pct bases	   num bases
@@ -88,4 +88,4 @@ Del Rate:        	  0.5661% 	       74 	  0.0026% 	          90
 Ins Rate:        	  0.0229% 	        3 	  0.0002% 	           7
 N Rate:          	  0.0000% 	        0 	  0.0000% 	           0
 
-Total time:     	14.038 seconds.
+Total time:     	17.565 seconds.

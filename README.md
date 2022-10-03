@@ -21,15 +21,17 @@ For more details on Snakemake, see the
 The [`Snakefile`](Snakefile) contains rules which define the output files we want and how to make them.
 Snakemake automatically builds a directed acyclic graph (DAG) of jobs to figure
 out the dependencies of each of the rules and what order to run them in.
-This workflow processes the data set by cleaning the sequencing reads, performing haplotype calling, and censoring the haplotypes to render numerous data analysis outputs, resulting in a final table that contains the resulting haplotypes after censoring.
+This workflow processes the data set by cleaning the sequencing reads for each target set in the config file, finding the optimal quality score, performing haplotype calling, and censoring the haplotypes to render numerous data analysis outputs, resulting in a final table that contains the resulting haplotypes after censoring.
 
 ![dag](dag.png)
 
-`clean_sequencing_reads` cleans, filters, and maps the raw reads. It uses BBmap to map all reads from the reference sequences to differentiate between the two targets, CutAdapt to trim the primers and adapter sequences from sequencing reads, and Trimmomatic to quality filter reads if average of every 4 nucleotides had a Phred Quality Score < 15 or was less than 80 nucleotides long. This is the first step in read processing on the cluster.
+`clean_sequencing_reads` cleans, filters, and maps the raw reads. It uses BBmap to map all reads from the reference sequences, CutAdapt to trim the primers and adapter sequences from sequencing reads, and Trimmomatic to quality filter reads if the average of every 4 nucleotides had a Phred Quality Score < 15 or was less than 80 nucleotides long. This is the first step in read processing on the cluster.
 
 `trim_and_filter` filters and trims the forward and reverse reads using the DADA2 program and outputs them into a `filtered` folder.
 
-`call_haplotypes` calls haplotypes for your target and writes the results out into a reads table.
+`optimize_reads` finds the quality score that produces the highest number of read counts and uses only the filtered reads created using that quality score.
+
+`call_haplotypes` calls haplotypes for your target(s) and writes the results out into a reads table.
 
 `censor_haplotypes` censors falsely detected haplotypes. Censoring criteria is applied in this order:
 1. Haplotypes that occur in < 250 of the sample’s reads are removed. You can change this criteria in the config file ("read_depth").
@@ -88,11 +90,12 @@ This workflow processes the data set by cleaning the sequencing reads, performin
     - `rev`: the path to the file with the list of reverse primers.
     - `out`: the name of desired output folder.
     - `recreateRefFolder`: option to recreate the `ref` folder for every run - deleting and creating it again makes sure it gets updated if you change the reference sequences you want to use.
+    - `truncQ_values`: values of truncQ to be used in the filterAndTrim function to find the optimal truncQ value
     - `cutoff`: cutoff for which samples with less than this number of reads after sampling should be removed.
     - `seed`: seed of R's random number generator for the purpose of obtaining a reproducible random result.
     - `read_depth`: cutoff for which haplotypes that occur in less than this amount of the sample reads should be removed.
     - `proportion`: cutoff for which haplotypes that occur in less than this percentage of the sample reads should be removed.
-    - `haplotype_length`: the length of the majority of haplotypes for the target.
+    - `read_depth_ratio`: cutoff for which haplotypes that have 1 SNP difference, occur in the same sample, and have a greater than this amount times read depth difference between them within that sample with the lower read depth should be removed
 
     You can leave these options as-is if you'd like to first make sure the
     workflow runs without error on your machine before using your own dataset
@@ -108,7 +111,7 @@ This workflow processes the data set by cleaning the sequencing reads, performin
 
     Run it **locally** with:
     ``` sh
-    snakemake --cores {NCORES} # NCORES = number of cores, ie. without parallelization use snakemake --cores 1
+    snakemake --cores {NCORES} # NCORES = number of cores, ie. without parallelization use snakemake --cores 1. With our parameters, we typically run it with 12 cores.
     ```
 
     To run the workflow on an **HPC with Slurm**:
@@ -129,7 +132,7 @@ This workflow processes the data set by cleaning the sequencing reads, performin
 
 Below shows what output files looked like after running this pipeline with a small sample of haplotypes.
 
-`clean_sequencing_reads` should produce an all_samples folder within the out/fastq/{target} folder containing the cleaned and mapped fastq files. It also produces {out}/fastqc_in, a folder that contains the FastQC reports for each input fastq file. To open the .zip files, download and extract the files.
+`clean_sequencing_reads` should produce an all_samples folder within the {target}/{out}/fastq/{target} folder containing the cleaned and mapped fastq files. It also produces {target}/{out}/fastqc_in, a folder that contains the FastQC reports for each input fastq file. To open the .zip files, download and extract the files.
 
 After running this rule with a small sample of haplotypes, the **1** folder contained these files:
 ```
@@ -154,9 +157,10 @@ BF9_AMA_1.fastq.gz
 BF10_AMA_1.fastq.gz
 ```
 
-`trim_and_filter` should produce a haplotype_output in the {out} folder that contains one file, `{target}_trimAndFilterTable`, which summarizes read trimming and filtering.
+`trim_and_filter` should produce a haplotype_output directory in the {target}/{out} folder that contains a summary for read trimming and filtering for each q value (which can be changed in the config file), `{target}_{q_values}_trimAndFilterTable`,
 
-With our small sample, the trimAndFilter table looked like this:
+With our small sample, the AMA trimAndFilter table for a q value of 2 looked like this:
+
 |                      | reads.in | reads.out |
 |----------------------|----------|-----------|
 | BF1_AMA_1.fastq.gz   | 13072    | 8297      |
@@ -170,24 +174,50 @@ With our small sample, the trimAndFilter table looked like this:
 | BF8_AMA_1.fastq.gz   | 11474    | 7382      |
 | BF9_AMA_1.fastq.gz   | 12432    | 6318      |
 
+`optimize_reads` should produce 3 files in the haplotype_output folder: `{target}_final_q_value`, `{target}_max_read_count`, and `{target}_finalTrimAndFilterTable`.
+- `{target}_final_q_value`: contains the quality score that produced the highest number of read counts.
+- `{target}_max_read_count`: contains the value of the highest number of read counts, AKA the read count associated with the optimal quality score.
+- `{target}_finalTrimAndFilterTable`: contains the trim and filter table that was created with the optimal quality score.
+
+With our small sample, the AMA final q value was:
+`10`
+
+The AMA max read count was:
+`116036`
+
+And the final trim and filter table looked like this:
+
+|                     | reads.in | reads.out |
+|---------------------|----------|-----------|
+| BF1_AMA_1.fastq.gz  | 13072    | 11777     |
+| BF10_AMA_1.fastq.gz | 14875    | 13384     |
+| BF2_AMA_1.fastq.gz  | 15269    | 13718     |
+| BF3_AMA_1.fastq.gz  | 10116    | 8491      |
+| BF4_AMA_1.fastq.gz  | 13672    | 12226     |
+| BF5_AMA_1.fastq.gz  | 12650    | 11119     |
+| BF6_AMA_1.fastq.gz  | 14591    | 13085     |
+| BF7_AMA_1.fastq.gz  | 12760    | 11350     |
+| BF8_AMA_1.fastq.gz  | 11474    | 10326     |
+| BF9_AMA_1.fastq.gz  | 12432    | 10560     |
+
 `call_haplotypes` should add two files to the haplotype_output folder: `{target}_haplotypes.rds` and `{target}_trackReadsThroughPipeline.csv`. 
-- `{target}_haplotypes.rds`: R file that stores the haplotype results data set for furthermore manipulation in `censor_haplotypes`. 
+- `{target}_haplotypes.rds`: R file that stores the haplotype results data set for further manipulation in `censor_haplotypes`. 
 - `{target}_trackReadsThroughPipeline.csv`: tracks the reads, looking at the number of reads that made it through each step of the pipeline.
 
 With our small sample, the trackReadsThroughPipeline table looked like this:
 
 |      | merged | tabled | nonchim |
 |------|--------|--------|---------|
-| BF1  | 8296   | 8296   | 8296    |
-| BF10 | 9241   | 9241   | 9241    |
-| BF2  | 10239  | 10239  | 10239   |
-| BF3  | 5056   | 5056   | 5056    |
-| BF4  | 8850   | 8850   | 8850    |
-| BF5  | 7614   | 7614   | 7210    |
-| BF6  | 9752   | 9752   | 9752    |
-| BF7  | 8125   | 8125   | 7795    |
-| BF8  | 7378   | 7378   | 7378    |
-| BF9  | 6317   | 6317   | 6317    |
+| BF1  | 11768  | 11768  | 11768   |
+| BF10 | 13377  | 13377  | 13377   |
+| BF2  | 13681  | 13681  | 13681   |
+| BF3  | 8450   | 8450   | 8450    |
+| BF4  | 12211  | 12211  | 12211   |
+| BF5  | 10584  | 10584  | 10360   |
+| BF6  | 13078  | 13078  | 13078   |
+| BF7  | 11049  | 11049  | 10773   |
+| BF8  | 10314  | 10314  | 10314   |
+| BF9  | 10549  | 10549  | 10549   |
 
 `censor_haplotypes` should add six files to the {out}/haplotype_output folder: `{target}_haplotype_table_precensored.csv`, `{target}_snps_between_haps_within_samples.fasta`, `{target}_uniqueSeqs.fasta`, `{target}_aligned_seqs.fasta`, `{target}_uniqueSeqs_final_censored.fasta`, and `{target}_haplotype_table_censored_final_version.csv`. 
 - `{target}_haplotype_table_precensored.csv`: outputs the haplotype data set prior to beginning the censoring process (essentially `{target}_haplotypes.rds` in a formatted csv file). 
@@ -199,66 +229,51 @@ With our small sample, the trackReadsThroughPipeline table looked like this:
 
 With our small sample, the haplotype_table_precensored file looked like this:
 
-| H1    | H2   | H3   | H4   | H5   | H6   | H7   | H8 | MiSeq.ID |
-|-------|------|------|------|------|------|------|----|----------|
-| 0     | 0    | 0    | 0    | 8296 | 0    | 0    | 0  | BF1      |
-| 0     | 0    | 0    | 9241 | 0    | 0    | 0    | 0  | BF10     |
-| 10218 | 0    | 0    | 13   | 0    | 0    | 0    | 8  | BF2      |
-| 0     | 5056 | 0    | 0    | 0    | 0    | 0    | 0  | BF3      |
-| 11    | 8833 | 6    | 0    | 0    | 0    | 0    | 0  | BF4      |
-| 180   | 0    | 6872 | 0    | 0    | 158  | 0    | 0  | BF5      |
-| 9748  | 0    | 0    | 4    | 0    | 0    | 0    | 0  | BF6      |
-| 0     | 444  | 7351 | 0    | 0    | 0    | 0    | 0  | BF7      |
-| 0     | 0    | 0    | 0    | 0    | 7378 | 0    | 0  | BF8      |
-| 32    | 0    | 0    | 0    | 0    | 0    | 6285 | 0  | BF9      |
+| H1    | H2    | H3    | H4    | H5    | H6    | H7    | MiSeq.ID |
+|-------|-------|-------|-------|-------|-------|-------|----------|
+| 0     | 0     | 0     | 0     | 11768 | 0     | 0     | BF1      |
+| 0     | 0     | 0     | 13377 | 0     | 0     | 0     | BF10     |
+| 13665 | 0     | 0     | 16    | 0     | 0     | 0     | BF2      |
+| 0     | 8450  | 0     | 0     | 0     | 0     | 0     | BF3      |
+| 18    | 12186 | 7     | 0     | 0     | 0     | 0     | BF4      |
+| 268   | 0     | 9862  | 0     | 0     | 230   | 0     | BF5      |
+| 13078 | 0     | 0     | 0     | 0     | 0     | 0     | BF6      |
+| 0     | 603   | 10170 | 0     | 0     | 0     | 0     | BF7      |
+| 0     | 0     | 0     | 0     | 0     | 10314 | 0     | BF8      |
+| 51    | 0     | 0     | 0     | 0     | 0     | 10498 | BF9      |
 
 The snps_between_haps_within_samples file looked like this:
 ```
 >Seq1
 GTAAAGGTATAATTATTGAGAATTCAAATACTACTTTTTTAACACCGGTAGCTACGGGAAATCAATATTTAAAAGATGGAGGTTTTGCTTTTCCTCCAACAGAACCTCATATGTCACCAATGACATTAGATGAAATGAGACATTTTTATAAAGATAATAAATATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGATTCCAGATAATGATAAAAATTCAAATTATAAATATCCAGCTGTTTATGATGACAAAGATAAAAAGTGTCATATATTATATATTG
-
 >Seq2
 GTAAAGGTATAATTATTGAGAATTCAAATACTACTTTTTTAAAACCGGTAGCTACGGGAAATCAAGATTTAAAAGATGGAGGTTTTGCTTTTCCTCCAACAAATCCTCTTATATCACCAATGACATTAAATGGTATGAGAGATTTTTATAAAAATAATGAATATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGAATCCAGATAATGATGAAAATTCAAATTATAAATATCCAGCTGTTTATGATGACAAAGATAAAAAGTGTCATATATTATATATTG
-
 >Seq3
 GTAAAGGTATAATTATTGAGAATTCAAATACTACTTTTTTAAAACCGGTAGCTACGGGAAATCAAGATTTAAAAGATGGAGGTTTTGCTTTTCCTCCAACAGAACCTCTTATATCACCAATGACATTAGATGATATGAGAGATTTTTATAAAAATAATGAATATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGAATCCAGATAATGATCAAAATTCAAATTATAAATATCCAGCTGTTTATGATTACGAAGATAAAAAGTGTCATATATTATATATTG
-
 >Seq4
 GTAAAGGTATAATTATTGAGAATTCAAATACTACTTTTTTAACACCGGTAGCTACGGGAAAACAAGATTTAAAAGATGGAGGTTTTGCTTTTCCTCCAACAAATCCTCTTATATCACCAATGACATTAGATCATATGAGAGATTTTTATAAAAAAAATGAATATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGAATCCAGATAATGATGAAAATTCAAATTATAAATATCCAGCTGTTTATGATTACAAAGATAAAAAGTGTCATATATTATATATTG
-
 >Seq5
 GTAAAGGTATAATTATTGAGAATTCAAATACTACTTTTTTAAAACCGGTAGCTACGGGAAATCAAGATTTAAAAGATGGAGGTTTTGCTTTTCCTCCAACAGAACCTCTTATATCACCAATGACATTAAATGGTATGAGAGATTTATATAAAAATAATGAAGATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGAATCCAGATAATGATAAAAATTCAAATTATAAATATCCAGCTGTTTATGATGACAAAAATAAAAAGTGTCATATATTATATATTG
-
 >Seq6
 GTAAAGGTATAATTATTGAGAATTCAAAAACTACTTTTTTAACACCGGTAGCTACGGAAAATCAAGATTTAAAAGATGGAGGTTTTGCTTTTCCTCCAACAAATCCTCCTATGTCACCAATGACATTAAATGGTATGAGAGATTTATATAAAAATAATGAATATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGAATCCAGATAATGATAAAAATTCAAATTATAAATATCCAGCTGTTTATGATTACAATGATAATAAGTGTCATATATTATATATTG
-
 >Seq7
 GTAAAGGTATAATTATTGAGAATTCAAATACTACTTTTTTAAAACCGGTAGCTACGGGAAATCAAGATTTAAAAGATGGAGGTTTTGCTTTTCCTCCAACAGAACCTCTTATATCACCAATGACATTAAATGGTATGAGAGATTTTTATAAAAATAATGAATATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGAATCCAGATAAGGATGAAAATTCAAATTATAAATATCCAGCTGTTTATGATGACAAAGATAAAAAGTGTCATATATTATATATTG
-
->Seq8
-GTAAAGGTATAATTATTGAGAATTCAAATACTACTTTTTTAACACCGGTAGCTACGGAAAATCAAGATTTAAAAGATGGAGGTTTTGCTTTTCCTCCAACAAAACCTCTTATGTCACCAATGACATTAGATCAAATGAGACATTTTTATAAAGATAATAAATATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGATTCCAGATAATGATAAAAATTCAAATTATAAATATCCAGCTGTTTATGATGACAAAGATAAAAAGTGTCATATATTATATATTG
 ```
 
 The uniqueSeqs file looked like this: 
 ```
 >Seq1
 GTAAAGGTATAATTATTGAGAATTCAAATACTACTTTTTTAACACCGGTAGCTACGGGAAATCAATATTTAAAAGATGGAGGTTTTGCTTTTCCTCCAACAGAACCTCATATGTCACCAATGACATTAGATGAAATGAGACATTTTTATAAAGATAATAAATATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGATTCCAGATAATGATAAAAATTCAAATTATAAATATCCAGCTGTTTATGATGACAAAGATAAAAAGTGTCATATATTATATATTG
-
 >Seq2
 GTAAAGGTATAATTATTGAGAATTCAAATACTACTTTTTTAAAACCGGTAGCTACGGGAAATCAAGATTTAAAAGATGGAGGTTTTGCTTTTCCTCCAACAAATCCTCTTATATCACCAATGACATTAAATGGTATGAGAGATTTTTATAAAAATAATGAATATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGAATCCAGATAATGATGAAAATTCAAATTATAAATATCCAGCTGTTTATGATGACAAAGATAAAAAGTGTCATATATTATATATTG
-
 >Seq3
 GTAAAGGTATAATTATTGAGAATTCAAATACTACTTTTTTAAAACCGGTAGCTACGGGAAATCAAGATTTAAAAGATGGAGGTTTTGCTTTTCCTCCAACAGAACCTCTTATATCACCAATGACATTAGATGATATGAGAGATTTTTATAAAAATAATGAATATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGAATCCAGATAATGATCAAAATTCAAATTATAAATATCCAGCTGTTTATGATTACGAAGATAAAAAGTGTCATATATTATATATTG
-
 >Seq4
 GTAAAGGTATAATTATTGAGAATTCAAATACTACTTTTTTAACACCGGTAGCTACGGGAAAACAAGATTTAAAAGATGGAGGTTTTGCTTTTCCTCCAACAAATCCTCTTATATCACCAATGACATTAGATCATATGAGAGATTTTTATAAAAAAAATGAATATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGAATCCAGATAATGATGAAAATTCAAATTATAAATATCCAGCTGTTTATGATTACAAAGATAAAAAGTGTCATATATTATATATTG
-
 >Seq5
 GTAAAGGTATAATTATTGAGAATTCAAATACTACTTTTTTAAAACCGGTAGCTACGGGAAATCAAGATTTAAAAGATGGAGGTTTTGCTTTTCCTCCAACAGAACCTCTTATATCACCAATGACATTAAATGGTATGAGAGATTTATATAAAAATAATGAAGATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGAATCCAGATAATGATAAAAATTCAAATTATAAATATCCAGCTGTTTATGATGACAAAAATAAAAAGTGTCATATATTATATATTG
-
 >Seq6
 GTAAAGGTATAATTATTGAGAATTCAAAAACTACTTTTTTAACACCGGTAGCTACGGAAAATCAAGATTTAAAAGATGGAGGTTTTGCTTTTCCTCCAACAAATCCTCCTATGTCACCAATGACATTAAATGGTATGAGAGATTTATATAAAAATAATGAATATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGAATCCAGATAATGATAAAAATTCAAATTATAAATATCCAGCTGTTTATGATTACAATGATAATAAGTGTCATATATTATATATTG
-
 >Seq7
 GTAAAGGTATAATTATTGAGAATTCAAATACTACTTTTTTAAAACCGGTAGCTACGGGAAATCAAGATTTAAAAGATGGAGGTTTTGCTTTTCCTCCAACAGAACCTCTTATATCACCAATGACATTAAATGGTATGAGAGATTTTTATAAAAATAATGAATATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGAATCCAGATAAGGATGAAAATTCAAATTATAAATATCCAGCTGTTTATGATGACAAAGATAAAAAGTGTCATATATTATATATTG
 ```
@@ -271,37 +286,31 @@ GTAAAGGTATAATTATTGAGAATTCAAATACTACTTTTTTAAAACCGGTAGCTACGGGAAATCAAGATTTAAAAGATGGA
 GGTTTTGCTTTTCCTCCAACAGAACCTCTTATATCACCAATGACATTAAATGGTATGAGAGATTTATATAAAAATAATGA
 AGATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGAATCCAGATAATGATAAAAATTCAA
 ATTATAAATATCCAGCTGTTTATGATGACAAAAATAAAAAGTGTCATATATTATATATTG
-
 >Seq6
 GTAAAGGTATAATTATTGAGAATTCAAAAACTACTTTTTTAACACCGGTAGCTACGGAAAATCAAGATTTAAAAGATGGA
 GGTTTTGCTTTTCCTCCAACAAATCCTCCTATGTCACCAATGACATTAAATGGTATGAGAGATTTATATAAAAATAATGA
 ATATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGAATCCAGATAATGATAAAAATTCAA
 ATTATAAATATCCAGCTGTTTATGATTACAATGATAATAAGTGTCATATATTATATATTG
-
 >Seq4
 GTAAAGGTATAATTATTGAGAATTCAAATACTACTTTTTTAACACCGGTAGCTACGGGAAAACAAGATTTAAAAGATGGA
 GGTTTTGCTTTTCCTCCAACAAATCCTCTTATATCACCAATGACATTAGATCATATGAGAGATTTTTATAAAAAAAATGA
 ATATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGAATCCAGATAATGATGAAAATTCAA
 ATTATAAATATCCAGCTGTTTATGATTACAAAGATAAAAAGTGTCATATATTATATATTG
-
 >Seq1
 GTAAAGGTATAATTATTGAGAATTCAAATACTACTTTTTTAACACCGGTAGCTACGGGAAATCAATATTTAAAAGATGGA
 GGTTTTGCTTTTCCTCCAACAGAACCTCATATGTCACCAATGACATTAGATGAAATGAGACATTTTTATAAAGATAATAA
 ATATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGATTCCAGATAATGATAAAAATTCAA
 ATTATAAATATCCAGCTGTTTATGATGACAAAGATAAAAAGTGTCATATATTATATATTG
-
 >Seq2
 GTAAAGGTATAATTATTGAGAATTCAAATACTACTTTTTTAAAACCGGTAGCTACGGGAAATCAAGATTTAAAAGATGGA
 GGTTTTGCTTTTCCTCCAACAAATCCTCTTATATCACCAATGACATTAAATGGTATGAGAGATTTTTATAAAAATAATGA
 ATATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGAATCCAGATAATGATGAAAATTCAA
 ATTATAAATATCCAGCTGTTTATGATGACAAAGATAAAAAGTGTCATATATTATATATTG
-
 >Seq3
 GTAAAGGTATAATTATTGAGAATTCAAATACTACTTTTTTAAAACCGGTAGCTACGGGAAATCAAGATTTAAAAGATGGA
 GGTTTTGCTTTTCCTCCAACAGAACCTCTTATATCACCAATGACATTAGATGATATGAGAGATTTTTATAAAAATAATGA
 ATATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGAATCCAGATAATGATCAAAATTCAA
 ATTATAAATATCCAGCTGTTTATGATTACGAAGATAAAAAGTGTCATATATTATATATTG
-
 >Seq7
 GTAAAGGTATAATTATTGAGAATTCAAATACTACTTTTTTAAAACCGGTAGCTACGGGAAATCAAGATTTAAAAGATGGA
 GGTTTTGCTTTTCCTCCAACAGAACCTCTTATATCACCAATGACATTAAATGGTATGAGAGATTTTTATAAAAATAATGA
@@ -312,16 +321,16 @@ ATTATAAATATCCAGCTGTTTATGATGACAAAGATAAAAAGTGTCATATATTATATATTG
 The uniqueSeqs_final_censored file looked like this:
 ```
 >Seq1
-GTAAAGGTATAATTATTGAGAATTCAAATACTACTTTTTTAACACCGGTAGCTACGGGAAAACAAGATTTAAAAGATGGAGGTTTTGCTTTTCCTCCAACAAATCCTCTTATATCACCAATGACATTAGATCATATGAGAGATTTTTATAAAAAAAATGAATATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGAATCCAGATAATGATGAAAATTCAAATTATAAATATCCAGCTGTTTATGATTACAAAGATAAAAAGTGTCATATATTATATATTG
+GTAAAGGTATAATTATTGAGAATTCAAATACTACTTTTTTAAAACCGGTAGCTACGGGAAATCAAGATTTAAAAGATGGAGGTTTTGCTTTTCCTCCAACAAATCCTCTTATATCACCAATGACATTAAATGGTATGAGAGATTTTTATAAAAATAATGAATATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGAATCCAGATAATGATGAAAATTCAAATTATAAATATCCAGCTGTTTATGATGACAAAGATAAAAAGTGTCATATATTATATATTG
 ```
 
 And the haplotype_table_censored_final table looked like this:
 
-| H2   | MiSeq.ID |
-|------|----------|
-| 5056 | BF3      |
-| 8833 | BF4      |
-| 444  | BF7      |
+| H2    | MiSeq.ID |
+|-------|----------|
+| 8450  | BF3      |
+| 12186 | BF4      |
+| 603   | BF7      |
 
 ## More resources
 
