@@ -22,12 +22,76 @@ REV = config['rev']
 OUT = config['out']
 
 rule all:
- 	input:
- 		expand("{target}/{out}/fastq/{target}/all_samples/", out=OUT, target=TARGET),
- 		expand("{target}/{out}/haplotype_output/{target}_{q_values}_trimAndFilterTable", out=OUT, target=TARGET, q_values=TRUNCQ_VALUES),
-		expand("{target}/{out}/haplotype_output/{target}_finalTrimAndFilterTable", out=OUT, target=TARGET),
-		expand("{target}/{out}/haplotype_output/{target}_trackReadsThroughPipeline.csv", out=OUT, target=TARGET),
-		expand("{target}/{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv", out=OUT, target=TARGET),
+	input:
+		expand("{target}/{out}/fastqc_in", out=OUT, target=TARGET),
+		# expand("{target}/{out}/fastq/{target}/all_samples/", out=OUT, target=TARGET),
+ 		# expand("{target}/{out}/haplotype_output/{target}_{q_values}_trimAndFilterTable", out=OUT, target=TARGET, q_values=TRUNCQ_VALUES),
+		# expand("{target}/{out}/haplotype_output/{target}_finalTrimAndFilterTable", out=OUT, target=TARGET),
+		# expand("{target}/{out}/haplotype_output/{target}_trackReadsThroughPipeline.csv", out=OUT, target=TARGET),
+		# expand("{target}/{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv", out=OUT, target=TARGET),
+
+rule calling_fastqc:
+	input:
+		refs="refs/{target}.fasta",
+		pair1=PAIR1,
+		pair2=PAIR2,
+		forward=expand("{forward}.fasta", forward=FOWARD),
+		rev=expand("{rev}.fasta", rev=REV)
+	output:
+		#directory(expand("{out}/fastq/{target}/1/", out=OUT, target=TARGET)),
+		#directory(expand("{out}/fastq/{target}/2/", out=OUT, target=TARGET)),
+		out=directory("{target}/{out}/fastqc_in/"),
+	params:
+		recreate_ref_folder=RECREATE_REF_FOLDER,
+		refs="refs/{target}.fasta",
+		folder="{target}/{out}",
+		pair1=PAIR1,
+		pair2=PAIR2,
+		forward=expand("{forward}.fasta", forward=FOWARD),
+		rev=expand("{rev}.fasta", rev=REV),
+		output="{target}/{out}",
+		forward_samples="{target}/{out}/fastq/{target}/1",
+		reverse_samples="{target}/{out}/fastq/{target}/2",
+		haplotype_output="{target}/{out}/haplotype_output",
+		out="{target}/{out}", # should be "{target}/{out}" i think
+		pyscript="scripts/step1_callFastqc.py"
+	script:
+		"{params.pyscript}"
+
+rule call_trimmomatic:
+	input:
+		refs="refs/{target}.fasta",
+		pair1=PAIR1,
+		pair2=PAIR2,
+		forward=expand("{forward}.fasta", forward=FOWARD),
+		rev=expand("{rev}.fasta", rev=REV)
+	output:
+		#directory(expand("{out}/fastq/{target}/1/", out=OUT, target=TARGET)),
+		#directory(expand("{out}/fastq/{target}/2/", out=OUT, target=TARGET)),
+		out=directory("{target}/{out}/fastq/{target}/all_samples/")
+	params:
+		recreate_ref_folder=RECREATE_REF_FOLDER,
+		refs="refs/{target}.fasta",
+		folder="{target}/{out}",
+		pair1=PAIR1,
+		pair2=PAIR2,
+		forward=expand("{forward}.fasta", forward=FOWARD),
+		rev=expand("{rev}.fasta", rev=REV),
+		output="{target}/{out}/fastq/{target}/all_samples",
+		forward_samples="{target}/{out}/fastq/{target}/1",
+		reverse_samples="{target}/{out}/fastq/{target}/2",
+		haplotype_output="{target}/{out}/haplotype_output",
+		out="{target}/{out}", # should be "{target}/{out}" i think
+		pyscript="scripts/step1_callTrimmomatic.py"
+	# run: # put this stuff all in the python script
+	# 	if params.recreate_ref_folder == True:
+	# 		shell("rm -rf ref")
+	# 	shell("perl scripts/step1_splitSyncReadsMultiRef.pl 1 {input.refs} {params.folder} {input.pair1} {input.pair2} {input.forward} {input.rev}")
+	# 	shell("mkdir {params.output}")
+	# 	shell("mv {params.forward_samples}/*.fastq.gz {params.out} && mv {params.reverse_samples}/*.fastq.gz {params.out}")
+	# 	shell("rm -r {params.forward_samples} && rm -r {params.reverse_samples}")
+	script:
+		"{params.pyscript}"
 
 rule clean_sequencing_reads:
 	input:
@@ -42,19 +106,54 @@ rule clean_sequencing_reads:
 		out=directory("{target}/{out}/fastq/{target}/all_samples/")
 	params:
 		recreate_ref_folder=RECREATE_REF_FOLDER,
+		refs="refs/{target}.fasta",
 		folder="{target}/{out}",
+		pair1=PAIR1,
+		pair2=PAIR2,
+		forward=expand("{forward}.fasta", forward=FOWARD),
+		rev=expand("{rev}.fasta", rev=REV),
 		output="{target}/{out}/fastq/{target}/all_samples",
 		forward_samples="{target}/{out}/fastq/{target}/1",
 		reverse_samples="{target}/{out}/fastq/{target}/2",
 		haplotype_output="{target}/{out}/haplotype_output",
-		out="{target}/{out}/fastq/{target}/all_samples"
-	run:
-		if params.recreate_ref_folder == True:
-			shell("rm -rf ref")
-		shell("perl scripts/step1_splitSyncReadsMultiRef.pl 1 {input.refs} {params.folder} {input.pair1} {input.pair2} {input.forward} {input.rev}")
-		shell("mkdir {params.output}")
-		shell("mv {params.forward_samples}/*.fastq.gz {params.out} && mv {params.reverse_samples}/*.fastq.gz {params.out}")
-		shell("rm -r {params.forward_samples} && rm -r {params.reverse_samples}")
+		out="{target}/{out}", # should be "{target}/{out}" i think
+		pyscript="scripts/step1_getReferences.py"
+	# run: # put this stuff all in the python script
+	# 	if params.recreate_ref_folder == True:
+	# 		shell("rm -rf ref")
+	# 	shell("perl scripts/step1_splitSyncReadsMultiRef.pl 1 {input.refs} {params.folder} {input.pair1} {input.pair2} {input.forward} {input.rev}")
+	# 	shell("mkdir {params.output}")
+	# 	shell("mv {params.forward_samples}/*.fastq.gz {params.out} && mv {params.reverse_samples}/*.fastq.gz {params.out}")
+	# 	shell("rm -r {params.forward_samples} && rm -r {params.reverse_samples}")
+	script:
+		"{params.pyscript}"
+
+# rule clean_sequencing_reads_old:
+# 	input:
+# 		refs="refs/{target}.fasta",
+# 		pair1=PAIR1,
+# 		pair2=PAIR2,
+# 		forward=expand("{forward}.fasta", forward=FOWARD),
+# 		rev=expand("{rev}.fasta", rev=REV)
+# 	output:
+# 		#directory(expand("{out}/fastq/{target}/1/", out=OUT, target=TARGET)),
+# 		#directory(expand("{out}/fastq/{target}/2/", out=OUT, target=TARGET)),
+# 		out=directory("{target}/{out}/fastq/{target}/all_samples/")
+# 	params:
+# 		recreate_ref_folder=RECREATE_REF_FOLDER,
+# 		folder="{target}/{out}",
+# 		output="{target}/{out}/fastq/{target}/all_samples",
+# 		forward_samples="{target}/{out}/fastq/{target}/1",
+# 		reverse_samples="{target}/{out}/fastq/{target}/2",
+# 		haplotype_output="{target}/{out}/haplotype_output",
+# 		out="{target}/{out}/fastq/{target}/all_samples"
+# 	run:
+# 		if params.recreate_ref_folder == True:
+# 			shell("rm -rf ref")
+# 		shell("perl scripts/step1_splitSyncReadsMultiRef.pl 1 {input.refs} {params.folder} {input.pair1} {input.pair2} {input.forward} {input.rev}")
+# 		shell("mkdir {params.output}")
+# 		shell("mv {params.forward_samples}/*.fastq.gz {params.out} && mv {params.reverse_samples}/*.fastq.gz {params.out}")
+# 		shell("rm -r {params.forward_samples} && rm -r {params.reverse_samples}")
 
 rule trim_and_filter:
 	input:

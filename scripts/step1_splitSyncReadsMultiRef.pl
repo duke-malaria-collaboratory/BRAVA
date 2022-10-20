@@ -22,8 +22,14 @@ chomp $numRef;
 unless ($numRef > 0)
 {die "\n\tPlease enter a number greater than 0 for number of genomes\n";}
 my ($refSeqs, $refNames) = getReference($numRef, $refs);
+print("scalars:\n");
+print("\n$refSeqs\n");
+print("\n$refNames\n");
 my @refSeqs = @{$refSeqs};
 my @refNames = @{$refNames};
+print("arrays:\n");
+print("\n@refSeqs\n");
+print("\n@refNames\n");
 
 chomp $out;
 makeOutDirs("$out", \@refNames);
@@ -38,8 +44,12 @@ my @trimReads2 = ();
 
 @PairedReadfiles1 = getReads("$pair1");
 @PairedReadfiles2 = getReads("$pair2");
+print("@PairedReadfiles1");
+print("\n2:\n");
+print("@PairedReadfiles2");
 
 QCreads("$pair1", "$pair2", "$out/fastqc_in", \@PairedReadfiles1, \@PairedReadfiles2, "fastq");
+die "\ntest\n";
 
 ($trim1, $trim2) = trimReads("$pair1", "$pair2", "$out", \@PairedReadfiles1, \@PairedReadfiles2, "$forward", "$reverse");
 
@@ -141,7 +151,6 @@ sub getReads
 		splice (@Reads, 0, 2);
     }
 	else { die "\n\t**Reads not found**\n"; }
-
 	my @sortReads = sort(@Reads);
 	return @sortReads;
 }
