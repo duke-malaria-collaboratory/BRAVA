@@ -49,12 +49,13 @@ print("\n2:\n");
 print("@PairedReadfiles2");
 
 QCreads("$pair1", "$pair2", "$out/fastqc_in", \@PairedReadfiles1, \@PairedReadfiles2, "fastq");
-die "\ntest\n";
 
 ($trim1, $trim2) = trimReads("$pair1", "$pair2", "$out", \@PairedReadfiles1, \@PairedReadfiles2, "$forward", "$reverse");
 
 @trimReads1 = getReads("$trim1");
 @trimReads2 = getReads("$trim2");
+
+die "\ntest\n";
     
 splitReads(\@refSeqs, \@refNames, "$out", \@trimReads1, \@trimReads2, "$trim1", "$trim2");
 ############################################################

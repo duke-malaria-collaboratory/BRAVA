@@ -49,26 +49,6 @@ def makeOutDirs(out, refs):
         if not os.path.exists(out + "/fastqc_in"):
             os.system('mkdir {}/fastqc_in'.format(out))
             print ("\tFastqc .html files of input reads stored in {}/fastqc_in".format(out))
-
-        if not os.path.exists(out + "/cut"):
-            os.system('mkdir {}/cut'.format(out))
-            os.system('mkdir {}/cut/1'.format(out))
-            os.system('mkdir {}/cut/2'.format(out))
-            print ("\tAdapter cut reads temporarily stored in {}/cut".format(out))
-
-        if not os.path.exists(out + "/trim"):
-            os.system('mkdir {}/trim'.format(out))
-            os.system('mkdir {}/trim/1'.format(out))
-            os.system('mkdir {}/trim/2'.format(out))
-            os.system('mkdir {}/trim/fastqcTrim'.format(out))
-            os.system('mkdir {}/trim/Log'.format(out))
-            os.system('mkdir {}/trim/singleton'.format(out))
-            os.system('mkdir {}/trim/Summary'.format(out))
-            print ("\tTrimmed reads stored in  {}/trim".format(out))
-        
-        if not os.path.exists(out + "/fastqc_trim_split"):
-            os.system('mkdir {}/fastqc_trim_split'.format(out))
-            print ("\tFastqc .html files of trimmed reads stored in {}/fastqc_trim_split\n".format(out))
                 
 def getReads(readsDir):
     if os.path.exists(readsDir):
@@ -385,7 +365,6 @@ QCreads(pair1, pair2, out + "/fastqc_in", pairedReadFiles1, pairedReadFiles2, "f
 # move_folders_command = ['mv', snakemake.params["forward_samples"]]
 
 # subprocess.run(make_folder_command)
-os.system('mkdir {}'.format(snakemake.params["refs"]))
-os.system('mv {0}/*.fastq.gz {1} && mv {2}/*.fastq.gz {1}'.format(snakemake.params["forward_samples"], snakemake.params["out"], snakemake.params["reverse_samples"]))
-os.system('rm -r {0} && rm -r {1}'.format(snakemake.params["forward_samples"], snakemake.params["reverse_samples"]))
-# os.system('mv {params.forward_samples}/*.fastq.gz {params.out} && mv {params.reverse_samples}/*.fastq.gz {params.out}"')
+# os.system('mkdir {}'.format(snakemake.params["refs"]))
+# os.system('mv {0}/*.fastq.gz {1} && mv {2}/*.fastq.gz {1}'.format(snakemake.params["forward_samples"], snakemake.params["out"], snakemake.params["reverse_samples"]))
+# os.system('rm -r {0} && rm -r {1}'.format(snakemake.params["forward_samples"], snakemake.params["reverse_samples"]))

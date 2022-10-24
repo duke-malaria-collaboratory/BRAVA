@@ -61,37 +61,6 @@ def getReads(readsDir):
     reads.sort()
     return reads
 
-def trimReads(read1Dir, read2Dir, outDir, reads1, reads2, forward, reverse):
-    size = len(reads1)
-    size2 = len(reads2)
-    if size != size2:
-        sys.exit("\t***Paired-end read file names unequal***")
-    print(reads1)
-    # for i, file in enumerate(sorted(os.listdir(read1Dir))):
-    #     print(i)
-    #     print(file)
-
-    for i in range(size):
-        currRead1 = reads1[i]
-        PRE = currRead1.split('_')
-        prefix = PRE[0]
-        print("\t Trimming {} reads".format(prefix))
-        currRead2 = reads2[i]
-        PRE2 = currRead2.split('_')
-        prefix2 = PRE2[0]
-        if prefix == prefix2:
-            forwardElem = forward[0]
-            reverseElem = reverse[0]
-            os.system('cutadapt -g file:{0} -G file:{1} -o {2}/cut/1/{3}.1.fastq.gz -p {2}/cut/2/{3}.2.fastq.gz {4}/{5} {6}/{7}'.format(forwardElem, reverseElem, outDir, prefix, read1Dir, currRead1, read2Dir, currRead2))
-
-            os.system('trimmomatic PE -phred33 -summary {0}/trim/Summary/{1}.summary {0}/cut/1/{1}.1.fastq.gz {0}/cut/2/{1}.2.fastq.gz {0}/trim/1/{1}.1.fastq.gz {0}/trim/singleton/{1}.1_unpaired.fq.gz {0}/trim/2/{1}.2.fastq.gz {0}/trim/singleton/{1}.2_unpaired.fq.gz LEADING:10 TRAILING:10 SLIDINGWINDOW:4:15 MINLEN:80'.format(outDir, prefix))
-
-            os.system('rm {0}/cut/1/{1}.1.fastq.gz {0}/cut/2/{1}.2.fastq.gz'.format(outDir, prefix))
-
-    trimReads1 = "{}/trim/1".format(outDir)
-    trimReads2 = "{}/trim/2".format(outDir)
-    return trimReads1, trimReads2
-
 numRef = 1
 refs = snakemake.params["refs"]
 out = snakemake.params["folder"]
@@ -110,10 +79,6 @@ pairedReadFiles2 = getReads(pair2)
 
 trim1, trim2 = trimReads(pair1, pair2, out, pairedReadFiles1, pairedReadFiles2, forward, reverse)
 
-# ($trim1, $trim2) = trimReads("$pair1", "$pair2", "$out", \@PairedReadfiles1, \@PairedReadfiles2, "$forward", "$reverse");
-
-# @trimReads1 = getReads("$trim1");
-# @trimReads2 = getReads("$trim2");
     
 # splitReads(\@refSeqs, \@refNames, "$out", \@trimReads1, \@trimReads2, "$trim1", "$trim2");
 # ############################################################
