@@ -1,11 +1,11 @@
 #!/usr/bin/perl
 # Written by Joe Saelens
 # Updated on 11/20/2020 to include read pair synchronization
-
-# remove stuff from the callFastqc script, and only keep the things needed to call trimmomatic.
+# Updated on 10/25/2022 by Kathie Huang - converted to Python and split into 3 separate scripts
 
 import os
 import subprocess
+import re
 
 # defining functions
 
@@ -31,27 +31,13 @@ def getReference(numRef, refPaths):
         i += 1
     return referenceFastas, refNames
 
-def makeOutDirs(out, refs):
-
-    if not os.path.exists(out + "/cut"):
-        os.system('mkdir {}/cut'.format(out))
-        os.system('mkdir {}/cut/1'.format(out))
-        os.system('mkdir {}/cut/2'.format(out))
-        print ("\tAdapter cut reads temporarily stored in {}/cut".format(out))
-
-    if not os.path.exists(out + "/trim"):
-        os.system('mkdir {}/trim'.format(out))
-        os.system('mkdir {}/trim/1'.format(out))
-        os.system('mkdir {}/trim/2'.format(out))
-        os.system('mkdir {}/trim/fastqcTrim'.format(out))
-        os.system('mkdir {}/trim/Log'.format(out))
-        os.system('mkdir {}/trim/singleton'.format(out))
-        os.system('mkdir {}/trim/Summary'.format(out))
-        print ("\tTrimmed reads stored in  {}/trim".format(out))
-
-    if not os.path.exists(out + "/fastqc_trim_split"):
-        os.system('mkdir {}/fastqc_trim_split'.format(out))
-        print ("\tFastqc .html files of trimmed reads stored in {}/fastqc_trim_split\n".format(out))
+def makeOutDirs(out):
+    if not os.path.exists("/" + out + "/fastq"):
+        os.system('mkdir {}/fastq/'.format(out))
+        print("\tSynchronized paired end fastq files stored in /{}/fastq".format(out))
+    if not os.path.exists("/" + out + "/Results"):
+        os.system('mkdir {}/Results'.format(out))
+        print("\tLog files stored in /{}/Results".format(out))
 
 def getReads(readsDir):
     if os.path.exists(readsDir):
@@ -61,25 +47,86 @@ def getReads(readsDir):
     reads.sort()
     return reads
 
+def splitReads(refSeqs, refNames, out, read1, read2, read1Dir, read2Dir, target):
+    size = len(read1)
+    refs = ",".join(refSeqs)
+    sampleName = [None] * size
+    for i in range(size):
+        fileSplit = re.split('\.', read1[i])
+        sampleName[i] = fileSplit[0]
+        print("\tAligning {0} to {1}".format(sampleName[i], refs))
+        file2Split = re.split('\.', read2[i])
+        sampleName2 = file2Split[0]
+
+        if sampleName[i] == sampleName2:
+            os.system('bbsplit.sh -Xmx8000m in={0}/{1} in2={2}/{3} ref={4} basename={5}_%_#.fastq >& {6}/Results/{5}.txt'.format(read1Dir, read1[i], read2Dir, read2[i], refs, sampleName[i], out))
+
+            for elem in refNames:
+                os.system("mv *_{0}* {1}/fastq".format(target, out))
+                os.system("gzip {0}/fastq/*.fastq".format(out))
+                if not os.path.exists(out + "/fastq/1"):
+                    os.system("mkdir {}/fastq/1".format(out))
+                if not os.path.exists(out + "/fastq/2"):
+                    os.system("mkdir {}/fastq/2".format(out))
+                os.system("mv {0}/fastq/*_1.fastq.gz {0}/fastq/1".format(out))
+                os.system("mv {0}/fastq/*_2.fastq.gz {0}/fastq/2".format(out))
+    print("Synchronizing paired end reads...\n")
+    for elem in refNames:
+        unsyncReads1 = getReads("{}/fastq/1".format(out))
+        unsyncReads2 = getReads("{}/fastq/2".format(out))
+        syncReads("{}/fastq/1".format(out), "{}/fastq/2".format(out), unsyncReads1, unsyncReads2)
+
+def syncReads(read1Dir, read2Dir, reads1, reads2):
+    size = len(reads1)
+    size2 = len(reads2)
+    if size != size2:
+        sys.exit("Paired end read files unequal")
+    sampleName = [None] * size
+
+    for i in range(size):
+        fileSplit = re.split('\.', reads1[i])
+        sampleName[i] = fileSplit[0]
+        print("\tSynchronizing paired read ends for {}".format(sampleName[i]))
+        file2Split = re.split('\.', reads2[i])
+        sampleName2 = file2Split[0]
+
+        os.system("repair.sh in={0}/{1} in2={2}/{3} out={0}/{4}.paired.fastq.gz out2={2}/{5}.paired.fastq.gz outs=singletons.fq repair".format(read1Dir, reads1[i], read2Dir, reads2[i], sampleName[i], sampleName2))
+        os.system("rm singletons.fq {0}/{1} {2}/{3}".format(read1Dir, reads1[i], read2Dir, reads2[i]))
+        os.system("mv {0}/{1}.paired.fastq.gz {0}/{2}".format(read1Dir, sampleName[i], reads1[i]))
+        os.system("mv {0}/{1}.paired.fastq.gz {0}/{2}".format(read2Dir, sampleName2, reads2[i]))
+
+if snakemake.params["recreate_ref_folder"] == True:
+    os.system('rm -rf ref')
+
 numRef = 1
 refs = snakemake.params["refs"]
-out = snakemake.params["folder"]
+out = snakemake.params["out"]
 pair1 = snakemake.params["pair1"]
 pair2 = snakemake.params["pair2"]
 forward = snakemake.params["forward"]
 reverse = snakemake.params["rev"]
+target = snakemake.params["target"]
 
 refSeqs, refNames = getReference(numRef, refs)
 
 out = out.replace('\n', '')    # remove '\n' only
-makeOutDirs(out, refNames);
+makeOutDirs(out);
 
 pairedReadFiles1 = getReads(pair1)
 pairedReadFiles2 = getReads(pair2)
 
-trim1, trim2 = trimReads(pair1, pair2, out, pairedReadFiles1, pairedReadFiles2, forward, reverse)
+trim1 = snakemake.params["trimmed"] + "/1"
+trim2 = snakemake.params["trimmed"] + "/2"
 
-    
+trimReads1 = getReads(trim1)
+trimReads2 = getReads(trim2)
+
+splitReads(refSeqs, refNames, out, trimReads1, trimReads2, trim1, trim2, target)
+
+os.system('mkdir {}'.format(snakemake.params["output"]))
+os.system('mv {0}/*.fastq.gz {1} && mv {2}/*.fastq.gz {1}'.format(snakemake.params["forward_samples"], snakemake.params["output"], snakemake.params["reverse_samples"]))
+os.system('rm -r {0} && rm -r {1}'.format(snakemake.params["forward_samples"], snakemake.params["reverse_samples"]))
+
 # splitReads(\@refSeqs, \@refNames, "$out", \@trimReads1, \@trimReads2, "$trim1", "$trim2");
 # ############################################################
 

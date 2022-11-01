@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 # Written by Joe Saelens
 # Updated on 11/20/2020 to include read pair synchronization
+# Updated on 10/25/2022 by Kathie Huang - converted to Python and split into 3 separate scripts
 
 import os
 import subprocess
@@ -30,26 +31,27 @@ def getReference(numRef, refPaths):
     return referenceFastas, refNames
 
 def makeOutDirs(out, refs):
-    i = 0
-    if not os.path.exists(out):
-        os.system('mkdir {}'.format(out))
 
-    if os.path.exists(out):
-        if not os.path.exists(out + "/fastq"):
-            os.system('mkdir {}/fastq'.format(out))
-            for elem in refs:
-                os.system('mkdir {0}/fastq/{1}'.format(out, refs[i]))
-                i += 1
-            print("\tSynchronized paired end fastq files stored in {}/fastq".format(out))
+    if not os.path.exists("/" + out + "/cut"):
+        os.system('mkdir {}/cut'.format(out))
+        os.system('mkdir {}/cut/1'.format(out))
+        os.system('mkdir {}/cut/2'.format(out))
+        print ("\tAdapter cut reads temporarily stored in {}/cut".format(out))
 
-        if not os.path.exists(out + "/Results"):
-            os.system('mkdir {}/Results'.format(out))
-            print ("\tLog files stored in {}/Results".format(out))
+    if not os.path.exists("/" + out + "/trim"):
+        os.system('mkdir {}/trim'.format(out))
+        os.system('mkdir {}/trim/1'.format(out))
+        os.system('mkdir {}/trim/2'.format(out))
+        os.system('mkdir {}/trim/fastqcTrim'.format(out))
+        os.system('mkdir {}/trim/Log'.format(out))
+        os.system('mkdir {}/trim/singleton'.format(out))
+        os.system('mkdir {}/trim/Summary'.format(out))
+        print ("\tTrimmed reads stored in /{}/trim".format(out))
 
-        if not os.path.exists(out + "/fastqc_in"):
-            os.system('mkdir {}/fastqc_in'.format(out))
-            print ("\tFastqc .html files of input reads stored in {}/fastqc_in".format(out))
-                
+    if not os.path.exists("/" + out + "/fastqc_trim_split"):
+        os.system('mkdir {}/fastqc_trim_split'.format(out))
+        print ("\tFastqc .html files of trimmed reads stored in /{}/fastqc_trim_split\n".format(out))
+
 def getReads(readsDir):
     if os.path.exists(readsDir):
         reads = os.listdir(readsDir)
@@ -58,17 +60,36 @@ def getReads(readsDir):
     reads.sort()
     return reads
 
-def QCreads(read1Dir, read2Dir, outDir, reads1, reads2, formatting):
+def trimReads(read1Dir, read2Dir, outDir, reads1, reads2, forward, reverse):
     size = len(reads1)
     size2 = len(reads2)
     if size != size2:
-        sys.exit("Paired end read files unequal")
+        sys.exit("\t***Paired-end read file names unequal***")
+    print(reads1)
+    # for i, file in enumerate(sorted(os.listdir(read1Dir))):
+    #     print(i)
+    #     print(file)
+
     for i in range(size):
-        os.system('fastqc -o {0} -f {1} {2}/{3} {4}/{5}'.format(outDir, formatting, read1Dir, reads1[i], read2Dir, reads2[i]))
+        currRead1 = reads1[i]
+        PRE = currRead1.split('_')
+        prefix = PRE[0]
+        print("\t Trimming {} reads".format(prefix))
+        currRead2 = reads2[i]
+        PRE2 = currRead2.split('_')
+        prefix2 = PRE2[0]
+        if prefix == prefix2:
+            forwardElem = forward[0]
+            reverseElem = reverse[0]
+            os.system('cutadapt -g file:{0} -G file:{1} -o {2}/cut/1/{3}.1.fastq.gz -p {2}/cut/2/{3}.2.fastq.gz {4}/{5} {6}/{7}'.format(forwardElem, reverseElem, outDir, prefix, read1Dir, currRead1, read2Dir, currRead2))
 
-if snakemake.params["recreate_ref_folder"] == True:
-    os.system('rm -rf ref')
+            os.system('trimmomatic PE -phred33 -summary {0}/trim/Summary/{1}.summary {0}/cut/1/{1}.1.fastq.gz {0}/cut/2/{1}.2.fastq.gz {0}/trim/1/{1}.1.fastq.gz {0}/trim/singleton/{1}.1_unpaired.fq.gz {0}/trim/2/{1}.2.fastq.gz {0}/trim/singleton/{1}.2_unpaired.fq.gz LEADING:10 TRAILING:10 SLIDINGWINDOW:4:15 MINLEN:80'.format(outDir, prefix))
 
+            os.system('rm {0}/cut/1/{1}.1.fastq.gz {0}/cut/2/{1}.2.fastq.gz'.format(outDir, prefix))
+
+    trimReads1 = "{}/trim/1".format(outDir)
+    trimReads2 = "{}/trim/2".format(outDir)
+    return trimReads1, trimReads2
 
 numRef = 1
 refs = snakemake.params["refs"]
@@ -78,32 +99,23 @@ pair2 = snakemake.params["pair2"]
 forward = snakemake.params["forward"]
 reverse = snakemake.params["rev"]
 
-if numRef <= 0:
-    sys.exit("Please use a number greater than 0 for number of genomes.")
-
-
 refSeqs, refNames = getReference(numRef, refs)
-print("refSeqs:")
-print(refSeqs)
-print("refNames:")
-print(refNames)
 
 out = out.replace('\n', '')    # remove '\n' only
-
 makeOutDirs(out, refNames);
-# check if makeOutDirs is correct
 
-baseQual = None
-trim1 = None
-trim2 = None
-trimReads1 = []
-trimReads2 = []
 pairedReadFiles1 = getReads(pair1)
 pairedReadFiles2 = getReads(pair2)
 
-QCreads(pair1, pair2, out + "/fastqc_in", pairedReadFiles1, pairedReadFiles2, "fastq")
-
-# QCreads("$pair1", "$pair2", "$out/fastqc_in", \@PairedReadfiles1, \@PairedReadfiles2, "fastq");
+trim1, trim2 = trimReads(pair1, pair2, out, pairedReadFiles1, pairedReadFiles2, forward, reverse)
+trimReads1 = getReads(trim1)
+trimReads2 = getReads(trim2)
+print("trim1 " + trim1) # CSP/out/trim/1 add these as parameters/inputs to synchronizeReads
+print("trim2 " + trim2) # CSP/out/trim/2
+print("trimReads1")
+print(trimReads1)
+#['BF1.1.fastq.gz', 'BF10.1.fastq.gz', 'BF2.1.fastq.gz', 'BF3.1.fastq.gz', 'BF4.1.fastq.gz', 'BF5.1.fastq.gz', 'BF6.1.fastq.gz', 'BF7.1.fastq.gz', 'BF8.1.fastq.gz', 'BF9.1.fastq.gz']
+# this one could just use getReads functions
 
 # ($trim1, $trim2) = trimReads("$pair1", "$pair2", "$out", \@PairedReadfiles1, \@PairedReadfiles2, "$forward", "$reverse");
 
@@ -368,3 +380,4 @@ QCreads(pair1, pair2, out + "/fastqc_in", pairedReadFiles1, pairedReadFiles2, "f
 # os.system('mkdir {}'.format(snakemake.params["refs"]))
 # os.system('mv {0}/*.fastq.gz {1} && mv {2}/*.fastq.gz {1}'.format(snakemake.params["forward_samples"], snakemake.params["out"], snakemake.params["reverse_samples"]))
 # os.system('rm -r {0} && rm -r {1}'.format(snakemake.params["forward_samples"], snakemake.params["reverse_samples"]))
+# os.system('mv {params.forward_samples}/*.fastq.gz {params.out} && mv {params.reverse_samples}/*.fastq.gz {params.out}"')

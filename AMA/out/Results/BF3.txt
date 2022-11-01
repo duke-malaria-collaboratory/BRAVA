@@ -1,0 +1,40 @@
+java -Djava.library.path=/home/kh455/miniconda3/envs/haplotype_calling/opt/bbmap-38.18/jni/ -ea -Xmx8000m -cp /home/kh455/miniconda3/envs/haplotype_calling/opt/bbmap-38.18/current/ align2.BBSplitter ow=t fastareadlen=500 minhits=1 minratio=0.56 maxindel=20 qtrim=rl untrim=t trimq=6 -Xmx8000m in=AMA/out/trim/1/BF3.1.fastq.gz in2=AMA/out/trim/2/BF3.2.fastq.gz ref=refs/AMA.fasta basename=BF3_%_#.fastq
+Executing align2.BBSplitter [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, -Xmx8000m, in=AMA/out/trim/1/BF3.1.fastq.gz, in2=AMA/out/trim/2/BF3.2.fastq.gz, ref=refs/AMA.fasta, basename=BF3_%_#.fastq]
+
+Converted arguments to [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=AMA/out/trim/1/BF3.1.fastq.gz, in2=AMA/out/trim/2/BF3.2.fastq.gz, basename=BF3_%_#.fastq, ref_AMA=refs/AMA.fasta]
+Merged reference file ref/genome/1/merged_ref_64917.fa.gz already exists; skipping merge.
+Ref merge time:     	0.025 seconds.
+Executing align2.BBMap [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=AMA/out/trim/1/BF3.1.fastq.gz, in2=AMA/out/trim/2/BF3.2.fastq.gz, ref=ref/genome/1/merged_ref_64917.fa.gz, out_AMA=BF3_AMA_#.fastq]
+Version 38.18
+
+Set MINIMUM_ALIGNMENT_SCORE_RATIO to 0.560
+Retaining first best site only for ambiguous mappings.
+NOTE:	Ignoring reference file because it already appears to have been processed.
+NOTE:	If you wish to regenerate the index, please manually delete ref/genome/1/summary.txt
+Set genome to 1
+
+Loaded Reference:	0.031 seconds.
+Loading index for chunk 1-1, build 1
+Exception in thread "Thread-2" java.lang.RuntimeException: java.util.zip.ZipException: invalid bit length repeat
+	at fileIO.ReadWrite.readObject(ReadWrite.java:806)
+	at fileIO.ReadWrite.read(ReadWrite.java:1246)
+	at align2.Block.read(Block.java:132)
+	at align2.IndexMaker4$BlockMaker.makeArrays(IndexMaker4.java:140)
+	at align2.IndexMaker4$BlockMaker.run(IndexMaker4.java:128)
+Caused by: java.util.zip.ZipException: invalid bit length repeat
+	at java.base/java.util.zip.InflaterInputStream.read(InflaterInputStream.java:165)
+	at java.base/java.util.zip.GZIPInputStream.read(GZIPInputStream.java:118)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.read(ObjectInputStream.java:2745)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.readFully(ObjectInputStream.java:2761)
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.readInts(ObjectInputStream.java:3414)
+	at java.base/java.io.ObjectInputStream.readArray(ObjectInputStream.java:1972)
+	at java.base/java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1588)
+	at java.base/java.io.ObjectInputStream.readObject(ObjectInputStream.java:430)
+	at fileIO.ReadWrite.readObject(ReadWrite.java:802)
+	... 4 more
+Generated Index:	0.415 seconds.
+Exception in thread "main" java.lang.NullPointerException
+	at align2.BBIndex.analyzeIndex(BBIndex.java:116)
+	at align2.BBMap.loadIndex(BBMap.java:418)
+	at align2.BBMap.main(BBMap.java:33)
+	at align2.BBSplitter.main(BBSplitter.java:47)

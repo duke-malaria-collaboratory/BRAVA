@@ -54,10 +54,10 @@ QCreads("$pair1", "$pair2", "$out/fastqc_in", \@PairedReadfiles1, \@PairedReadfi
 
 @trimReads1 = getReads("$trim1");
 @trimReads2 = getReads("$trim2");
-
-die "\ntest\n";
     
 splitReads(\@refSeqs, \@refNames, "$out", \@trimReads1, \@trimReads2, "$trim1", "$trim2");
+# mv: cannot stat ‘AMA/out/fastq/AMA/1/*.fastq.gz’: No such file or directory error
+# added debugging print statements but didnt have time to run it again
 ############################################################
 sub getReference
 {
@@ -241,6 +241,8 @@ sub splitReads
 	for($i = 0; $i < $size; $i++)
 	{
 		my @fileSplit = split(/\./, $read1[$i]);
+        print "file split\n";
+        print(@fileSplit);
 		$sampleName[$i] = $fileSplit[0];
 		print "\n\tAligning $sampleName[$i] to $Refs\n";
 		my @file2Split = split(/\./, $read2[$i]);
@@ -248,18 +250,31 @@ sub splitReads
 
 		if ($sampleName[$i] eq $sampleName2)
 		{
+            print("bbsplit.sh -Xmx8000m in=$read1Dir/$read1[$i] in2=$read2Dir/$read2[$i] ref=$Refs basename=$sampleName[$i]_%_#.fastq >& $out/Results/$sampleName[$i].txt\n");
 			system "bbsplit.sh -Xmx8000m in=$read1Dir/$read1[$i] in2=$read2Dir/$read2[$i] ref=$Refs basename=$sampleName[$i]_%_#.fastq >& $out/Results/$sampleName[$i].txt";
-			
-			foreach $elem (@refNames)
+			# confused on Results BF1.txt error - what does it mean by re-indexing from the reference fasta?
+            # why does it not work for the first one, but it works for the others?
+            foreach $elem (@refNames)
 			{
-				system "mv *$elem* $out/fastq/$elem";
-				system "gzip $out/fastq/$elem/*.fastq";
-				unless (-d "$out/fastq/$elem/1")
-				{system "mkdir $out/fastq/$elem/1";}
-				unless (-d "$out/fastq/$elem/2")
-				{system "mkdir $out/fastq/$elem/2";}
-				system "mv $out/fastq/$elem/*_1.fastq.gz $out/fastq/$elem/1";
-				system "mv $out/fastq/$elem/*_2.fastq.gz $out/fastq/$elem/2";
+                print("$elem\n");
+                # moving still doesn't work it seems like? try dying right after this system call below
+                # if still doesnt work, maybe change to "mv $sampleName[$i]_$elem* $out/fastq"
+                print("mv *_$elem* $out/fastq\n");
+				system "mv *_$elem* $out/fastq";
+                # die here - should be in AMA/out/fastq not main directory
+                # deleted /$elem from end of commands, should make it so that the files are in CSP/out/fastq instead of in the main directory
+                print("gzip $out/fastq/*.fastq\n");
+				system "gzip $out/fastq/*.fastq";
+                # die here - files should be fastq.gz, not fastq
+				unless (-d "$out/fastq/1")
+				{
+                    print("mkdir $out/fastq/1\n");
+                    system "mkdir $out/fastq/1";}
+				unless (-d "$out/fastq/2")
+				{system "mkdir $out/fastq/2";}
+                print("mv $out/fastq/*_1.fastq.gz $out/fastq/1\n");
+				system "mv $out/fastq/*_1.fastq.gz $out/fastq/1";
+				system "mv $out/fastq/*_2.fastq.gz $out/fastq/2";
 
 			}
 		}
@@ -268,9 +283,9 @@ sub splitReads
     print "\nSynchronizing paired end reads...\n\n";
     foreach $elem (@refNames)
     {
-        my @unsyncReads1 = getReads("$out/fastq/$elem/1");
-        my @unsyncReads2 = getReads("$out/fastq/$elem/2");
-        syncReads("$out/fastq/$elem/1", "$out/fastq/$elem/2", \@unsyncReads1, \@unsyncReads2);
+        my @unsyncReads1 = getReads("$out/fastq/1");
+        my @unsyncReads2 = getReads("$out/fastq/2");
+        syncReads("$out/fastq/1", "$out/fastq/2", \@unsyncReads1, \@unsyncReads2);
         
     }   
 }
@@ -298,8 +313,11 @@ sub syncReads
 	my $sampleName2 = $file2Split[0];
 
 	system "repair.sh in=$read1Dir/$Reads1[$i] in2=$read2Dir/$Reads2[$i] out=$read1Dir/$sampleName[$i].paired.fastq.gz out2=$read2Dir/$sampleName2.paired.fastq.gz outs=singletons.fq repair";
-	system "rm singletons.fq $read1Dir/$Reads1[$i] $read2Dir/$Reads2[$i]";
+	print("rm singletons.fq $read1Dir/$Reads1[$i] $read2Dir/$Reads2[$i]");
+    system "rm singletons.fq $read1Dir/$Reads1[$i] $read2Dir/$Reads2[$i]";
+    print("mv $read1Dir/$sampleName[$i].paired.fastq.gz $read1Dir/$Reads1[$i]");
 	system "mv $read1Dir/$sampleName[$i].paired.fastq.gz $read1Dir/$Reads1[$i]";
+    print("mv $read2Dir/$sampleName2.paired.fastq.gz $read2Dir/$Reads2[$i]");
 	system "mv $read2Dir/$sampleName2.paired.fastq.gz $read2Dir/$Reads2[$i]";
     }
 }
