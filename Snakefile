@@ -2,6 +2,8 @@ import pandas as pd
 
 configfile: "config.yaml"
 
+# update readme, delete unnecessary parameters from each rule, clean up code in general, delete old stuff
+
 # modifiable parameters - change in config.yaml file
 TARGET_TABLE = pd.read_table(config['target_file'])
 TARGET = list(TARGET_TABLE.target.unique())
@@ -41,6 +43,7 @@ rule call_fastqc:
 	output:
 		out=directory("{target}/{out}/fastqc_in/"),
 	params:
+		recreate_ref_folder=RECREATE_REF_FOLDER,
 		refs="refs/{target}.fasta",
 		folder="{target}/{out}",
 		pair1=PAIR1,
@@ -77,13 +80,13 @@ rule call_trimmomatic:
 		rev=expand("{rev}.fasta", rev=REV),
 		output="{target}/{out}/fastq/all_samples",
 		forward_samples="{target}/{out}/fastq/1",
-		reverse_samples="{target}/{out}/fastq/",
+		reverse_samples="{target}/{out}/fastq/2",
 		haplotype_output="{target}/{out}/haplotype_output",
 		out="{target}/{out}", # should be "{target}/{out}" i think
 		pyscript="scripts/step1b_callTrimmomatic.py"
 	script:
 		"{params.pyscript}"
-
+		
 rule synchronize_reads:
 	input:
 		refs="refs/{target}.fasta",

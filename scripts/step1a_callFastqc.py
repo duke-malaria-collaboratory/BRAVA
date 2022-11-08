@@ -32,13 +32,16 @@ def getReference(numRef, refPaths):
 
 def makeOutDirs(out, refs):
     i = 0
-    if not os.path.exists(out):
-        os.system('mkdir {}'.format(out))
+    os.system('mkdir -p {}'.format(out))
+    os.system('mkdir -p {}/fastqc_in'.format(out))
+    print ("\tFastqc .html files of input reads stored in {}/fastqc_in".format(out))
+    # if not os.path.exists(out):
+    #     os.system('mkdir {}'.format(out))
         
-    if os.path.exists(out):
-        if not os.path.exists("/" + out + "/fastqc_in"):
-            os.system('mkdir {}/fastqc_in'.format(out))
-            print ("\tFastqc .html files of input reads stored in {}/fastqc_in".format(out))
+    # if os.path.exists(out):
+    #     if not os.path.exists("/" + out + "/fastqc_in"):
+    #         os.system('mkdir {}/fastqc_in'.format(out))
+    #         print ("\tFastqc .html files of input reads stored in {}/fastqc_in".format(out))
                 
 def getReads(readsDir):
     if os.path.exists(readsDir):

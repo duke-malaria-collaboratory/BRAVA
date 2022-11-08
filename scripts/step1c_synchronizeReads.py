@@ -32,12 +32,16 @@ def getReference(numRef, refPaths):
     return referenceFastas, refNames
 
 def makeOutDirs(out):
-    if not os.path.exists("/" + out + "/fastq"):
-        os.system('mkdir {}/fastq/'.format(out))
-        print("\tSynchronized paired end fastq files stored in /{}/fastq".format(out))
-    if not os.path.exists("/" + out + "/Results"):
-        os.system('mkdir {}/Results'.format(out))
-        print("\tLog files stored in /{}/Results".format(out))
+    os.system('mkdir -p {}/fastq/'.format(out))
+    print("\tSynchronized paired end fastq files stored in /{}/fastq".format(out))
+    os.system('mkdir -p {}/Results'.format(out))
+    print("\tLog files stored in /{}/Results".format(out))
+    # if not os.path.exists("/" + out + "/fastq"):
+    #     os.system('mkdir {}/fastq/'.format(out))
+    #     print("\tSynchronized paired end fastq files stored in /{}/fastq".format(out))
+    # if not os.path.exists("/" + out + "/Results"):
+    #     os.system('mkdir {}/Results'.format(out))
+    #     print("\tLog files stored in /{}/Results".format(out))
 
 def getReads(readsDir):
     if os.path.exists(readsDir):
@@ -50,6 +54,8 @@ def getReads(readsDir):
 def splitReads(refSeqs, refNames, out, read1, read2, read1Dir, read2Dir, target):
     size = len(read1)
     refs = ",".join(refSeqs)
+    print("refs")
+    print(refs)
     sampleName = [None] * size
     for i in range(size):
         fileSplit = re.split('\.', read1[i])
@@ -59,22 +65,23 @@ def splitReads(refSeqs, refNames, out, read1, read2, read1Dir, read2Dir, target)
         sampleName2 = file2Split[0]
 
         if sampleName[i] == sampleName2:
-            os.system('bbsplit.sh -Xmx8000m in={0}/{1} in2={2}/{3} ref={4} basename={5}_%_#.fastq >& {6}/Results/{5}.txt'.format(read1Dir, read1[i], read2Dir, read2[i], refs, sampleName[i], out))
+            # try using nodisk flag
+            os.system('bbsplit.sh -Xmx15g in={0}/{1} in2={2}/{3} ref={4} basename={5}_%_#.fastq >& {6}/Results/{5}.txt overwrite=true nodisk path={6}'.format(read1Dir, read1[i], read2Dir, read2[i], refs, sampleName[i], out))
 
-            for elem in refNames:
-                os.system("mv *_{0}* {1}/fastq".format(target, out))
-                os.system("gzip {0}/fastq/*.fastq".format(out))
-                if not os.path.exists(out + "/fastq/1"):
-                    os.system("mkdir {}/fastq/1".format(out))
-                if not os.path.exists(out + "/fastq/2"):
-                    os.system("mkdir {}/fastq/2".format(out))
-                os.system("mv {0}/fastq/*_1.fastq.gz {0}/fastq/1".format(out))
-                os.system("mv {0}/fastq/*_2.fastq.gz {0}/fastq/2".format(out))
+    for elem in refNames:
+        os.system("mv *_{0}* {1}/fastq".format(target, out))
+        os.system("gzip {0}/fastq/*.fastq".format(out))
+        if not os.path.exists(out + "/fastq/1"):
+            os.system("mkdir {}/fastq/1".format(out))
+        if not os.path.exists(out + "/fastq/2"):
+            os.system("mkdir {}/fastq/2".format(out))
+        os.system("mv {0}/fastq/*_1.fastq.gz {0}/fastq/1".format(out))
+        os.system("mv {0}/fastq/*_2.fastq.gz {0}/fastq/2".format(out))
     print("Synchronizing paired end reads...\n")
     for elem in refNames:
         unsyncReads1 = getReads("{}/fastq/1".format(out))
         unsyncReads2 = getReads("{}/fastq/2".format(out))
-        syncReads("{}/fastq/1".format(out), "{}/fastq/2".format(out), unsyncReads1, unsyncReads2)
+        # syncReads("{}/fastq/1".format(out), "{}/fastq/2".format(out), unsyncReads1, unsyncReads2)
 
 def syncReads(read1Dir, read2Dir, reads1, reads2):
     size = len(reads1)
@@ -94,9 +101,6 @@ def syncReads(read1Dir, read2Dir, reads1, reads2):
         os.system("rm singletons.fq {0}/{1} {2}/{3}".format(read1Dir, reads1[i], read2Dir, reads2[i]))
         os.system("mv {0}/{1}.paired.fastq.gz {0}/{2}".format(read1Dir, sampleName[i], reads1[i]))
         os.system("mv {0}/{1}.paired.fastq.gz {0}/{2}".format(read2Dir, sampleName2, reads2[i]))
-
-if snakemake.params["recreate_ref_folder"] == True:
-    os.system('rm -rf ref')
 
 numRef = 1
 refs = snakemake.params["refs"]

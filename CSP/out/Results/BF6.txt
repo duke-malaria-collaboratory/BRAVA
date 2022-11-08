@@ -1,23 +1,26 @@
-java -Djava.library.path=/home/kh455/miniconda3/envs/haplotype_calling/opt/bbmap-38.18/jni/ -ea -Xmx8000m -cp /home/kh455/miniconda3/envs/haplotype_calling/opt/bbmap-38.18/current/ align2.BBSplitter ow=t fastareadlen=500 minhits=1 minratio=0.56 maxindel=20 qtrim=rl untrim=t trimq=6 -Xmx8000m in=CSP/out/trim/1/BF6.1.fastq.gz in2=CSP/out/trim/2/BF6.2.fastq.gz ref=refs/CSP.fasta basename=BF6_%_#.fastq
-Executing align2.BBSplitter [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, -Xmx8000m, in=CSP/out/trim/1/BF6.1.fastq.gz, in2=CSP/out/trim/2/BF6.2.fastq.gz, ref=refs/CSP.fasta, basename=BF6_%_#.fastq]
+java -ea -Xmx15g -Xms15g -cp /home/kh455/miniconda3/envs/haplotype_calling/opt/bbmap-39.01-0/current/ align2.BBSplitter ow=t fastareadlen=500 minhits=1 minratio=0.56 maxindel=20 qtrim=rl untrim=t trimq=6 -Xmx15g in=CSP/out/trim/1/BF6.1.fastq.gz in2=CSP/out/trim/2/BF6.2.fastq.gz ref=refs/CSP.fasta basename=BF6_%_#.fastq overwrite=true nodisk path=CSP/out
+Executing align2.BBSplitter [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, -Xmx15g, in=CSP/out/trim/1/BF6.1.fastq.gz, in2=CSP/out/trim/2/BF6.2.fastq.gz, ref=refs/CSP.fasta, basename=BF6_%_#.fastq, overwrite=true, nodisk, path=CSP/out]
 
-Converted arguments to [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=CSP/out/trim/1/BF6.1.fastq.gz, in2=CSP/out/trim/2/BF6.2.fastq.gz, basename=BF6_%_#.fastq, ref_CSP=refs/CSP.fasta]
-Merged reference file ref/genome/1/merged_ref_67040.fa.gz already exists; skipping merge.
-Ref merge time:     	0.043 seconds.
-Executing align2.BBMap [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=CSP/out/trim/1/BF6.1.fastq.gz, in2=CSP/out/trim/2/BF6.2.fastq.gz, ref=ref/genome/1/merged_ref_67040.fa.gz, out_CSP=BF6_CSP_#.fastq]
-Version 38.18
+Converted arguments to [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=CSP/out/trim/1/BF6.1.fastq.gz, in2=CSP/out/trim/2/BF6.2.fastq.gz, basename=BF6_%_#.fastq, overwrite=true, nodisk, path=CSP/out, ref_CSP=refs/CSP.fasta]
+Merged reference file CSP/out/ref/genome/1/merged_ref_67040.fa.gz already exists; skipping merge.
+Ref merge time:     	0.046 seconds.
+Executing align2.BBMap [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=CSP/out/trim/1/BF6.1.fastq.gz, in2=CSP/out/trim/2/BF6.2.fastq.gz, overwrite=true, nodisk, ref=CSP/out/ref/genome/1/merged_ref_67040.fa.gz, out_CSP=BF6_CSP_#.fastq]
+Version 39.01
 
 Set MINIMUM_ALIGNMENT_SCORE_RATIO to 0.560
 Retaining first best site only for ambiguous mappings.
-NOTE:	Ignoring reference file because it already appears to have been processed.
-NOTE:	If you wish to regenerate the index, please manually delete ref/genome/1/summary.txt
+Executing dna.FastaToChromArrays2 [CSP/out/ref/genome/1/merged_ref_67040.fa.gz, 1, writeinthread=false, genscaffoldinfo=true, retain, waitforwriting=false, gz=true, maxlen=536670912, writechroms=false, minscaf=1, midpad=300, startpad=8000, stoppad=8000, nodisk=true]
+
+Set genScaffoldInfo=true
 Set genome to 1
 
-Loaded Reference:	0.019 seconds.
+Loaded Reference:	0.001 seconds.
 Loading index for chunk 1-1, build 1
-Generated Index:	0.633 seconds.
-Analyzed Index:   	3.748 seconds.
-Cleared Memory:    	0.153 seconds.
+Indexing threads started for block 0-1
+Indexing threads finished for block 0-1
+Generated Index:	0.256 seconds.
+Analyzed Index:   	3.607 seconds.
+Cleared Memory:    	0.195 seconds.
 Processing reads in paired-ended mode.
 Started read stream.
 Started 56 mapping threads.
@@ -32,9 +35,9 @@ Minimum Score Ratio:  	0.56
 Mapping Mode:         	normal
 Reads Used:           	61758	(16371543 bases)
 
-Mapping:          	9.253 seconds.
-Reads/sec:       	6674.20
-kBases/sec:      	1769.28
+Mapping:          	10.909 seconds.
+Reads/sec:       	5661.06
+kBases/sec:      	1500.70
 
 
 Pairing data:   	pct pairs	num pairs 	pct bases	   num bases
@@ -81,4 +84,4 @@ Del Rate:        	  2.1827% 	      355 	  0.0088% 	         374
 Ins Rate:        	  2.4656% 	      401 	  0.0097% 	         412
 N Rate:          	  0.0246% 	        4 	  0.0038% 	         160
 
-Total time:     	13.879 seconds.
+Total time:     	15.080 seconds.

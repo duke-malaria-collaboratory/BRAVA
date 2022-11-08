@@ -285,7 +285,7 @@ sub splitReads
     {
         my @unsyncReads1 = getReads("$out/fastq/1");
         my @unsyncReads2 = getReads("$out/fastq/2");
-        syncReads("$out/fastq/1", "$out/fastq/2", \@unsyncReads1, \@unsyncReads2);
+        # syncReads("$out/fastq/1", "$out/fastq/2", \@unsyncReads1, \@unsyncReads2);
         
     }   
 }

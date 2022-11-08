@@ -1,31 +1,26 @@
-java -Djava.library.path=/home/kh455/miniconda3/envs/haplotype_calling/opt/bbmap-38.18/jni/ -ea -Xmx8000m -cp /home/kh455/miniconda3/envs/haplotype_calling/opt/bbmap-38.18/current/ align2.BBSplitter ow=t fastareadlen=500 minhits=1 minratio=0.56 maxindel=20 qtrim=rl untrim=t trimq=6 -Xmx8000m in=CSP/out/trim/1/BF10.1.fastq.gz in2=CSP/out/trim/2/BF10.2.fastq.gz ref=refs/CSP.fasta basename=BF10_%_#.fastq
-Executing align2.BBSplitter [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, -Xmx8000m, in=CSP/out/trim/1/BF10.1.fastq.gz, in2=CSP/out/trim/2/BF10.2.fastq.gz, ref=refs/CSP.fasta, basename=BF10_%_#.fastq]
+java -ea -Xmx15g -Xms15g -cp /home/kh455/miniconda3/envs/haplotype_calling/opt/bbmap-39.01-0/current/ align2.BBSplitter ow=t fastareadlen=500 minhits=1 minratio=0.56 maxindel=20 qtrim=rl untrim=t trimq=6 -Xmx15g in=CSP/out/trim/1/BF10.1.fastq.gz in2=CSP/out/trim/2/BF10.2.fastq.gz ref=refs/CSP.fasta basename=BF10_%_#.fastq overwrite=true nodisk path=CSP/out
+Executing align2.BBSplitter [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, -Xmx15g, in=CSP/out/trim/1/BF10.1.fastq.gz, in2=CSP/out/trim/2/BF10.2.fastq.gz, ref=refs/CSP.fasta, basename=BF10_%_#.fastq, overwrite=true, nodisk, path=CSP/out]
 
-Converted arguments to [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=CSP/out/trim/1/BF10.1.fastq.gz, in2=CSP/out/trim/2/BF10.2.fastq.gz, basename=BF10_%_#.fastq, ref_CSP=refs/CSP.fasta]
-Creating merged reference file ref/genome/1/merged_ref_67040.fa.gz
-Ref merge time:     	0.033 seconds.
-Executing align2.BBMap [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=CSP/out/trim/1/BF10.1.fastq.gz, in2=CSP/out/trim/2/BF10.2.fastq.gz, ref=ref/genome/1/merged_ref_67040.fa.gz, out_CSP=BF10_CSP_#.fastq]
-Version 38.18
+Converted arguments to [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=CSP/out/trim/1/BF10.1.fastq.gz, in2=CSP/out/trim/2/BF10.2.fastq.gz, basename=BF10_%_#.fastq, overwrite=true, nodisk, path=CSP/out, ref_CSP=refs/CSP.fasta]
+Merged reference file CSP/out/ref/genome/1/merged_ref_67040.fa.gz already exists; skipping merge.
+Ref merge time:     	0.052 seconds.
+Executing align2.BBMap [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=CSP/out/trim/1/BF10.1.fastq.gz, in2=CSP/out/trim/2/BF10.2.fastq.gz, overwrite=true, nodisk, ref=CSP/out/ref/genome/1/merged_ref_67040.fa.gz, out_CSP=BF10_CSP_#.fastq]
+Version 39.01
 
 Set MINIMUM_ALIGNMENT_SCORE_RATIO to 0.560
 Retaining first best site only for ambiguous mappings.
-NOTE:	Deleting contents of ref/genome/1 because reference is specified and overwrite=true
-NOTE:	Deleting contents of ref/index/1 because reference is specified and overwrite=true
-Writing reference.
-Executing dna.FastaToChromArrays2 [ref/genome/1/merged_ref_67040.fa.gz, 1, writeinthread=false, genscaffoldinfo=true, retain, waitforwriting=false, gz=true, maxlen=536670912, writechroms=true, minscaf=1, midpad=300, startpad=8000, stoppad=8000, nodisk=false]
+Executing dna.FastaToChromArrays2 [CSP/out/ref/genome/1/merged_ref_67040.fa.gz, 1, writeinthread=false, genscaffoldinfo=true, retain, waitforwriting=false, gz=true, maxlen=536670912, writechroms=false, minscaf=1, midpad=300, startpad=8000, stoppad=8000, nodisk=true]
 
 Set genScaffoldInfo=true
-Writing chunk 1
 Set genome to 1
 
-Loaded Reference:	0.002 seconds.
+Loaded Reference:	0.001 seconds.
 Loading index for chunk 1-1, build 1
-No index available; generating from reference genome: /gpfs/fs1/home/kh455/haplotype_calling_pipeline/ref/index/1/chr1_index_k13_c16_b1.block
 Indexing threads started for block 0-1
 Indexing threads finished for block 0-1
-Generated Index:	1.455 seconds.
-Analyzed Index:   	3.818 seconds.
-Cleared Memory:    	0.144 seconds.
+Generated Index:	0.272 seconds.
+Analyzed Index:   	3.800 seconds.
+Cleared Memory:    	0.539 seconds.
 Processing reads in paired-ended mode.
 Started read stream.
 Started 56 mapping threads.
@@ -40,9 +35,9 @@ Minimum Score Ratio:  	0.56
 Mapping Mode:         	normal
 Reads Used:           	64598	(17062697 bases)
 
-Mapping:          	10.405 seconds.
-Reads/sec:       	6208.28
-kBases/sec:      	1639.83
+Mapping:          	8.571 seconds.
+Reads/sec:       	7537.18
+kBases/sec:      	1990.85
 
 
 Pairing data:   	pct pairs	num pairs 	pct bases	   num bases
@@ -89,4 +84,4 @@ Del Rate:        	  1.8830% 	      328 	  0.0075% 	         346
 Ins Rate:        	  2.2389% 	      390 	  0.0108% 	         493
 N Rate:          	  0.0000% 	        0 	  0.0000% 	           0
 
-Total time:     	15.920 seconds.
+Total time:     	13.264 seconds.

@@ -32,25 +32,42 @@ def getReference(numRef, refPaths):
 
 def makeOutDirs(out, refs):
 
-    if not os.path.exists("/" + out + "/cut"):
-        os.system('mkdir {}/cut'.format(out))
-        os.system('mkdir {}/cut/1'.format(out))
-        os.system('mkdir {}/cut/2'.format(out))
-        print ("\tAdapter cut reads temporarily stored in {}/cut".format(out))
+    os.system('mkdir -p {}/cut'.format(out))
+    os.system('mkdir -p {}/cut/1'.format(out))
+    os.system('mkdir -p {}/cut/2'.format(out))
+    print ("\tAdapter cut reads temporarily stored in {}/cut".format(out))
 
-    if not os.path.exists("/" + out + "/trim"):
-        os.system('mkdir {}/trim'.format(out))
-        os.system('mkdir {}/trim/1'.format(out))
-        os.system('mkdir {}/trim/2'.format(out))
-        os.system('mkdir {}/trim/fastqcTrim'.format(out))
-        os.system('mkdir {}/trim/Log'.format(out))
-        os.system('mkdir {}/trim/singleton'.format(out))
-        os.system('mkdir {}/trim/Summary'.format(out))
-        print ("\tTrimmed reads stored in /{}/trim".format(out))
+    os.system('mkdir -p {}/trim'.format(out))
+    os.system('mkdir -p {}/trim/1'.format(out))
+    os.system('mkdir -p {}/trim/2'.format(out))
+    os.system('mkdir -p {}/trim/fastqcTrim'.format(out))
+    os.system('mkdir -p {}/trim/Log'.format(out))
+    os.system('mkdir -p {}/trim/singleton'.format(out))
+    os.system('mkdir -p {}/trim/Summary'.format(out))
+    print ("\tTrimmed reads stored in /{}/trim".format(out))
 
-    if not os.path.exists("/" + out + "/fastqc_trim_split"):
-        os.system('mkdir {}/fastqc_trim_split'.format(out))
-        print ("\tFastqc .html files of trimmed reads stored in /{}/fastqc_trim_split\n".format(out))
+    os.system('mkdir -p {}/fastqc_trim_split'.format(out))
+    print ("\tFastqc .html files of trimmed reads stored in /{}/fastqc_trim_split\n".format(out))
+
+    # if not os.path.exists("/" + out + "/cut"):
+    #     os.system('mkdir {}/cut'.format(out))
+    #     os.system('mkdir {}/cut/1'.format(out))
+    #     os.system('mkdir {}/cut/2'.format(out))
+    #     print ("\tAdapter cut reads temporarily stored in {}/cut".format(out))
+
+    # if not os.path.exists("/" + out + "/trim"):
+    #     os.system('mkdir {}/trim'.format(out))
+    #     os.system('mkdir {}/trim/1'.format(out))
+    #     os.system('mkdir {}/trim/2'.format(out))
+    #     os.system('mkdir {}/trim/fastqcTrim'.format(out))
+    #     os.system('mkdir {}/trim/Log'.format(out))
+    #     os.system('mkdir {}/trim/singleton'.format(out))
+    #     os.system('mkdir {}/trim/Summary'.format(out))
+    #     print ("\tTrimmed reads stored in /{}/trim".format(out))
+
+    # if not os.path.exists("/" + out + "/fastqc_trim_split"):
+    #     os.system('mkdir {}/fastqc_trim_split'.format(out))
+    #     print ("\tFastqc .html files of trimmed reads stored in /{}/fastqc_trim_split\n".format(out))
 
 def getReads(readsDir):
     if os.path.exists(readsDir):
