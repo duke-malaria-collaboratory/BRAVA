@@ -9,10 +9,6 @@ forward: adapters/forwardPrimers
 rev: adapters/reversePrimers
 out: out
 
-# step1_splitSyncReadsMultiRef.pl
-recreate_ref_folder: True # automatically delete and recreate ref folder for every run (this ensures it gets updated when the reference sequences are changed)
-# this is a Python Boolean, so either True or False
-
 # step2_trim_and_filter
 truncQ_values: [2, 5, 10, 15, 20, 25] # values of truncQ to be used in the filterAndTrim function to find the optimal truncQ value
 

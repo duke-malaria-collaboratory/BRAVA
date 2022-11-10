@@ -3,7 +3,7 @@ Executing align2.BBSplitter [ow=t, fastareadlen=500, minhits=1, minratio=0.56, m
 
 Converted arguments to [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=CSP/out/trim/1/BF3.1.fastq.gz, in2=CSP/out/trim/2/BF3.2.fastq.gz, basename=BF3_%_#.fastq, overwrite=true, nodisk, path=CSP/out, ref_CSP=refs/CSP.fasta]
 Merged reference file CSP/out/ref/genome/1/merged_ref_67040.fa.gz already exists; skipping merge.
-Ref merge time:     	0.047 seconds.
+Ref merge time:     	0.054 seconds.
 Executing align2.BBMap [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=CSP/out/trim/1/BF3.1.fastq.gz, in2=CSP/out/trim/2/BF3.2.fastq.gz, overwrite=true, nodisk, ref=CSP/out/ref/genome/1/merged_ref_67040.fa.gz, out_CSP=BF3_CSP_#.fastq]
 Version 39.01
 
@@ -14,13 +14,13 @@ Executing dna.FastaToChromArrays2 [CSP/out/ref/genome/1/merged_ref_67040.fa.gz, 
 Set genScaffoldInfo=true
 Set genome to 1
 
-Loaded Reference:	0.001 seconds.
+Loaded Reference:	0.000 seconds.
 Loading index for chunk 1-1, build 1
 Indexing threads started for block 0-1
 Indexing threads finished for block 0-1
-Generated Index:	0.305 seconds.
-Analyzed Index:   	3.725 seconds.
-Cleared Memory:    	0.260 seconds.
+Generated Index:	0.261 seconds.
+Analyzed Index:   	4.013 seconds.
+Cleared Memory:    	0.323 seconds.
 Processing reads in paired-ended mode.
 Started read stream.
 Started 56 mapping threads.
@@ -35,9 +35,9 @@ Minimum Score Ratio:  	0.56
 Mapping Mode:         	normal
 Reads Used:           	49490	(12861767 bases)
 
-Mapping:          	11.409 seconds.
-Reads/sec:       	4337.81
-kBases/sec:      	1127.34
+Mapping:          	12.644 seconds.
+Reads/sec:       	3914.07
+kBases/sec:      	1017.21
 
 
 Pairing data:   	pct pairs	num pairs 	pct bases	   num bases
@@ -84,4 +84,4 @@ Del Rate:        	  1.6153% 	      236 	  0.0066% 	         242
 Ins Rate:        	  2.3135% 	      338 	  0.0096% 	         352
 N Rate:          	  0.0137% 	        2 	  0.0026% 	          97
 
-Total time:     	15.781 seconds.
+Total time:     	17.322 seconds.

@@ -3,7 +3,7 @@ Executing align2.BBSplitter [ow=t, fastareadlen=500, minhits=1, minratio=0.56, m
 
 Converted arguments to [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=CSP/out/trim/1/BF4.1.fastq.gz, in2=CSP/out/trim/2/BF4.2.fastq.gz, basename=BF4_%_#.fastq, overwrite=true, nodisk, path=CSP/out, ref_CSP=refs/CSP.fasta]
 Merged reference file CSP/out/ref/genome/1/merged_ref_67040.fa.gz already exists; skipping merge.
-Ref merge time:     	0.051 seconds.
+Ref merge time:     	0.061 seconds.
 Executing align2.BBMap [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=CSP/out/trim/1/BF4.1.fastq.gz, in2=CSP/out/trim/2/BF4.2.fastq.gz, overwrite=true, nodisk, ref=CSP/out/ref/genome/1/merged_ref_67040.fa.gz, out_CSP=BF4_CSP_#.fastq]
 Version 39.01
 
@@ -14,13 +14,13 @@ Executing dna.FastaToChromArrays2 [CSP/out/ref/genome/1/merged_ref_67040.fa.gz, 
 Set genScaffoldInfo=true
 Set genome to 1
 
-Loaded Reference:	0.001 seconds.
+Loaded Reference:	0.000 seconds.
 Loading index for chunk 1-1, build 1
 Indexing threads started for block 0-1
 Indexing threads finished for block 0-1
-Generated Index:	0.286 seconds.
-Analyzed Index:   	3.559 seconds.
-Cleared Memory:    	0.318 seconds.
+Generated Index:	0.300 seconds.
+Analyzed Index:   	3.819 seconds.
+Cleared Memory:    	0.421 seconds.
 Processing reads in paired-ended mode.
 Started read stream.
 Started 56 mapping threads.
@@ -35,9 +35,9 @@ Minimum Score Ratio:  	0.56
 Mapping Mode:         	normal
 Reads Used:           	57008	(15112083 bases)
 
-Mapping:          	11.614 seconds.
-Reads/sec:       	4908.36
-kBases/sec:      	1301.14
+Mapping:          	10.394 seconds.
+Reads/sec:       	5484.80
+kBases/sec:      	1453.95
 
 
 Pairing data:   	pct pairs	num pairs 	pct bases	   num bases
@@ -84,4 +84,4 @@ Del Rate:        	  1.9023% 	      282 	  0.0074% 	         286
 Ins Rate:        	  2.4960% 	      370 	  0.0098% 	         378
 N Rate:          	  0.0067% 	        1 	  0.0012% 	          45
 
-Total time:     	15.904 seconds.
+Total time:     	15.019 seconds.

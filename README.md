@@ -27,6 +27,10 @@ This workflow processes the data set by cleaning the sequencing reads for each t
 
 The DAG shows how calls can be run in parallel if Snakemake is allowed to run more than one job at a time. Here, the pipeline is parallelized by being called with two targets, AMA and CSP, and six quality scores (2, 5, 10, 15, 20, 25) at the same time.
 
+`call_fastqc` uses FastQC to perform quality control on the raw reads and allow for visualization of the quality of the reads.
+
+`call_trimmomatic` cleans and filters the raw reads. It uses CutAdapt to trim the primers and adapter sequences from sequencing reads and Trimmomatic to quality filter reads if the average of every 4 nucleotides had a Phred Quality Score < 15 or was less than 80 nucleotides long.
+
 `clean_sequencing_reads` cleans, filters, and maps the raw reads. It uses BBmap to map all reads from the reference sequences, CutAdapt to trim the primers and adapter sequences from sequencing reads, and Trimmomatic to quality filter reads if the average of every 4 nucleotides had a Phred Quality Score < 15 or was less than 80 nucleotides long. This is the first step in read processing on the cluster.
 
 `trim_and_filter` filters and trims the forward and reverse reads using the DADA2 program and outputs them into a `filtered` folder.
@@ -134,34 +138,21 @@ The DAG shows how calls can be run in parallel if Snakemake is allowed to run mo
 
 Below shows what output files looked like after running this pipeline with a small sample of haplotypes.
 
-`clean_sequencing_reads` should produce an all_samples folder within the {target}/{out}/fastq/{target} folder containing the cleaned and mapped fastq files. It also produces {target}/{out}/fastqc_in, a folder that contains the FastQC reports for each input fastq file. To open the .zip files, download and extract the files.
+`call_fastqc` should produce an output folder for each target. Within the output folder, there should be a `fastqc_in` folder with FastQC reports for each input fastq file. This allows you to visualize and assess quality collectively across all reads within a sample. To open the .zip files, download and extract the files.
 
-After running this rule with a small sample of haplotypes, the **1** folder contained these files:
-```
-BF1_AMA_1.fastq.gz
+Example of FastQC output files for a single sample: `BF1_S1_L001_R1_001_fastqc.html`, `BF1_S1_L001_R1_001_fastqc.zip`, `BF1_S1_L001_R2_001_fastqc.html`, `BF1_S1_L001_R2_001_fastqc.zip`
 
-BF2_AMA_1.fastq.gz
+`call_trimmomatic` should add a `trim` folder within the output directory containing the results from the Trimmomatic program, which filters poor quality reads and trims poor quality bases from your samples and produces statistical summaries.
 
-BF3_AMA_1.fastq.gz
+The `trim` folder contains four folders labeled `1`, `2`, `singleton`, and `summaries`. As an example, the `trim/1` folder contains a `BF1.1.fastq.gz` file, the `trim/2` folder contains a `BF1.2.fastq.gz` file, the `singleton` folder contains `BF1.1_unpaired.fq.gz` and `BF1.2_unpaired.fq.gz` files, and the `summaries` folder contains a `BF1.summary` file.
 
-BF4_AMA_1.fastq.gz
+`synchronize_reads` should produce three folders within the output directory: `fastq/all_samples`, `ref`, and `results`. `all_samples` contains the cleaned and mapped fastq files, `ref` contains information about the indexes produced and referenced by the BBSplit program, and `results` contains summaries of the BBSplit call on each sample.
 
-BF5_AMA_1.fastq.gz
+As an example, the `fastq/all_samples` folder contains `BF1_AMA_1.fastq.gz` and `BF1_AMA_2.fastq.gz` files, the `ref` folder contains a `genome/1` folder that has `merged_ref_64917.fa.gz`, `namelist.txt`, and `reflist.txt` files, and `results` contains a `BF1.txt` file.
 
-BF6_AMA_1.fastq.gz
+`trim_and_filter` should produce a `haplotype_output` folder in the output directory that contains a summary for read trimming and filtering for each q value (which can be changed in the config file), `{target}_{q_values}_trimAndFilterTable`. It also produces a `{target}/read_count` file that lists the read counts for each q value.
 
-BF7_AMA_1.fastq.gz
-
-BF8_AMA_1.fastq.gz
-
-BF9_AMA_1.fastq.gz
-
-BF10_AMA_1.fastq.gz
-```
-
-`trim_and_filter` should produce a haplotype_output directory in the {target}/{out} folder that contains a summary for read trimming and filtering for each q value (which can be changed in the config file), `{target}_{q_values}_trimAndFilterTable`,
-
-With our small sample, the AMA trimAndFilter table for a q value of 2 looked like this:
+After running the pipeline on a small sample of haplotypes, the AMA trim and filter table for a q value of 2 looked like this:
 
 |                      | reads.in | reads.out |
 |----------------------|----------|-----------|
@@ -176,9 +167,18 @@ With our small sample, the AMA trimAndFilter table for a q value of 2 looked lik
 | BF8_AMA_1.fastq.gz   | 11474    | 7382      |
 | BF9_AMA_1.fastq.gz   | 12432    | 6318      |
 
-`optimize_reads` should produce 3 files in the haplotype_output folder: `{target}_final_q_value`, `{target}_max_read_count`, and `{target}_finalTrimAndFilterTable`.
+And the AMA read count table looked like this:
+
+|10 |116036|
+|5  |81096 |
+|25 |76565 |
+|15 |103293|
+|2  |81096 |
+|20 |103222|
+
+`optimize_reads` should produce 3 files in the `haplotype_output` folder: `{target}_final_q_value`, `{target}_max_read_count`, and `{target}_finalTrimAndFilterTable`.
 - `{target}_final_q_value`: contains the quality score that produced the highest number of read counts.
-- `{target}_max_read_count`: contains the value of the highest number of read counts, AKA the read count associated with the optimal quality score.
+- `{target}_max_read_count`: contains the value of the highest number of read counts—the read count associated with the optimal quality score.
 - `{target}_finalTrimAndFilterTable`: contains the trim and filter table that was created with the optimal quality score.
 
 With our small sample, the AMA final q value was:
@@ -202,7 +202,7 @@ And the final trim and filter table looked like this:
 | BF8_AMA_1.fastq.gz  | 11474    | 10326     |
 | BF9_AMA_1.fastq.gz  | 12432    | 10560     |
 
-`call_haplotypes` should add two files to the haplotype_output folder: `{target}_haplotypes.rds` and `{target}_trackReadsThroughPipeline.csv`. 
+`call_haplotypes` should add two files to the `haplotype_output` folder: `{target}_haplotypes.rds` and `{target}_trackReadsThroughPipeline.csv`. 
 - `{target}_haplotypes.rds`: R file that stores the haplotype results data set for further manipulation in `censor_haplotypes`. 
 - `{target}_trackReadsThroughPipeline.csv`: tracks the reads, looking at the number of reads that made it through each step of the pipeline.
 
@@ -221,7 +221,7 @@ With our small sample, the trackReadsThroughPipeline table looked like this:
 | BF8  | 10314  | 10314  | 10314   |
 | BF9  | 10549  | 10549  | 10549   |
 
-`censor_haplotypes` should add six files to the {out}/haplotype_output folder: `{target}_haplotype_table_precensored.csv`, `{target}_snps_between_haps_within_samples.fasta`, `{target}_uniqueSeqs.fasta`, `{target}_aligned_seqs.fasta`, `{target}_uniqueSeqs_final_censored.fasta`, and `{target}_haplotype_table_censored_final_version.csv`. 
+`censor_haplotypes` should add six files to the haplotype_output folder: `{target}_haplotype_table_precensored.csv`, `{target}_snps_between_haps_within_samples.fasta`, `{target}_uniqueSeqs.fasta`, `{target}_aligned_seqs.fasta`, `{target}_uniqueSeqs_final_censored.fasta`, and `{target}_haplotype_table_censored_final_version.csv`. 
 - `{target}_haplotype_table_precensored.csv`: outputs the haplotype data set prior to beginning the censoring process (essentially `{target}_haplotypes.rds` in a formatted csv file). 
 - `{target}_snps_between_haps_within_samples.fasta`: fasta file of the haplotypes after the first three steps of the censoring process are completed. This is used to tally up the number of SNPs between all haplotype pairings. 
 - `{target}_uniqueSeqs.fasta`: fasta file of the haplotypes after the fourth step of the censoring process is completed. 
