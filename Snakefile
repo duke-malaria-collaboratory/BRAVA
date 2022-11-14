@@ -2,8 +2,6 @@ import pandas as pd
 
 configfile: "config.yaml"
 
-# update readme, delete unnecessary parameters from each rule, clean up code in general, delete old stuff
-
 # modifiable parameters - change in config.yaml file
 TARGET_TABLE = pd.read_table(config['target_file'])
 TARGET = list(TARGET_TABLE.target.unique())
@@ -48,7 +46,6 @@ rule call_fastqc:
 	script:
 		"{params.pyscript}"
 
-# delete output and rerun call_trimmomatic. update readme (talk about what folders trimmomatic produces) and keep cleaning up the code.
 rule call_trimmomatic:
 	input:
 		"{target}/{out}/fastqc_in/",
