@@ -23,12 +23,12 @@ OUT = config['out']
 rule all:
 	input:
 		# expand("{target}/{out}/fastqc_in", out=OUT, target=TARGET),
-		expand("{target}/{out}/trim", out=OUT, target=TARGET),
+		# expand("{target}/{out}/trim", out=OUT, target=TARGET),
 		# expand("{target}/{out}/fastq/all_samples", out=OUT, target=TARGET),
  		# expand("{target}/{out}/haplotype_output/{target}_{q_values}_trimAndFilterTable", out=OUT, target=TARGET, q_values=TRUNCQ_VALUES),
 		# expand("{target}/{out}/haplotype_output/{target}_finalTrimAndFilterTable", out=OUT, target=TARGET),
 		# expand("{target}/{out}/haplotype_output/{target}_trackReadsThroughPipeline.csv", out=OUT, target=TARGET),
-		# expand("{target}/{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv", out=OUT, target=TARGET),
+		expand("{target}/{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv", out=OUT, target=TARGET),
 
 rule call_fastqc:
 	input:
