@@ -46,7 +46,7 @@ def trimReads(read1Dir, read2Dir, outDir, reads1, reads2, forward, reverse):
         if prefix == prefix2:
             forwardElem = forward[0]
             reverseElem = reverse[0]
-            os.system('cutadapt -g file:{0} -G file:{1} -o {2}/cut/1/{3}.1.fastq.gz -p {2}/cut/2/{3}.2.fastq.gz {4}/{5} {6}/{7}'.format(forwardElem, reverseElem, outDir, prefix, read1Dir, currRead1, read2Dir, currRead2))
+            os.system('cutadapt -g "file:{0}" -G "file:{1}" -o {2}/cut/1/{3}.1.fastq.gz -p {2}/cut/2/{3}.2.fastq.gz {4}/{5} {6}/{7}'.format(forwardElem, reverseElem, outDir, prefix, read1Dir, currRead1, read2Dir, currRead2))
 
             os.system('trimmomatic PE -phred33 -summary {0}/trim/summaries/{1}.summary {0}/cut/1/{1}.1.fastq.gz {0}/cut/2/{1}.2.fastq.gz {0}/trim/1/{1}.1.fastq.gz {0}/trim/singleton/{1}.1_unpaired.fq.gz {0}/trim/2/{1}.2.fastq.gz {0}/trim/singleton/{1}.2_unpaired.fq.gz LEADING:10 TRAILING:10 SLIDINGWINDOW:4:15 MINLEN:80'.format(outDir, prefix))
 
