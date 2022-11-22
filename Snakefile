@@ -22,8 +22,8 @@ OUT = config['out']
 
 rule all:
 	input:
-		# expand("{target}/{out}/fastqc_in", out=OUT, target=TARGET),
-		# expand("{target}/{out}/trim", out=OUT, target=TARGET),
+		# expand("{out}/fastqc_in", out=OUT, target=TARGET),
+		# expand("{out}/trim", out=OUT, target=TARGET),
 		# expand("{target}/{out}/fastq/all_samples", out=OUT, target=TARGET),
  		# expand("{target}/{out}/haplotype_output/{target}_{q_values}_trimAndFilterTable", out=OUT, target=TARGET, q_values=TRUNCQ_VALUES),
 		# expand("{target}/{out}/haplotype_output/{target}_finalTrimAndFilterTable", out=OUT, target=TARGET),
@@ -32,14 +32,12 @@ rule all:
 
 rule call_fastqc:
 	input:
-		refs="refs/{target}.fasta",
 		pair1=PAIR1,
 		pair2=PAIR2,
 	output:
-		out=directory("{target}/{out}/fastqc_in/"),
+		out=directory("{out}/fastqc_in/"),
 	params:
-		out="{target}/{out}",
-		refs="refs/{target}.fasta",
+		out="{out}",
 		pair1=PAIR1,
 		pair2=PAIR2,
 		pyscript="scripts/step1_callFastqc.py",
@@ -48,11 +46,11 @@ rule call_fastqc:
 
 rule call_trimmomatic:
 	input:
-		"{target}/{out}/fastqc_in/",
+		"{out}/fastqc_in/",
 	output:
-		out=directory("{target}/{out}/trim/"),
+		out=directory("{out}/trim/"),
 	params:
-		out="{target}/{out}",
+		out="{out}",
 		pair1=PAIR1,
 		pair2=PAIR2,
 		forward=expand("{forward}.fasta", forward=FOWARD),
@@ -63,7 +61,7 @@ rule call_trimmomatic:
 		
 rule synchronize_reads:
 	input:
-		"{target}/{out}/trim/",
+		"{out}/trim/",
 	output:
 		out=directory("{target}/{out}/fastq/all_samples/"),
 	params:
@@ -72,7 +70,7 @@ rule synchronize_reads:
 		all_samples="{target}/{out}/fastq/all_samples",
 		forward_samples="{target}/{out}/fastq/1",
 		reverse_samples="{target}/{out}/fastq/2",
-		trimmed="{target}/{out}/trim",
+		trimmed="{out}/trim",
 		target="{target}",
 		pyscript="scripts/step3_synchronizeReads.py",
 	script:
