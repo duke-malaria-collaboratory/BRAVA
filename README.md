@@ -107,23 +107,24 @@ The DAG shows how calls can be run in parallel if Snakemake is allowed to run mo
     and custom parameters.
 
 1. Modify your adapters files to notify CutAdapt that you want to use linked adapters.
+
     A linked adapter combines a 5’ and a 3’ adapter, so we use this if a sequence is surrounded by a 5’ and a 3’ adapter and we want to remove both adapters. Linked adapters aren't required for this pipeline to run, but we found that for our data, using linked adapters produced better results.
 
-    Linked adapters are specified as two sequences separated by ... (three dots), with the second sequence being the reverse complement. We use -g instead of -a (5' vs 3' adapters) when calling CutAdapt, which causes both adapters to be required, even if they are not anchored. However, we want the non-anchored adapters to be optional. You can mark each adapter explicitly as required or optional using the search parameters required and optional. As a result, we add the optional parameter to the end of the reverse complement sequence. This is what our `forwardPrimers.fasta` file looks like for CSP:
+    Linked adapters are specified as two sequences separated by ... (three dots), with the second sequence being the reverse complement. We use -g instead of -a (5' vs 3' adapters) when calling CutAdapt, which causes both adapters to be required, even if they are not anchored. However, we want the non-anchored adapters to be optional. You can mark each adapter explicitly as required or optional using the search parameters `required` and `optional`. As a result, we add the `optional` parameter to the end of the reverse complement sequence. This is what our `forwardPrimers.fasta` file looks like for CSP:
 
-       ``` sh
-       >Pfcsp-f
-       TTAAGGAACAAGAAGGATAATACCA...CATTTCGGTTTGGGTCATTT;optional
-       ```
+    ``` sh
+    >Pfcsp-f
+    TTAAGGAACAAGAAGGATAATACCA...CATTTCGGTTTGGGTCATTT;optional
+    ```
 
     If you choose to forgo using linked adapters, this is what your adapters file would look like:
 
-       ``` sh
-       >Pfcsp-f
-       TTAAGGAACAAGAAGGATAATACCA
-       ```
+    ``` sh
+    >Pfcsp-f
+    TTAAGGAACAAGAAGGATAATACCA
+    ```
 
-    For more information about the linked adapters parameter, visit the [CutAdapt documentation](https://cutadapt.readthedocs.io/en/stable/guide.html#linked-adapters-combined-5-and-3-adapter)
+    For more information about the linked adapters parameter, visit the [CutAdapt documentation.](https://cutadapt.readthedocs.io/en/stable/guide.html#linked-adapters-combined-5-and-3-adapter)
 
 1. Do a dry run to make sure the snakemake workflow is valid.
 
