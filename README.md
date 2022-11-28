@@ -88,14 +88,13 @@ The DAG shows how calls can be run in parallel if Snakemake is allowed to run mo
     [`environment.yaml`](environment.yaml) however you like.
 
 1. Edit the configuration file [`config.yaml`](config.yaml).
-    - `target_file`: the TSV File that contains a table with your target(s) and length(s) of majority of haplotypes.
+    - `target_file`: the TSV File that contains a table with your target(s) and length(s) of majority of haplotypes. We used [`targets.tsv`](targets.tsv) for reference.
     - `refs`: the path to the folder containing reference sequences for the polymorphic gene target that will be used to map the raw reads to the appropriate gene targets of interest.
     - `pair1`: the path to the folder containing the forward reads.
     - `pair2`: the path to the folder containing the reverse reads.
     - `forward`: the path to the file with the list of forward primers.
     - `rev`: the path to the file with the list of reverse primers.
     - `out`: the name of desired output folder.
-    - `recreateRefFolder`: option to recreate the `ref` folder for every run - deleting and creating it again makes sure it gets updated if you change the reference sequences you want to use.
     - `truncQ_values`: values of truncQ to be used in the filterAndTrim function to find the optimal truncQ value
     - `cutoff`: cutoff for which samples with less than this number of reads after sampling should be removed.
     - `seed`: seed of R's random number generator for the purpose of obtaining a reproducible random result.
@@ -106,6 +105,25 @@ The DAG shows how calls can be run in parallel if Snakemake is allowed to run mo
     You can leave these options as-is if you'd like to first make sure the
     workflow runs without error on your machine before using your own dataset
     and custom parameters.
+
+1. Modify your adapters files to notify CutAdapt that you want to use linked adapters.
+    A linked adapter combines a 5’ and a 3’ adapter, so we use this if a sequence is surrounded by a 5’ and a 3’ adapter and we want to remove both adapters. Linked adapters aren't required for this pipeline to run, but we found that for our data, using linked adapters produced better results.
+
+    Linked adapters are specified as two sequences separated by ... (three dots), with the second sequence being the reverse complement. We use -g instead of -a (5' vs 3' adapters) when calling CutAdapt, which causes both adapters to be required, even if they are not anchored. However, we want the non-anchored adapters to be optional. You can mark each adapter explicitly as required or optional using the search parameters required and optional. As a result, we add the optional parameter to the end of the reverse complement sequence. This is what our `forwardPrimers.fasta` file looks like for CSP:
+
+       ``` sh
+       >Pfcsp-f
+       TTAAGGAACAAGAAGGATAATACCA...CATTTCGGTTTGGGTCATTT;optional
+       ```
+
+    If you choose to forgo using linked adapters, this is what your adapters file would look like:
+
+       ``` sh
+       >Pfcsp-f
+       TTAAGGAACAAGAAGGATAATACCA
+       ```
+
+    For more information about the linked adapters parameter, visit the [CutAdapt documentation](https://cutadapt.readthedocs.io/en/stable/guide.html#linked-adapters-combined-5-and-3-adapter)
 
 1. Do a dry run to make sure the snakemake workflow is valid.
 
