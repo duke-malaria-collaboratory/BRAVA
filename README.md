@@ -110,11 +110,18 @@ The DAG shows how calls can be run in parallel if Snakemake is allowed to run mo
 
     A linked adapter combines a 5’ and a 3’ adapter, so we use this if a sequence is surrounded by a 5’ and a 3’ adapter and we want to remove both adapters. Linked adapters aren't required for this pipeline to run, but we found that for our data, using linked adapters produced better results.
 
-    Linked adapters are specified as two sequences separated by ... (three dots), with the second sequence being the reverse complement. We use -g instead of -a (5' vs 3' adapters) when calling CutAdapt, which causes both adapters to be required, even if they are not anchored. However, we want the non-anchored adapters to be optional. You can mark each adapter explicitly as required or optional using the search parameters `required` and `optional`. As a result, we add the `optional` parameter to the end of the reverse complement sequence. This is what our `forwardPrimers.fasta` file looks like for CSP:
+    Linked adapters are specified as two sequences separated by ... (three dots), with the second sequence being the reverse complement of the reverse primer for the forward primer and the reverse complement of the forward primer for the reverse primer. We use -g instead of -a (5' vs 3' adapters) when calling CutAdapt, which causes both adapters to be required, even if they are not anchored. However, we want the non-anchored adapters to be optional. You can mark each adapter explicitly as required or optional using the search parameters `required` and `optional`. As a result, we add the `optional` parameter to the end of the sequence after the three dots. This is what our `forwardPrimers.fasta` file looks like for CSP:
 
     ``` sh
     >Pfcsp-f
     TTAAGGAACAAGAAGGATAATACCA...CATTTCGGTTTGGGTCATTT;optional
+    ```
+
+    And our `reversePrimers.fasta` file looks like this:
+
+    ``` sh
+    >Pfcsp-r_rc
+    AAATGACCCAAACCGAAATG...TGGTATTATCCTTCTTGTTCCTTAA;optional
     ```
 
     If you choose to forgo using linked adapters, this is what your adapters file would look like:
@@ -122,6 +129,11 @@ The DAG shows how calls can be run in parallel if Snakemake is allowed to run mo
     ``` sh
     >Pfcsp-f
     TTAAGGAACAAGAAGGATAATACCA
+    ```
+
+    ``` sh
+    >Pfcsp-r_rc
+    AAATGACCCAAACCGAAATG
     ```
 
     For more information about the linked adapters parameter, visit the [CutAdapt documentation.](https://cutadapt.readthedocs.io/en/stable/guide.html#linked-adapters-combined-5-and-3-adapter)
