@@ -200,12 +200,14 @@ After running the pipeline on a small sample of haplotypes, the AMA trim and fil
 
 And the AMA read count table looked like this:
 
-|10 |116036|
-|5  |81096 |
-|25 |76565 |
-|15 |103293|
-|2  |81096 |
-|20 |103222|
+|   |   |
+|---|---|
+| 25 | 76565  |
+| 15 | 103295 |
+| 20 | 103224 |
+| 2  | 81096  |
+| 5  | 81096  |
+| 10 | 116036 |
 
 `optimize_reads` should produce 3 files in the `haplotype_output` folder: `{target}_final_q_value`, `{target}_max_read_count`, and `{target}_finalTrimAndFilterTable`.
 - `{target}_final_q_value`: contains the quality score that produced the highest number of read counts.
