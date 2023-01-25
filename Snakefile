@@ -22,13 +22,16 @@ OUT = config['out']
 
 rule all:
 	input:
-		# expand("{out}/fastqc_in", out=OUT, target=TARGET),
-		# expand("{out}/trim", out=OUT, target=TARGET),
+		# expand("out/fastqc_in", out=OUT, target=TARGET),
+		# expand("out/trim", out=OUT, target=TARGET),
 		# expand("{target}/{out}/fastq/all_samples", out=OUT, target=TARGET),
  		# expand("{target}/{out}/haplotype_output/{target}_{q_values}_trimAndFilterTable", out=OUT, target=TARGET, q_values=TRUNCQ_VALUES),
 		# expand("{target}/{out}/haplotype_output/{target}_finalTrimAndFilterTable", out=OUT, target=TARGET),
 		# expand("{target}/{out}/haplotype_output/{target}_trackReadsThroughPipeline.csv", out=OUT, target=TARGET),
-		expand("{target}/{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv", out=OUT, target=TARGET),
+		# expand("out/trim_summary", out=OUT),
+		# expand("{target}/{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv", out=OUT, target=TARGET),
+		# expand("out/trim_summaries.txt", out=OUT),
+		expand("{out}/long_summary.csv", out=OUT),
 
 rule call_fastqc:
 	input:
@@ -141,5 +144,38 @@ rule censor_haplotypes:
 		length=lambda wildcards: list(TARGET_TABLE.length[TARGET_TABLE.target == wildcards.target]),
 		ratio=READ_DEPTH_RATIO,
 		rscript="scripts/step7_haplotype_censoring.R",
+	script:
+		"{params.rscript}"
+
+rule get_read_summaries:
+	input: 
+		expand("{target}/{out}/haplotype_output/{target}_uniqueSeqs_final_censored.fasta", target=TARGET, out=OUT),
+	output:
+		trim_summary_names="{out}/trim_summary_names.txt",
+		trim_summaries="{out}/trim_summaries.txt",
+		pre_filt_fastq_counts="{out}/pre-filt_fastq_read_counts.txt",
+		filt_fastq_counts="{out}/filt_fastq_read_counts.txt",
+	params:
+		pre_trim_summaries="{out}/trim/summaries",
+		all_pre_trim_summaries="{out}/trim/summaries/*",
+		all_fastq_files="*/{out}/fastq/all_samples/*fastq.gz",
+		all_filtered_files="*/{out}/fastq/all_samples/final_filtered/*",
+	script:
+		"scripts/get_read_summaries.sh"
+
+
+rule create_summaries:
+	input:
+		trim_summaries="{out}/trim_summaries.txt",
+	output:
+		long_summary="{out}/long_summary.csv",
+		wide_summary="{out}/wide_summary.csv",
+	params:
+		trim_summary_names="{out}/trim_summary_names.txt",
+		trim_summaries="{out}/trim_summaries.txt",
+		pre_filt_fastq_counts="{out}/pre-filt_fastq_read_counts.txt",
+		filt_fastq_counts="{out}/filt_fastq_read_counts.txt",
+		all_filtered_files="/{out}/fastq/all_samples/final_filtered/.*",
+		rscript="scripts/step8_create_summaries.R",
 	script:
 		"{params.rscript}"

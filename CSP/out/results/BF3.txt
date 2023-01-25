@@ -14,13 +14,13 @@ Executing dna.FastaToChromArrays2 [CSP/out/ref/genome/1/merged_ref_67040.fa.gz, 
 Set genScaffoldInfo=true
 Set genome to 1
 
-Loaded Reference:	0.001 seconds.
+Loaded Reference:	0.000 seconds.
 Loading index for chunk 1-1, build 1
 Indexing threads started for block 0-1
 Indexing threads finished for block 0-1
-Generated Index:	0.295 seconds.
-Analyzed Index:   	3.173 seconds.
-Cleared Memory:    	0.680 seconds.
+Generated Index:	0.273 seconds.
+Analyzed Index:   	4.495 seconds.
+Cleared Memory:    	0.373 seconds.
 Processing reads in paired-ended mode.
 Started read stream.
 Started 56 mapping threads.
@@ -35,9 +35,9 @@ Minimum Score Ratio:  	0.56
 Mapping Mode:         	normal
 Reads Used:           	49460	(12858181 bases)
 
-Mapping:          	11.503 seconds.
-Reads/sec:       	4299.70
-kBases/sec:      	1117.80
+Mapping:          	10.468 seconds.
+Reads/sec:       	4724.97
+kBases/sec:      	1228.36
 
 
 Pairing data:   	pct pairs	num pairs 	pct bases	   num bases
@@ -84,4 +84,4 @@ Del Rate:        	  1.6221% 	      237 	  0.0066% 	         243
 Ins Rate:        	  2.3133% 	      338 	  0.0096% 	         352
 N Rate:          	  0.0000% 	        0 	  0.0000% 	           0
 
-Total time:     	15.740 seconds.
+Total time:     	15.689 seconds.
