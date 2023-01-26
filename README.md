@@ -46,6 +46,10 @@ The DAG shows how calls can be run in parallel if Snakemake is allowed to run mo
 4. For haplotypes that have 1 SNP difference, occur in the same sample, and have a > 8 times read depth difference between them within that sample, removed the hapltoype with the lower read depth from that sample. You can change the 8 to a different read depth ratio in the config file ("read_depth_ratio").
 5. If a haplotype is defined by a single variant position that is only variable within that haplotype, then it is removed.
 
+`get_read_summaries` runs a bash script that pulls statistics from the summary files produced during the trim_and_filter rule for later manipulation in R.
+
+`create_summaries` outputs csv files that summarizes the trim and read counts.
+
 ## Quick Start
 
 1. Clone or download this repo.
@@ -366,6 +370,181 @@ And the haplotype_table_censored_final table looked like this:
 | 8450  | BF3      |
 | 12186 | BF4      |
 | 603   | BF7      |
+
+`get_read_summaries` should produce 4 files in the `{out}` folder: `trim_summaries`, `trim_summary_names`, `pre-filt_fastq_read_counts`, and `filt_fastq_read_counts`.
+- `trim_summaries` consolidates all the `{out}/trim/summaries` data into one file.
+- `trim_summary_names` contains all the file names in `{out}/trim/summaries`.
+- `pre-filt_fastq_read_counts` contains the read counts prior to filtering.
+- `filt-fastq_read_counts` contains the read counts after filtering.
+
+With our small sample, one of the consolidated trim summaries looked like this:
+
+```
+Input Read Pairs: 33577
+Both Surviving Reads: 32298
+Both Surviving Read Percent: 96.19
+Forward Only Surviving Reads: 454
+Forward Only Surviving Read Percent: 1.35
+Reverse Only Surviving Reads: 659
+Reverse Only Surviving Read Percent: 1.96
+Dropped Reads: 166
+Dropped Read Percent: 0.49
+```
+
+The trim summary names file looked like this:
+
+```
+BF10.summary
+BF1.summary
+BF2.summary
+BF3.summary
+BF4.summary
+BF5.summary
+BF6.summary
+BF7.summary
+BF8.summary
+BF9.summary
+```
+
+Some of the pre-filtered read counts looked like this:
+
+```
+AMA/out/fastq/all_samples/BF10_AMA_1.fastq.gz	14875
+AMA/out/fastq/all_samples/BF10_AMA_2.fastq.gz	14875
+AMA/out/fastq/all_samples/BF1_AMA_1.fastq.gz	13072
+AMA/out/fastq/all_samples/BF1_AMA_2.fastq.gz	13072
+AMA/out/fastq/all_samples/BF2_AMA_1.fastq.gz	15269
+AMA/out/fastq/all_samples/BF2_AMA_2.fastq.gz	15269
+AMA/out/fastq/all_samples/BF3_AMA_1.fastq.gz	10116
+AMA/out/fastq/all_samples/BF3_AMA_2.fastq.gz	10116
+```
+
+And some of the filtered read counts looked like this:
+
+```
+AMA/out/fastq/all_samples/final_filtered/BF10_final_F_filt.fastq.gz	13384
+AMA/out/fastq/all_samples/final_filtered/BF10_final_R_filt.fastq.gz	13384
+AMA/out/fastq/all_samples/final_filtered/BF1_final_F_filt.fastq.gz	11777
+AMA/out/fastq/all_samples/final_filtered/BF1_final_R_filt.fastq.gz	11777
+AMA/out/fastq/all_samples/final_filtered/BF2_final_F_filt.fastq.gz	13718
+AMA/out/fastq/all_samples/final_filtered/BF2_final_R_filt.fastq.gz	13718
+AMA/out/fastq/all_samples/final_filtered/BF3_final_F_filt.fastq.gz	8491
+AMA/out/fastq/all_samples/final_filtered/BF3_final_R_filt.fastq.gz	8491
+```
+
+`create_summaries` should produce 2 files in the `{out}` folder: `long_summary` and `wide_summary`. `long_summary` is a csv file that summarizes the read counts with columns read_type, read_ct, sample, and target. This allows for easy manipulation of the dataframe if needed in the future. `wide_summary` is a csv file that summarizes the read counts with each row being a sample. This allows for easy visualization of the data analysis to see how each sample did throughout the workflow.
+
+With our small samples of AMA and CSP, the long summary looked like this:
+
+|read_type|read_ct|sample|target|
+|---------|-------|------|------|
+|Input Read Pairs|33577  |BF10  |NA    |
+|Both Surviving Reads|32298  |BF10  |NA    |
+|Forward Only Surviving Reads|454    |BF10  |NA    |
+|Reverse Only Surviving Reads|659    |BF10  |NA    |
+|Dropped Reads|166    |BF10  |NA    |
+|Input Read Pairs|26485  |BF1   |NA    |
+|Both Surviving Reads|25565  |BF1   |NA    |
+|Forward Only Surviving Reads|359    |BF1   |NA    |
+|Reverse Only Surviving Reads|461    |BF1   |NA    |
+|Dropped Reads|100    |BF1   |NA    |
+|Input Read Pairs|28008  |BF2   |NA    |
+|Both Surviving Reads|26932  |BF2   |NA    |
+|Forward Only Surviving Reads|412    |BF2   |NA    |
+|Reverse Only Surviving Reads|516    |BF2   |NA    |
+|Dropped Reads|148    |BF2   |NA    |
+|Input Read Pairs|25840  |BF3   |NA    |
+|Both Surviving Reads|24730  |BF3   |NA    |
+|Forward Only Surviving Reads|443    |BF3   |NA    |
+|Reverse Only Surviving Reads|504    |BF3   |NA    |
+|Dropped Reads|163    |BF3   |NA    |
+|Input Read Pairs|29520  |BF4   |NA    |
+|Both Surviving Reads|28500  |BF4   |NA    |
+|Forward Only Surviving Reads|392    |BF4   |NA    |
+|Reverse Only Surviving Reads|546    |BF4   |NA    |
+|Dropped Reads|82     |BF4   |NA    |
+|Input Read Pairs|30472  |BF5   |NA    |
+|Both Surviving Reads|29347  |BF5   |NA    |
+|Forward Only Surviving Reads|455    |BF5   |NA    |
+|Reverse Only Surviving Reads|533    |BF5   |NA    |
+|Dropped Reads|137    |BF5   |NA    |
+|Input Read Pairs|32025  |BF6   |NA    |
+|Both Surviving Reads|30863  |BF6   |NA    |
+|Forward Only Surviving Reads|444    |BF6   |NA    |
+|Reverse Only Surviving Reads|591    |BF6   |NA    |
+|Dropped Reads|127    |BF6   |NA    |
+|Input Read Pairs|29455  |BF7   |NA    |
+|Both Surviving Reads|28429  |BF7   |NA    |
+|Forward Only Surviving Reads|391    |BF7   |NA    |
+|Reverse Only Surviving Reads|524    |BF7   |NA    |
+|Dropped Reads|111    |BF7   |NA    |
+|Input Read Pairs|27293  |BF8   |NA    |
+|Both Surviving Reads|26279  |BF8   |NA    |
+|Forward Only Surviving Reads|303    |BF8   |NA    |
+|Reverse Only Surviving Reads|609    |BF8   |NA    |
+|Dropped Reads|102    |BF8   |NA    |
+|Input Read Pairs|26675  |BF9   |NA    |
+|Both Surviving Reads|25541  |BF9   |NA    |
+|Forward Only Surviving Reads|477    |BF9   |NA    |
+|Reverse Only Surviving Reads|514    |BF9   |NA    |
+|Dropped Reads|143    |BF9   |NA    |
+|filt     |11777  |BF1   |ama   |
+|prefilt  |13072  |BF1   |ama   |
+|filt     |11352  |BF1   |csp   |
+|prefilt  |12491  |BF1   |csp   |
+|filt     |13384  |BF10  |ama   |
+|prefilt  |14875  |BF10  |ama   |
+|filt     |15886  |BF10  |csp   |
+|prefilt  |17422  |BF10  |csp   |
+|filt     |13718  |BF2   |ama   |
+|prefilt  |15269  |BF2   |ama   |
+|filt     |10659  |BF2   |csp   |
+|prefilt  |11659  |BF2   |csp   |
+|filt     |8491   |BF3   |ama   |
+|prefilt  |10116  |BF3   |ama   |
+|filt     |13099  |BF3   |csp   |
+|prefilt  |14611  |BF3   |csp   |
+|filt     |12226  |BF4   |ama   |
+|prefilt  |13672  |BF4   |ama   |
+|filt     |13584  |BF4   |csp   |
+|prefilt  |14828  |BF4   |csp   |
+|filt     |11119  |BF5   |ama   |
+|prefilt  |12650  |BF5   |ama   |
+|filt     |15006  |BF5   |csp   |
+|prefilt  |16695  |BF5   |csp   |
+|filt     |13085  |BF6   |ama   |
+|prefilt  |14591  |BF6   |ama   |
+|filt     |14725  |BF6   |csp   |
+|prefilt  |16269  |BF6   |csp   |
+|filt     |11350  |BF7   |ama   |
+|prefilt  |12760  |BF7   |ama   |
+|filt     |14179  |BF7   |csp   |
+|prefilt  |15668  |BF7   |csp   |
+|filt     |10326  |BF8   |ama   |
+|prefilt  |11474  |BF8   |ama   |
+|filt     |13359  |BF8   |csp   |
+|prefilt  |14801  |BF8   |csp   |
+|filt     |10560  |BF9   |ama   |
+|prefilt  |12432  |BF9   |ama   |
+|filt     |11500  |BF9   |csp   |
+|prefilt  |13108  |BF9   |csp   |
+
+
+And the wide summary looked like this:
+
+|sample|NA_Input Read Pairs|NA_Both Surviving Reads|NA_Forward Only Surviving Reads|NA_Reverse Only Surviving Reads|NA_Dropped Reads|ama_filt|ama_prefilt|csp_filt|csp_prefilt|
+|------|-------------------|-----------------------|-------------------------------|-------------------------------|----------------|--------|-----------|--------|-----------|
+|BF10  |33577              |32298                  |454                            |659                            |166             |13384   |14875      |15886   |17422      |
+|BF1   |26485              |25565                  |359                            |461                            |100             |11777   |13072      |11352   |12491      |
+|BF2   |28008              |26932                  |412                            |516                            |148             |13718   |15269      |10659   |11659      |
+|BF3   |25840              |24730                  |443                            |504                            |163             |8491    |10116      |13099   |14611      |
+|BF4   |29520              |28500                  |392                            |546                            |82              |12226   |13672      |13584   |14828      |
+|BF5   |30472              |29347                  |455                            |533                            |137             |11119   |12650      |15006   |16695      |
+|BF6   |32025              |30863                  |444                            |591                            |127             |13085   |14591      |14725   |16269      |
+|BF7   |29455              |28429                  |391                            |524                            |111             |11350   |12760      |14179   |15668      |
+|BF8   |27293              |26279                  |303                            |609                            |102             |10326   |11474      |13359   |14801      |
+|BF9   |26675              |25541                  |477                            |514                            |143             |10560   |12432      |11500   |13108      |
+
 
 ## More resources
 

@@ -161,8 +161,7 @@ rule get_read_summaries:
 		all_fastq_files="*/{out}/fastq/all_samples/*fastq.gz",
 		all_filtered_files="*/{out}/fastq/all_samples/final_filtered/*",
 	script:
-		"scripts/get_read_summaries.sh"
-
+		"scripts/step8_get_read_summaries.sh"
 
 rule create_summaries:
 	input:
@@ -176,6 +175,6 @@ rule create_summaries:
 		pre_filt_fastq_counts="{out}/pre-filt_fastq_read_counts.txt",
 		filt_fastq_counts="{out}/filt_fastq_read_counts.txt",
 		all_filtered_files="/{out}/fastq/all_samples/final_filtered/.*",
-		rscript="scripts/step8_create_summaries.R",
+		rscript="scripts/step9_create_summaries.R",
 	script:
 		"{params.rscript}"
