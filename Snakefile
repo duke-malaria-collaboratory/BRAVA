@@ -31,6 +31,8 @@ rule all:
 		# expand("out/trim_summary", out=OUT),
 		# expand("{target}/{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv", out=OUT, target=TARGET),
 		# expand("out/trim_summaries.txt", out=OUT),
+		expand("{out}/marker_lengths.csv", out=OUT),
+		expand("{out}/multiqc_report.html", out=OUT),
 		expand("{out}/long_summary.csv", out=OUT),
 
 rule call_fastqc:
@@ -61,6 +63,24 @@ rule call_trimmomatic:
 		pyscript="scripts/step2_callTrimmomatic.py"
 	script:
 		"{params.pyscript}"
+
+rule generate_multiqc_report:
+	input:
+		"{out}/trim",
+	output:
+		"{out}/multiqc_report.html",
+	shell:
+		"multiqc . --outdir out"
+	
+rule get_marker_length:
+	input:
+		"{out}/multiqc_report.html"
+	output:
+		"{out}/marker_lengths.csv",
+	params:
+		refs="refs",
+		primers=expand("{forward}.fasta", forward=FOWARD),
+		script="scripts/step2a_get_marker_lengths"
 		
 rule synchronize_reads:
 	input:

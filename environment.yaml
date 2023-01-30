@@ -27,3 +27,4 @@ dependencies:
   - r-cli=3.6.0
   - r-vctrs=0.4.1
   - r-tidyselect=1.2.0
+  - multiqc=1.14

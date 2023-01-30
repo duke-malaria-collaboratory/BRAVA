@@ -549,4 +549,6 @@ And the wide summary looked like this:
 ## More resources
 
 - [Snakemake tutorial](https://snakemake.readthedocs.io/en/stable/tutorial/tutorial.html)
-- [conda user guide](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html)
+- [Conda user guide](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html)
+- [MultiQC report tutorial](https://www.youtube.com/watch?v=qPbIlO_KWN0&ab_channel=PhilEwels)
+- [MultiQC documentation](https://multiqc.info/docs/#using-multiqc-reports)
