@@ -1,10 +1,7 @@
-import pandas as pd
-
 configfile: "config.yaml"
 
 # modifiable parameters - change in config.yaml file
-TARGET_TABLE = pd.read_table(config['target_file'])
-TARGET = list(TARGET_TABLE.target.unique())
+TARGET = config['target']
 TRUNCQ_VALUES = config['truncQ_values']
 CUTOFF = config['cutoff']
 SEED = config['seed']
@@ -31,7 +28,6 @@ rule all:
 		# expand("out/trim_summary", out=OUT),
 		# expand("{target}/{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv", out=OUT, target=TARGET),
 		# expand("out/trim_summaries.txt", out=OUT),
-		expand("{out}/marker_lengths.csv", out=OUT),
 		expand("{out}/multiqc_report.html", out=OUT),
 		expand("{out}/long_summary.csv", out=OUT),
 
@@ -72,7 +68,7 @@ rule generate_multiqc_report:
 	shell:
 		"multiqc . --outdir out"
 	
-rule get_marker_length:
+rule get_marker_lengths:
 	input:
 		"{out}/multiqc_report.html"
 	output:
@@ -80,7 +76,9 @@ rule get_marker_length:
 	params:
 		refs="refs",
 		primers=expand("{forward}.fasta", forward=FOWARD),
-		script="scripts/step2a_get_marker_lengths"
+		pyscript="scripts/step2a_get_marker_lengths.py",
+	script:
+		"{params.pyscript}"
 		
 rule synchronize_reads:
 	input:
@@ -149,7 +147,8 @@ rule call_haplotypes:
 
 rule censor_haplotypes:
 	input:
-		"{target}/{out}/haplotype_output/{target}_haplotypes.rds",
+		input_file="{target}/{out}/haplotype_output/{target}_haplotypes.rds",
+		lengths="{out}/marker_lengths.csv",
 	output:
 		precensored_haplotype_table="{target}/{out}/haplotype_output/{target}_haplotype_table_precensored.csv",
 		snps_between_haps="{target}/{out}/haplotype_output/{target}_snps_between_haps_within_samples.fasta",
@@ -158,10 +157,11 @@ rule censor_haplotypes:
 		final_censored="{target}/{out}/haplotype_output/{target}_uniqueSeqs_final_censored.fasta",
 		final_haplotype_table="{target}/{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv",
 	params:
+		target="{target}",
 		haplotypes="{target}/{out}/haplotype_output/{target}_haplotypes.rds",
 		depth=READ_DEPTH,
 		proportion=PROPORTION,
-		length=lambda wildcards: list(TARGET_TABLE.length[TARGET_TABLE.target == wildcards.target]),
+		marker_lengths="{out}/marker_lengths.csv",
 		ratio=READ_DEPTH_RATIO,
 		rscript="scripts/step7_haplotype_censoring.R",
 	script:

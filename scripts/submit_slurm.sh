@@ -11,4 +11,4 @@
 #SBATCH -e logs/output_%j.err           # File for STDERR (with jobid = %j)   
 
 echo "$SLURM_ARRAY_TASK_ID"
-snakemake --cores 12 --latency-wait 10
+snakemake --cores 12 --stats stats

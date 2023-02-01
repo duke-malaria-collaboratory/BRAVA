@@ -31,6 +31,10 @@ old_data = as.data.frame(old_data)
 old_data$`MiSeq.ID` = rownames(old_data)
 write_csv(old_data, snakemake@output[["precensored_haplotype_table"]])
 
+marker_lengths = read.csv(file = snakemake@params[["marker_lengths"]])
+
+marker_length = marker_lengths[[snakemake@params[["target"]]]]
+
 # figure out how many rows and columns
 print("Number of haplotypes:")
 nrow(data)
@@ -78,9 +82,9 @@ for (i in 1:nrow(data)){
 
 # for each haplotype that is a different length than the majority of haplotypes, throw it out
 haps_to_remove = rep(NA,ncol(data))
-print(snakemake@params[["length"]])
+print(marker_length)
 for (i in 1:ncol(data)) {
-  if (nchar(getSequences(data))[i] != snakemake@params[["length"]]) {
+  if (nchar(getSequences(data))[i] != marker_length) {
     haps_to_remove[i] = i
   }
 }
