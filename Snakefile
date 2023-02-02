@@ -41,7 +41,7 @@ rule call_fastqc:
 		out="{out}",
 		pair1=PAIR1,
 		pair2=PAIR2,
-		pyscript="scripts/step1_callFastqc.py",
+		pyscript="scripts/step1_call_fastqc.py",
 	script:
 		"{params.pyscript}"
 
@@ -56,7 +56,7 @@ rule call_trimmomatic:
 		pair2=PAIR2,
 		forward=expand("{forward}.fasta", forward=FOWARD),
 		rev=expand("{rev}.fasta", rev=REV),
-		pyscript="scripts/step2_callTrimmomatic.py"
+		pyscript="scripts/step2_call_trimmomatic.py"
 	script:
 		"{params.pyscript}"
 
@@ -76,7 +76,7 @@ rule get_marker_lengths:
 	params:
 		refs="refs",
 		primers=expand("{forward}.fasta", forward=FOWARD),
-		pyscript="scripts/step2a_get_marker_lengths.py",
+		pyscript="scripts/step3_get_marker_lengths.py",
 	script:
 		"{params.pyscript}"
 		
@@ -93,9 +93,13 @@ rule synchronize_reads:
 		reverse_samples="{target}/{out}/fastq/2",
 		trimmed="{out}/trim",
 		target="{target}",
-		pyscript="scripts/step3_synchronizeReads.py",
+		pyscript="scripts/step4_synchronizeReads.py",
 	script:
 		"{params.pyscript}"
+
+# variant calling!
+# then variantArray, then analyze VCF
+# download the repo and try running it to see what the output files are
 
 rule trim_and_filter:
 	input:
@@ -107,7 +111,7 @@ rule trim_and_filter:
 		read_count="{target}/{out}/haplotype_output/{target}_read_count",
 		q_values="{q_values}",
 		haplotype_output="{target}/{out}/haplotype_output",
-		rscript="scripts/step4_trim_and_filter.R",
+		rscript="scripts/step5_trim_and_filter.R",
 	script:
 		"{params.rscript}"
 
@@ -126,7 +130,7 @@ rule optimize_reads:
 		max_read_count="{target}/{out}/haplotype_output/{target}_max_read_count",
 		all_samples="{target}/{out}/fastq/all_samples",
 		final_filtered="{target}/{out}/fastq/all_samples/final_filtered",
-		rscript="scripts/step5_optimize_reads.R",
+		rscript="scripts/step6_optimize_reads.R",
 	script:
 		"{params.rscript}"
 
@@ -141,7 +145,7 @@ rule call_haplotypes:
 		trim_filter_table="{target}/{out}/haplotype_output/{target}_finalTrimAndFilterTable",
 		cutoff=CUTOFF,
 		seed=SEED,
-		rscript="scripts/step6_call_haplotypes.R",
+		rscript="scripts/step7_call_haplotypes.R",
 	script:
 		"{params.rscript}"
 
@@ -163,7 +167,7 @@ rule censor_haplotypes:
 		proportion=PROPORTION,
 		marker_lengths="{out}/marker_lengths.csv",
 		ratio=READ_DEPTH_RATIO,
-		rscript="scripts/step7_haplotype_censoring.R",
+		rscript="scripts/step8_haplotype_censoring.R",
 	script:
 		"{params.rscript}"
 
@@ -181,7 +185,7 @@ rule get_read_summaries:
 		all_fastq_files="*/{out}/fastq/all_samples/*fastq.gz",
 		all_filtered_files="*/{out}/fastq/all_samples/final_filtered/*",
 	script:
-		"scripts/step8_get_read_summaries.sh"
+		"scripts/step9_get_read_summaries.sh"
 
 rule create_summaries:
 	input:
@@ -195,6 +199,6 @@ rule create_summaries:
 		pre_filt_fastq_counts="{out}/pre-filt_fastq_read_counts.txt",
 		filt_fastq_counts="{out}/filt_fastq_read_counts.txt",
 		all_filtered_files="/{out}/fastq/all_samples/final_filtered/.*",
-		rscript="scripts/step9_create_summaries.R",
+		rscript="scripts/step10_create_summaries.R",
 	script:
 		"{params.rscript}"
