@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import glob
 
 def rev_compl(st):
     nn = {'A': 'T', 'C': 'G', 'G': 'C', 'T': 'A'}
@@ -24,6 +25,7 @@ for i in range(len(primers)):
 dict = {}
 
 if os.path.exists(refs):
+    # files = glob.glob(refs + '/**/*.fasta', recursive=True)
     targets = os.listdir(refs)
     for target in targets:
         with open(refs + "/" + target) as f:

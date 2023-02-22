@@ -1,15 +1,19 @@
 # TSV File that contains a table with your target(s) and length(s) of majority of haplotypes - (ie. 300 nucleotides for pfama1, 288 nucleotides for pfcsp)
 target_file: targets.tsv
 # Specify multiple targets to run in parallel, ie. target: ["AMA", "CSP"]
-target: ["AMA", "CSP"]
+target: ["PFMDR1", "PFCRT"]
+# target: ["AMA", "CSP"]
 
 # Default pathnames, change if needed
 refs: refs
-pair1: raw_reads/1
-pair2: raw_reads/2
+pair1: raw_reads/reads/amplicon/1
+pair2: raw_reads/reads/amplicon/2
+# pair1: raw_reads/1
+# pair2: raw_reads/2
 forward: adapters/forwardPrimers
 rev: adapters/reversePrimers
 out: out
+variant_table: raw_reads/reads/tables/DR_annos.csv
 
 # step4_trim_and_filter
 truncQ_values: [2, 5, 10, 15, 20, 25] # values of truncQ to be used in the filterAndTrim function to find the optimal truncQ value

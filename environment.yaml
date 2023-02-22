@@ -8,6 +8,7 @@ channels:
 dependencies:
   - python=3.8.12
   - snakemake=7.20.0
+  - conda-forge::ncurses
   - fastqc=0.11.9
   - cutadapt=4.1
   - bbmap=39.01
@@ -28,3 +29,6 @@ dependencies:
   - r-vctrs=0.4.1
   - r-tidyselect=1.2.0
   - multiqc=1.14
+  - bwa=0.7.17
+  - bcftools=1.16
+  - samtools=1.16.1

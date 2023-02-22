@@ -16,6 +16,7 @@ PAIR2 = config['pair2']
 FOWARD = config['forward']
 REV = config['rev']
 OUT = config['out']
+VARIANT_TABLE = config['variant_table']
 
 rule all:
 	input:
@@ -28,6 +29,7 @@ rule all:
 		# expand("out/trim_summary", out=OUT),
 		# expand("{target}/{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv", out=OUT, target=TARGET),
 		# expand("out/trim_summaries.txt", out=OUT),
+		#expand("{out}/final_vcf_analysis.csv", out=OUT),
 		expand("{out}/multiqc_report.html", out=OUT),
 		expand("{out}/long_summary.csv", out=OUT),
 
@@ -80,26 +82,63 @@ rule get_marker_lengths:
 	script:
 		"{params.pyscript}"
 		
-rule synchronize_reads:
+rule synchronize_reads: # calling haplotypes
 	input:
 		"{out}/trim/",
 	output:
 		out=directory("{target}/{out}/fastq/all_samples/"),
 	params:
 		out="{target}/{out}",
-		refs="refs/{target}.fasta",
+		refs="refs/{target}/{target}.fasta",
 		all_samples="{target}/{out}/fastq/all_samples",
 		forward_samples="{target}/{out}/fastq/1",
 		reverse_samples="{target}/{out}/fastq/2",
 		trimmed="{out}/trim",
 		target="{target}",
-		pyscript="scripts/step4_synchronizeReads.py",
+		pyscript="scripts/step4_synchronize_reads.py",
 	script:
 		"{params.pyscript}"
 
-# variant calling!
-# then variantArray, then analyze VCF
-# download the repo and try running it to see what the output files are
+rule variant_calling: # calling variants
+	input:
+		"{out}/trim/",
+	output:
+		out=directory("{target}/{out}/vcf"),
+	params:
+		out="{target}/{out}",
+		refs="refs/{target}",
+		trimmed="{out}/trim",
+		target="{target}",
+		pyscript="scripts/step4a_variant_calling.py",
+	script:
+		"{params.pyscript}"
+
+rule analyze_vcf:
+	input:
+		"{target}/{out}/vcf",
+	output:
+		"{target}/{out}/DR_mutations.csv",
+	params:
+		table=VARIANT_TABLE,
+		vcf="{target}/{out}/vcf",
+		target="{target}",
+		pyscript="scripts/step4b_analyze_VCF.py",
+	script:
+		"{params.pyscript}"
+
+# fix
+
+rule combine_vcf_analysis:
+	input:
+		expand("{target}/{out}/DR_mutations.csv", target=TARGET, out=OUT),
+	output:
+		"{out}/final_vcf_analysis.csv",
+	params:
+		targets=TARGET,
+		out="{out}",
+		rscript="scripts/step4c_combine_analysis.R",
+	script:
+		"{params.rscript}"
 
 rule trim_and_filter:
 	input:
