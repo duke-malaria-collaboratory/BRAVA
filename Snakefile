@@ -29,9 +29,9 @@ rule all:
 		# expand("out/trim_summary", out=OUT),
 		# expand("{target}/{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv", out=OUT, target=TARGET),
 		# expand("out/trim_summaries.txt", out=OUT),
-		#expand("{out}/final_vcf_analysis.csv", out=OUT),
-		expand("{out}/multiqc_report.html", out=OUT),
-		expand("{out}/long_summary.csv", out=OUT),
+		expand("{out}/dr_depths_freqs.csv", out=OUT),
+		#expand("{out}/multiqc_report.html", out=OUT),
+		#expand("{out}/long_summary.csv", out=OUT),
 
 rule call_fastqc:
 	input:
@@ -76,7 +76,7 @@ rule get_marker_lengths:
 	output:
 		"{out}/marker_lengths.csv",
 	params:
-		refs="refs",
+		refs=REFS,
 		primers=expand("{forward}.fasta", forward=FOWARD),
 		pyscript="scripts/step3_get_marker_lengths.py",
 	script:
@@ -126,16 +126,16 @@ rule analyze_vcf:
 	script:
 		"{params.pyscript}"
 
-# fix
-
 rule combine_vcf_analysis:
 	input:
 		expand("{target}/{out}/DR_mutations.csv", target=TARGET, out=OUT),
 	output:
-		"{out}/final_vcf_analysis.csv",
+		dr_depths="{out}/dr_depths_freqs.csv",
+		dr_freqs="{out}/dr_freqs.csv"
 	params:
 		targets=TARGET,
 		out="{out}",
+		table=VARIANT_TABLE,
 		rscript="scripts/step4c_combine_analysis.R",
 	script:
 		"{params.rscript}"
