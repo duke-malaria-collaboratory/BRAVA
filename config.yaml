@@ -1,5 +1,5 @@
 # select whether you want to run haplotype calling or variant calling with this pipeline
-variant_calling: true
+variant_calling: false
 
 # Specify multiple targets to run in parallel, ie. target: ["AMA", "CSP"]
 target: ["PFMDR1", "PFCRT"]

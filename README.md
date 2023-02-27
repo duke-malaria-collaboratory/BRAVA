@@ -23,7 +23,9 @@ Snakemake automatically builds a directed acyclic graph (DAG) of jobs to figure
 out the dependencies of each of the rules and what order to run them in.
 This workflow processes the data set by cleaning the sequencing reads for each target set in the config file, finding the optimal quality score, performing haplotype calling, and censoring the haplotypes to render numerous data analysis outputs, resulting in a final table that contains the resulting haplotypes after censoring.
 
-![dag](dag.png)
+![haplotype_calling_dag](haplotype_calling_dag.png)
+
+![variant_calling_dag](variant_calling_dag.png)
 
 The DAG shows how calls can be run in parallel if Snakemake is allowed to run more than one job at a time. Here, the pipeline is parallelized by being called with two targets, AMA and CSP, and six quality scores (2, 5, 10, 15, 20, 25) at the same time.
 
