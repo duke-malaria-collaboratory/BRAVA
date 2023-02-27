@@ -96,13 +96,15 @@ The DAG shows how calls can be run in parallel if Snakemake is allowed to run mo
     [`environment.yaml`](environment.yaml) however you like.
 
 1. Edit the configuration file [`config.yaml`](config.yaml).
-    - `target_file`: the TSV File that contains a table with your target(s) and length(s) of majority of haplotypes. We used [`targets.tsv`](targets.tsv) for reference.
+    - `variant_calling`: `true` if you want to run variant calling with this pipeline, `false` if you want to do haplotype calling.
+    - `target`: list of target(s) (can run multiple targets in parallel).
     - `refs`: the path to the folder containing reference sequences for the polymorphic gene target that will be used to map the raw reads to the appropriate gene targets of interest.
     - `pair1`: the path to the folder containing the forward reads.
     - `pair2`: the path to the folder containing the reverse reads.
     - `forward`: the path to the file with the list of forward primers.
     - `rev`: the path to the file with the list of reverse primers.
     - `out`: the name of desired output folder.
+    - `variant_table`: table that holds positions of interest for each target ran through variant calling.
     - `truncQ_values`: values of truncQ to be used in the filterAndTrim function to find the optimal truncQ value
     - `cutoff`: cutoff for which samples with less than this number of reads after sampling should be removed.
     - `seed`: seed of R's random number generator for the purpose of obtaining a reproducible random result.

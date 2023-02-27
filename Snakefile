@@ -29,9 +29,10 @@ rule all:
 		# expand("out/trim_summary", out=OUT),
 		# expand("{target}/{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv", out=OUT, target=TARGET),
 		# expand("out/trim_summaries.txt", out=OUT),
-		expand("{out}/dr_depths_freqs.csv", out=OUT),
+		# expand("{out}/dr_depths_freqs.csv", out=OUT),
 		#expand("{out}/multiqc_report.html", out=OUT),
 		#expand("{out}/long_summary.csv", out=OUT),
+		expand("{out}/dr_depths_freqs.csv", out=OUT) if config["variant_calling"] else expand("{out}/long_summary.csv", out=OUT),
 
 rule call_fastqc:
 	input:

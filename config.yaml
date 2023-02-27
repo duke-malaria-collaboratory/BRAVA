@@ -1,5 +1,6 @@
-# TSV File that contains a table with your target(s) and length(s) of majority of haplotypes - (ie. 300 nucleotides for pfama1, 288 nucleotides for pfcsp)
-target_file: targets.tsv
+# select whether you want to run haplotype calling or variant calling with this pipeline
+variant_calling: true
+
 # Specify multiple targets to run in parallel, ie. target: ["AMA", "CSP"]
 target: ["PFMDR1", "PFCRT"]
 # target: ["AMA", "CSP"]

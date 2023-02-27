@@ -15,7 +15,6 @@ for (target in targets) {
 }
 
 # dataframe of positions of interest 
-# WE SHOULD SUBSET TO ONLY THE TARGETS FOR WHICH WE HAVE DATA
 
 pos_of_interest <- read_csv(snakemake@params[["table"]]) %>%
   mutate(Target = toupper(Target)) %>% # this is to make the targets match between this file and the vcf - MIGHT HAVE TO CHANGE THIS IF IT BREAKS FOR SOME GENES 
