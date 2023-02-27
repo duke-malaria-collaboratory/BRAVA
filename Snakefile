@@ -30,8 +30,8 @@ rule all:
 		# expand("{target}/{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv", out=OUT, target=TARGET),
 		# expand("out/trim_summaries.txt", out=OUT),
 		# expand("{out}/dr_depths_freqs.csv", out=OUT),
-		#expand("{out}/multiqc_report.html", out=OUT),
-		#expand("{out}/long_summary.csv", out=OUT),
+		# expand("{out}/multiqc_report.html", out=OUT),
+		# expand("{out}/long_summary.csv", out=OUT),
 		expand("{out}/dr_depths_freqs.csv", out=OUT) if config["variant_calling"] else expand("{out}/long_summary.csv", out=OUT),
 
 rule call_fastqc:
@@ -82,23 +82,6 @@ rule get_marker_lengths:
 		pyscript="scripts/step3_get_marker_lengths.py",
 	script:
 		"{params.pyscript}"
-		
-rule synchronize_reads: # calling haplotypes
-	input:
-		"{out}/trim/",
-	output:
-		out=directory("{target}/{out}/fastq/all_samples/"),
-	params:
-		out="{target}/{out}",
-		refs="refs/{target}/{target}.fasta",
-		all_samples="{target}/{out}/fastq/all_samples",
-		forward_samples="{target}/{out}/fastq/1",
-		reverse_samples="{target}/{out}/fastq/2",
-		trimmed="{out}/trim",
-		target="{target}",
-		pyscript="scripts/step4_synchronize_reads.py",
-	script:
-		"{params.pyscript}"
 
 rule variant_calling: # calling variants
 	input:
@@ -140,6 +123,23 @@ rule combine_vcf_analysis:
 		rscript="scripts/step4c_combine_analysis.R",
 	script:
 		"{params.rscript}"
+
+rule synchronize_reads: # calling haplotypes
+	input:
+		"{out}/trim/",
+	output:
+		out=directory("{target}/{out}/fastq/all_samples/"),
+	params:
+		out="{target}/{out}",
+		refs="refs/{target}/{target}.fasta",
+		all_samples="{target}/{out}/fastq/all_samples",
+		forward_samples="{target}/{out}/fastq/1",
+		reverse_samples="{target}/{out}/fastq/2",
+		trimmed="{out}/trim",
+		target="{target}",
+		pyscript="scripts/step4_synchronize_reads.py",
+	script:
+		"{params.pyscript}"
 
 rule trim_and_filter:
 	input:

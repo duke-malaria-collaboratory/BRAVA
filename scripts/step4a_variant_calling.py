@@ -67,13 +67,6 @@ def getRef(refDir):
 		print("\n***Reference sequence already indexed***\n")
 	return(fasta)
 
-# things that are different: 
-# this seems like it's only for one sample, so i am modifying it to take in the folder
-# so i can do it for all the samples in the folder.
-
-# also the refs folder needs a folder for each target for the getRef method, so I'll have to change that to
-# account for the extra subdirectories in the other scripts
-
 def align(refSeq, read1, read2, read1Dir, read2Dir, out):
 	size = len(read1)
 	sampleName = [None] * size
@@ -84,7 +77,6 @@ def align(refSeq, read1, read2, read1Dir, read2Dir, out):
 		sampleName2 = file2Split[0]
 		assert sampleName[i] == sampleName2
 
-		# add read1Dir and read2Dir to each command
 		print("bwa mem {} {}/{} {}/{} > {}/sam/{}.sam".format(refSeq, read1Dir, read1[i], read2Dir, read2[i], out, sampleName[i]))
 		os.system("bwa mem {} {}/{} {}/{} > {}/sam/{}.sam".format(refSeq, read1Dir, read1[i], read2Dir, read2[i], out, sampleName[i]))
 		os.system("samtools view -b {}/sam/{}.sam > {}/bam/{}.bam".format(out, sampleName[i], out, sampleName[i]))
@@ -92,23 +84,6 @@ def align(refSeq, read1, read2, read1Dir, read2Dir, out):
 		os.system("samtools sort {}/bam/{}.bam -o {}/sort_bam/{}_sort.bam".format(out, sampleName[i], out, sampleName[i]))
 		os.system("rm {}/bam/{}.bam".format(out, sampleName[i]))
 		os.system("samtools index -b {}/sort_bam/{}_sort.bam".format(out, sampleName[i]))
-
-	# filename = os.path.basename(read1)
-	# console.log(filename)
-	# sample = filename.split('_')[0]
-	# filename2 = os.path.basename(read2)
-	# sample2 = filename2.split('_')[0]
-
-	# print(sample)
-	# print(sample2)
-	# assert sample == sample2
-	
-	# os.system("bwa mem {} {} {} > {}/sam/{}.sam".format(refSeq, read1, read2, out, sample))
-	# os.system("samtools view -b {}/sam/{}.sam > {}/bam/{}.bam".format(out, sample, out, sample))
-	# os.system("rm {}/sam/{}.sam".format(out, sample))
-	# os.system("samtools sort {}/bam/{}.bam -o {}/sort_bam/{}_sort.bam".format(out,sample,out,sample))
-	# os.system("rm {}/bam/{}.bam".format(out, sample))
-	# os.system("samtools index -b {}/sort_bam/{}_sort.bam".format(out,sample))
 
 	return(sampleName)
 
