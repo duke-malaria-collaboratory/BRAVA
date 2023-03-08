@@ -66,14 +66,22 @@ if (!any(duplicated(c(fnFs, fnRs)))) {
     ddF <- dada(derepF, err=errF, multithread=TRUE)
     derepR <- derepFastq(filtRs[[sam]])
     ddR <- dada(derepR, err=errR, multithread=TRUE)
+    print("pairs:")
+    print(derepF)
+    print(ddF)
+    print(derepR)
+    print(ddR)
     merger <- mergePairs(ddF, derepF, ddR, derepR)
+    print(merger)
     mergers[[sam]] <- merger
   }
   rm(derepF); rm(derepR)
-
+  print("mergers")
+  print(mergers)
   # Construct sequence table
   seqtab <- makeSequenceTable(mergers)
-
+  print("seqtab")
+  print(seqtab)
   # remove the chimeras
   seqtab.nochim <- removeBimeraDenovo(seqtab, method="consensus", multithread=TRUE, verbose=TRUE)
   print("Dimensions of results after chimera removal:")

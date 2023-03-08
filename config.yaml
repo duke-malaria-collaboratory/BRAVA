@@ -1,19 +1,25 @@
 # select whether you want to run haplotype calling or variant calling with this pipeline
-variant_calling: false
+# variant_calling: false
 
 # Specify multiple targets to run in parallel, ie. target: ["AMA", "CSP"]
-target: ["PFMDR1", "PFCRT"]
+# target: ["PFMDR1", "PFCRT"]
 # target: ["AMA", "CSP"]
+
+variant_calling_targets: ["PFMDR1", "PFCRT"]
+haplotype_calling_targets: ["AMA", "CSP"]
+
+# Paths for input and output data
+haplotype_pair1: raw_reads/1
+haplotype_pair2: raw_reads/2
+haplotype_out: haplotype_out
+variant_pair1: raw_reads/reads/amplicon/1
+variant_pair2: raw_reads/reads/amplicon/2
+variant_out: variant_out
 
 # Default pathnames, change if needed
 refs: refs
-pair1: raw_reads/reads/amplicon/1
-pair2: raw_reads/reads/amplicon/2
-# pair1: raw_reads/1
-# pair2: raw_reads/2
 forward: adapters/forwardPrimers
 rev: adapters/reversePrimers
-out: out
 variant_table: raw_reads/reads/tables/DR_annos.csv
 
 # step4_trim_and_filter

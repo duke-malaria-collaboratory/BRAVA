@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+# figure out how to use variant data for just variant calling
+
 import pandas as pd
 import os
 import io
@@ -116,6 +118,7 @@ if __name__ == "__main__":
     files, samples = get_samples(snakemake.params["vcf"])
     df = VCF_dataframe(snakemake.params["target"], files, samples)
     allSNPs = df
+    print(allSNPs)
     
     # dhfr_files, dhfr_samples = get_samples("/data/taylorlab/jws48/variantCall/dhfr/vcf/")
     # dhfr = VCF_dataframe("dhfr", dhfr_files, dhfr_samples)

@@ -1,7 +1,7 @@
 library(tidyverse)
 
 targets <- snakemake@params[["targets"]]
-out <- snakemake@params[["out"]]
+out <- snakemake@params[["variant_out"]]
 
 columns <- c("Target","Sample","POS","REF","ALT","ALT_DEPTH","DEPTH","ALT_FREQ") 
 df <- data.frame(matrix(nrow = 0, ncol = length(columns))) 

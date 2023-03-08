@@ -105,7 +105,7 @@ refs = snakemake.params["refs"]
 pair1 = snakemake.params["trimmed"] + "/1"
 pair2 = snakemake.params["trimmed"] + "/2"
 baseQual = 20
-out = snakemake.params["out"]
+out = snakemake.params["variant_out"]
 
 reads1 = getReads(pair1)
 reads2 = getReads(pair2)

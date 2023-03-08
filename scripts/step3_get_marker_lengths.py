@@ -25,15 +25,15 @@ for i in range(len(primers)):
 dict = {}
 
 if os.path.exists(refs):
-    # files = glob.glob(refs + '/**/*.fasta', recursive=True)
+    files = glob.glob(refs + '/**/*.fasta', recursive=True)
     targets = os.listdir(refs)
-    for target in targets:
-        with open(refs + "/" + target) as f:
+    for target in files:
+        with open(target) as f:
             next(f)
             sequence = f.read().replace("\n", "")
             for i in primArray:
                 sequence = sequence.replace(i.replace("\n", ""), '')
-            dict[target.replace(".fasta", "")] = len(sequence)
+            dict[target.replace(".fasta", "").split("/")[-1]] = len(sequence)
 else:
     sys.exit("\t**Reads not found**")
 

@@ -12,7 +12,8 @@ final_read_count <- max_read_count$read_count
 write(final_read_count, file=snakemake@output[["max_read_count"]])
 write(final_q_value, file=snakemake@output[["final_q_value"]])
 # copy the trim and filter table for the q value with the highest read count - we will later delete all trim and filter tables except this
-trim_filter_table <- file.path(snakemake@params[["target"]], snakemake@params[["out"]], "haplotype_output", paste0(snakemake@params[["target"]], "_", final_q_value, "_trimAndFilterTable"))
+print(file.path(paste0(snakemake@params[["trim_filter_path"]], "_", final_q_value, "_trimAndFilterTable")))
+trim_filter_table <- file.path(paste0(snakemake@params[["trim_filter_path"]], "_", final_q_value, "_trimAndFilterTable"))
 file.copy(from=trim_filter_table, to=snakemake@output[["final_trim_filter_table"]])
 
 # copy all the filtered fastq files for the q value with the highest read count - we will later delete all filtered fastq files except this
