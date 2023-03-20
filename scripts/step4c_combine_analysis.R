@@ -1,14 +1,13 @@
 library(tidyverse)
 
 targets <- snakemake@params[["targets"]]
-out <- snakemake@params[["variant_out"]]
 
 columns <- c("Target","Sample","POS","REF","ALT","ALT_DEPTH","DEPTH","ALT_FREQ") 
 df <- data.frame(matrix(nrow = 0, ncol = length(columns))) 
 colnames(df) <- columns
 
 for (target in targets) {
-    path <- paste0(target, "/", out, "/DR_mutations.csv")
+    path <- paste0(target, "/out/DR_mutations.csv")
     target_table = read.csv(path)
     target_table <- target_table[, -1]
     df <- rbind(df,target_table)
@@ -51,19 +50,21 @@ all_dat <- bind_rows(vcf %>%
     mutate(REF_DEPTH = DEPTH - ALT_DEPTH,
            REF_FREQ = 1 - ALT_FREQ) %>% 
     select(Target, Sample, POS, REF, DEPTH, REF_DEPTH, REF_FREQ) %>% 
-    rename(BASE = REF, TOTAL_DEPTH = DEPTH, DEPTH = REF_DEPTH, FREQ = REF_FREQ)) %>% 
-    mutate(pos_base = paste0(Target, '_', POS, BASE)) %>%
+    rename(BASE = REF, TOTAL_DEPTH = DEPTH, DEPTH = REF_DEPTH, FREQ = REF_FREQ)) #%>% 
+   # mutate(pos_base = paste0(Target, '_', POS, BASE)) %>%
   # add in any positions that are not found in any samples
-  full_join(pos_base) %>% 
-  select(-c(Target, POS, BASE)) %>% 
-  pivot_wider(names_from = pos_base, values_from = c(DEPTH, TOTAL_DEPTH, FREQ),
-              values_fill = 0, 
-              names_vary = 'slowest', names_glue = "{pos_base}_{.value}", names_sort = TRUE) %>% 
-  filter(!is.na(Sample))
+  #full_join(pos_base) #%>% 
+  # select(-c(Target, POS, BASE)) %>% 
+  # pivot_wider(names_from = pos_base, values_from = c(DEPTH, TOTAL_DEPTH, FREQ),
+  #             values_fill = 0, 
+  #             names_vary = 'slowest', names_glue = "{pos_base}_{.value}", names_sort = TRUE) %>% 
+  #filter(!is.na(Sample))
 
 all_dat %>% 
   write_csv(snakemake@output[["dr_depths"]])
 
-all_dat %>% 
-  select_if(grepl('FREQ', colnames(.))) %>% 
-  write_csv(snakemake@output[["dr_freqs"]])
+# all_dat %>% 
+#   select_if(grepl('FREQ', colnames(.))) %>% 
+#   write_csv(snakemake@output[["dr_freqs"]])
+
+unlink(snakemake@params[["DR_mutations"]])

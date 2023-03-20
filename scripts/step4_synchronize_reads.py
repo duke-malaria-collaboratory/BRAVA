@@ -105,8 +105,8 @@ refSeqs, refNames = getReference(numRef, refs)
 out = out.replace('\n', '')    # remove '\n' only
 makeOutDirs(out);
 
-trim1 = snakemake.params["trimmed"] + "/1"
-trim2 = snakemake.params["trimmed"] + "/2"
+trim1 = snakemake.params["trimmed"][0] + "/1"
+trim2 = snakemake.params["trimmed"][0] + "/2"
 
 trimReads1 = getReads(trim1)
 trimReads2 = getReads(trim2)

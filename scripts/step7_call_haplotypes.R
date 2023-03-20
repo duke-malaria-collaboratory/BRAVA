@@ -76,12 +76,12 @@ if (!any(duplicated(c(fnFs, fnRs)))) {
     mergers[[sam]] <- merger
   }
   rm(derepF); rm(derepR)
-  print("mergers")
-  print(mergers)
+  # print("mergers")
+  # print(mergers)
   # Construct sequence table
   seqtab <- makeSequenceTable(mergers)
-  print("seqtab")
-  print(seqtab)
+  # print("seqtab")
+  # print(seqtab)
   # remove the chimeras
   seqtab.nochim <- removeBimeraDenovo(seqtab, method="consensus", multithread=TRUE, verbose=TRUE)
   print("Dimensions of results after chimera removal:")

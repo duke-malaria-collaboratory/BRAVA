@@ -282,16 +282,16 @@ for (row in 1:nrow(dnaMatrix)) {
 uniqueRemove = unique(toRemove)
 
 # look at original variant table
-print("Uncensored variants:")
-print(variant_table)
+# print("Uncensored variants:")
+# print(variant_table)
 
 # remove the sequences that contain variants
 dnaMatrix = dnaMatrix[-toRemove, , drop = FALSE]
 
 # look at filtered variant table
-print("Filtered variants:")
+# print("Filtered variants:")
 filtered_variant_table = as.data.frame(dnaMatrix)
-print(filtered_variant_table)
+# print(filtered_variant_table)
 
 # make a vector that contains the sequences in the filtered table
 dnaVector = apply(filtered_variant_table,1,paste,collapse="")

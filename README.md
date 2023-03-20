@@ -1,6 +1,6 @@
-# Running the haplotype calling pipeline with Snakemake
+# Running the haplotype/variant calling pipeline with Snakemake
 
-Overview: Using human or mosquito samples from Webuye, Kenya, evaluate the extent to which there are unique haplotypes among two polymorphic gene targets: AMA, CSP.
+Overview: Using samples from amplicon deep sequencing from gene targets, either call haplotypes or call variants.
 
 Method: Targeted amplicon deep sequencing which produces forward and reverse fastq files for each sample.
 
@@ -23,9 +23,7 @@ Snakemake automatically builds a directed acyclic graph (DAG) of jobs to figure
 out the dependencies of each of the rules and what order to run them in.
 This workflow processes the data set by cleaning the sequencing reads for each target set in the config file, finding the optimal quality score, performing haplotype calling, and censoring the haplotypes to render numerous data analysis outputs, resulting in a final table that contains the resulting haplotypes after censoring.
 
-![haplotype_calling_dag](haplotype_calling_dag.png)
-
-![variant_calling_dag](variant_calling_dag.png)
+![dag](dag.png)
 
 The DAG shows how calls can be run in parallel if Snakemake is allowed to run more than one job at a time. Here, the pipeline is parallelized by being called with two targets, AMA and CSP, and six quality scores (2, 5, 10, 15, 20, 25) at the same time.
 
@@ -104,11 +102,11 @@ The DAG shows how calls can be run in parallel if Snakemake is allowed to run mo
     [`environment.yaml`](environment.yaml) however you like.
 
 1. Edit the configuration file [`config.yaml`](config.yaml).
-    - `variant_calling`: `true` if you want to run variant calling with this pipeline, `false` if you want to do haplotype calling.
-    - `target`: list of target(s) (can run multiple targets in parallel).
+    - `haplotype_calling_targets`: list of target(s) you want to perform haplotype calling on.
+    - `variant_calling_targets`: list of target(s) you want to perform variant calling on.
+    - `haplotype_calling_pair1`: the path to the folder containing the forward reads to be used for haplotype calling.
+    - `haplotype_calling_pair2`: the path to the folder containing the reverse reads to be used for haplotype_calk
     - `refs`: the path to the folder containing reference sequences for the polymorphic gene target that will be used to map the raw reads to the appropriate gene targets of interest.
-    - `pair1`: the path to the folder containing the forward reads.
-    - `pair2`: the path to the folder containing the reverse reads.
     - `forward`: the path to the file with the list of forward primers.
     - `rev`: the path to the file with the list of reverse primers.
     - `out`: the name of desired output folder.

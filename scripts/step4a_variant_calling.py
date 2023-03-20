@@ -102,8 +102,8 @@ def varCall(refSeq, samples, bq, out):
 
 numRef = 1
 refs = snakemake.params["refs"]
-pair1 = snakemake.params["trimmed"] + "/1"
-pair2 = snakemake.params["trimmed"] + "/2"
+pair1 = snakemake.params["trimmed"][0] + "/1"
+pair2 = snakemake.params["trimmed"][0] + "/2"
 baseQual = 20
 out = snakemake.params["variant_out"]
 

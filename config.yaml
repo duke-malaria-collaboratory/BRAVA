@@ -2,25 +2,23 @@
 # variant_calling: false
 
 # Specify multiple targets to run in parallel, ie. target: ["AMA", "CSP"]
+# check to see if it works w no variant calling or vice versa, and if a target is in both lists
 # target: ["PFMDR1", "PFCRT"]
 # target: ["AMA", "CSP"]
 
-variant_calling_targets: ["PFMDR1", "PFCRT"]
 haplotype_calling_targets: ["AMA", "CSP"]
+variant_calling_targets: ["PFMDR1", "PFCRT"]
 
 # Paths for input and output data
-haplotype_pair1: raw_reads/1
-haplotype_pair2: raw_reads/2
-haplotype_out: haplotype_out
-variant_pair1: raw_reads/reads/amplicon/1
-variant_pair2: raw_reads/reads/amplicon/2
-variant_out: variant_out
+pair1: raw_reads/1
+pair2: raw_reads/2
+trim_filter_out: trim_filter_out
 
 # Default pathnames, change if needed
 refs: refs
 forward: adapters/forwardPrimers
 rev: adapters/reversePrimers
-variant_table: raw_reads/reads/tables/DR_annos.csv
+variant_table: raw_reads/tables/DR_annos.csv
 
 # step4_trim_and_filter
 truncQ_values: [2, 5, 10, 15, 20, 25] # values of truncQ to be used in the filterAndTrim function to find the optimal truncQ value
