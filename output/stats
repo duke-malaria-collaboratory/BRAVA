@@ -1,0 +1,511 @@
+{
+    "total_runtime": 750.9372828006744,
+    "rules": {
+        "call_fastqc": {
+            "mean-runtime": 131.7352511882782,
+            "min-runtime": 131.7352511882782,
+            "max-runtime": 131.7352511882782
+        },
+        "call_trimmomatic": {
+            "mean-runtime": 81.90276765823364,
+            "min-runtime": 81.90276765823364,
+            "max-runtime": 81.90276765823364
+        },
+        "synchronize_reads": {
+            "mean-runtime": 255.62951982021332,
+            "min-runtime": 251.0882923603058,
+            "max-runtime": 260.17074728012085
+        },
+        "variant_calling": {
+            "mean-runtime": 84.36579179763794,
+            "min-runtime": 78.13845491409302,
+            "max-runtime": 90.59312868118286
+        },
+        "trim_and_filter": {
+            "mean-runtime": 43.67372953891754,
+            "min-runtime": 32.86639046669006,
+            "max-runtime": 54.48106861114502
+        },
+        "optimize_reads": {
+            "mean-runtime": 1.9748220443725586,
+            "min-runtime": 1.4462146759033203,
+            "max-runtime": 2.503429412841797
+        },
+        "call_haplotypes": {
+            "mean-runtime": 56.46854853630066,
+            "min-runtime": 55.50417423248291,
+            "max-runtime": 57.43292284011841
+        },
+        "analyze_vcf": {
+            "mean-runtime": 2.6479166746139526,
+            "min-runtime": 1.9360146522521973,
+            "max-runtime": 3.359818696975708
+        },
+        "generate_multiqc_report": {
+            "mean-runtime": 25.20030689239502,
+            "min-runtime": 25.20030689239502,
+            "max-runtime": 25.20030689239502
+        },
+        "get_marker_lengths": {
+            "mean-runtime": 2.4768385887145996,
+            "min-runtime": 2.4768385887145996,
+            "max-runtime": 2.4768385887145996
+        },
+        "censor_haplotypes": {
+            "mean-runtime": 18.750980138778687,
+            "min-runtime": 17.819761037826538,
+            "max-runtime": 19.682199239730835
+        },
+        "combine_vcf_analysis": {
+            "mean-runtime": 3.412080764770508,
+            "min-runtime": 3.412080764770508,
+            "max-runtime": 3.412080764770508
+        },
+        "get_read_summaries": {
+            "mean-runtime": 8.137572050094604,
+            "min-runtime": 8.137572050094604,
+            "max-runtime": 8.137572050094604
+        },
+        "create_summaries": {
+            "mean-runtime": 3.703033685684204,
+            "min-runtime": 3.703033685684204,
+            "max-runtime": 3.703033685684204
+        },
+        "all": {
+            "mean-runtime": 0.0011408329010009766,
+            "min-runtime": 0.0011408329010009766,
+            "max-runtime": 0.0011408329010009766
+        }
+    },
+    "files": {
+        "/home/kh455/haplotype_calling_pipeline/output/fastqc_out": {
+            "start-time": "Wed Mar 29 12:30:34 2023",
+            "stop-time": "Wed Mar 29 12:32:45 2023",
+            "duration": 131.7352511882782,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/trimmed_reads": {
+            "start-time": "Wed Mar 29 12:32:45 2023",
+            "stop-time": "Wed Mar 29 12:34:07 2023",
+            "duration": 81.90276765823364,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/CSP/bbsplit_out": {
+            "start-time": "Wed Mar 29 12:34:08 2023",
+            "stop-time": "Wed Mar 29 12:38:19 2023",
+            "duration": 251.0882923603058,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/variant_output/PFCRT/vcf": {
+            "start-time": "Wed Mar 29 12:34:08 2023",
+            "stop-time": "Wed Mar 29 12:35:38 2023",
+            "duration": 90.59312868118286,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/AMA/bbsplit_out": {
+            "start-time": "Wed Mar 29 12:35:38 2023",
+            "stop-time": "Wed Mar 29 12:39:58 2023",
+            "duration": 260.17074728012085,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/CSP/trim_filter_out/CSP_10_trim_and_filter_table": {
+            "start-time": "Wed Mar 29 12:38:19 2023",
+            "stop-time": "Wed Mar 29 12:39:13 2023",
+            "duration": 54.48106861114502,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/CSP/optimize_reads_out/CSP_max_read_count": {
+            "start-time": "Wed Mar 29 12:39:13 2023",
+            "stop-time": "Wed Mar 29 12:39:16 2023",
+            "duration": 2.503429412841797,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/CSP/optimize_reads_out/CSP_final_trim_and_filter_table": {
+            "start-time": "Wed Mar 29 12:39:13 2023",
+            "stop-time": "Wed Mar 29 12:39:16 2023",
+            "duration": 2.503429412841797,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/CSP/optimize_reads_out/CSP_final_q_value": {
+            "start-time": "Wed Mar 29 12:39:13 2023",
+            "stop-time": "Wed Mar 29 12:39:16 2023",
+            "duration": 2.503429412841797,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/variant_output/PFMDR1/vcf": {
+            "start-time": "Wed Mar 29 12:39:16 2023",
+            "stop-time": "Wed Mar 29 12:40:34 2023",
+            "duration": 78.13845491409302,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/CSP/CSP_haplotypes.rds": {
+            "start-time": "Wed Mar 29 12:39:59 2023",
+            "stop-time": "Wed Mar 29 12:40:56 2023",
+            "duration": 57.43292284011841,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/CSP/trim_filter_out/CSP_track_reads_through_pipeline.csv": {
+            "start-time": "Wed Mar 29 12:39:59 2023",
+            "stop-time": "Wed Mar 29 12:40:56 2023",
+            "duration": 57.43292284011841,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/variant_output/PFMDR1/DR_mutations.csv": {
+            "start-time": "Wed Mar 29 12:40:34 2023",
+            "stop-time": "Wed Mar 29 12:40:38 2023",
+            "duration": 3.359818696975708,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/multiqc_report.html": {
+            "start-time": "Wed Mar 29 12:40:38 2023",
+            "stop-time": "Wed Mar 29 12:41:03 2023",
+            "duration": 25.20030689239502,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/marker_lengths.csv": {
+            "start-time": "Wed Mar 29 12:40:56 2023",
+            "stop-time": "Wed Mar 29 12:40:59 2023",
+            "duration": 2.4768385887145996,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/CSP/haplotypes/CSP_haplotype_table_precensored.csv": {
+            "start-time": "Wed Mar 29 12:40:59 2023",
+            "stop-time": "Wed Mar 29 12:41:18 2023",
+            "duration": 19.682199239730835,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/CSP/sequences/CSP_snps_between_haps_within_samples.fasta": {
+            "start-time": "Wed Mar 29 12:40:59 2023",
+            "stop-time": "Wed Mar 29 12:41:18 2023",
+            "duration": 19.682199239730835,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/CSP/sequences/CSP_unique_seqs.fasta": {
+            "start-time": "Wed Mar 29 12:40:59 2023",
+            "stop-time": "Wed Mar 29 12:41:18 2023",
+            "duration": 19.682199239730835,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/CSP/sequences/CSP_aligned_seqs.fasta": {
+            "start-time": "Wed Mar 29 12:40:59 2023",
+            "stop-time": "Wed Mar 29 12:41:18 2023",
+            "duration": 19.682199239730835,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/CSP/sequences/CSP_unique_seqs_final_censored.fasta": {
+            "start-time": "Wed Mar 29 12:40:59 2023",
+            "stop-time": "Wed Mar 29 12:41:18 2023",
+            "duration": 19.682199239730835,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/CSP/haplotypes/CSP_haplotype_table_censored_final_version.csv": {
+            "start-time": "Wed Mar 29 12:40:59 2023",
+            "stop-time": "Wed Mar 29 12:41:18 2023",
+            "duration": 19.682199239730835,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/variant_output/PFCRT/DR_mutations.csv": {
+            "start-time": "Wed Mar 29 12:41:03 2023",
+            "stop-time": "Wed Mar 29 12:41:05 2023",
+            "duration": 1.9360146522521973,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/AMA/trim_filter_out/AMA_10_trim_and_filter_table": {
+            "start-time": "Wed Mar 29 12:41:05 2023",
+            "stop-time": "Wed Mar 29 12:41:38 2023",
+            "duration": 32.86639046669006,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/variant_output/dr_depths_freqs.csv": {
+            "start-time": "Wed Mar 29 12:41:18 2023",
+            "stop-time": "Wed Mar 29 12:41:22 2023",
+            "duration": 3.412080764770508,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/AMA/optimize_reads_out/AMA_max_read_count": {
+            "start-time": "Wed Mar 29 12:41:38 2023",
+            "stop-time": "Wed Mar 29 12:41:39 2023",
+            "duration": 1.4462146759033203,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/AMA/optimize_reads_out/AMA_final_trim_and_filter_table": {
+            "start-time": "Wed Mar 29 12:41:38 2023",
+            "stop-time": "Wed Mar 29 12:41:39 2023",
+            "duration": 1.4462146759033203,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/AMA/optimize_reads_out/AMA_final_q_value": {
+            "start-time": "Wed Mar 29 12:41:38 2023",
+            "stop-time": "Wed Mar 29 12:41:39 2023",
+            "duration": 1.4462146759033203,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/AMA/AMA_haplotypes.rds": {
+            "start-time": "Wed Mar 29 12:41:39 2023",
+            "stop-time": "Wed Mar 29 12:42:35 2023",
+            "duration": 55.50417423248291,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/AMA/trim_filter_out/AMA_track_reads_through_pipeline.csv": {
+            "start-time": "Wed Mar 29 12:41:39 2023",
+            "stop-time": "Wed Mar 29 12:42:35 2023",
+            "duration": 55.50417423248291,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/AMA/haplotypes/AMA_haplotype_table_precensored.csv": {
+            "start-time": "Wed Mar 29 12:42:35 2023",
+            "stop-time": "Wed Mar 29 12:42:53 2023",
+            "duration": 17.819761037826538,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/AMA/sequences/AMA_snps_between_haps_within_samples.fasta": {
+            "start-time": "Wed Mar 29 12:42:35 2023",
+            "stop-time": "Wed Mar 29 12:42:53 2023",
+            "duration": 17.819761037826538,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/AMA/sequences/AMA_unique_seqs.fasta": {
+            "start-time": "Wed Mar 29 12:42:35 2023",
+            "stop-time": "Wed Mar 29 12:42:53 2023",
+            "duration": 17.819761037826538,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/AMA/sequences/AMA_aligned_seqs.fasta": {
+            "start-time": "Wed Mar 29 12:42:35 2023",
+            "stop-time": "Wed Mar 29 12:42:53 2023",
+            "duration": 17.819761037826538,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/AMA/sequences/AMA_unique_seqs_final_censored.fasta": {
+            "start-time": "Wed Mar 29 12:42:35 2023",
+            "stop-time": "Wed Mar 29 12:42:53 2023",
+            "duration": 17.819761037826538,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/AMA/haplotypes/AMA_haplotype_table_censored_final_version.csv": {
+            "start-time": "Wed Mar 29 12:42:35 2023",
+            "stop-time": "Wed Mar 29 12:42:53 2023",
+            "duration": 17.819761037826538,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/pre-filt_fastq_read_counts.txt": {
+            "start-time": "Wed Mar 29 12:42:53 2023",
+            "stop-time": "Wed Mar 29 12:43:01 2023",
+            "duration": 8.137572050094604,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/filt_fastq_read_counts.txt": {
+            "start-time": "Wed Mar 29 12:42:53 2023",
+            "stop-time": "Wed Mar 29 12:43:01 2023",
+            "duration": 8.137572050094604,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/long_summary.csv": {
+            "start-time": "Wed Mar 29 12:43:01 2023",
+            "stop-time": "Wed Mar 29 12:43:05 2023",
+            "duration": 3.703033685684204,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "/home/kh455/haplotype_calling_pipeline/output/haplotype_output/wide_summary.csv": {
+            "start-time": "Wed Mar 29 12:43:01 2023",
+            "stop-time": "Wed Mar 29 12:43:05 2023",
+            "duration": 3.703033685684204,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        }
+    }
+}

@@ -1,4 +1,4 @@
-configfile: "config.yaml"
+configfile: "config/config.yaml"
 
 # work on haplotype/variant calling stuff getting fixed first, update readme, then clean up output files
 
@@ -16,13 +16,13 @@ READ_DEPTH_RATIO = config['read_depth_ratio']
 # input & output
 PAIR1 = config['pair1']
 PAIR2 = config['pair2']
-TRIM_FILTER_OUT = config['trim_filter_out']
 
 # paths
 REFS = config['refs']
 FOWARD = config['forward']
 REV = config['rev']
 VARIANT_TABLE = config['variant_table']
+ROOT = config['root']
 
 rule all:
 	input:
@@ -36,19 +36,19 @@ rule all:
 		# expand("{target}/{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv", out=OUT, target=TARGET),
 		# expand("out/trim_summaries.txt", out=OUT),
 		# expand("{out}/dr_depths_freqs.csv", out=OUT),
-		expand("{out}/multiqc_report.html", out=TRIM_FILTER_OUT),
-		#expand("{out}/long_summary.csv", out=OUT),
-		expand("{out}/dr_depths_freqs.csv", out=TRIM_FILTER_OUT) if (len(VARIANT_CALLING) > 0) else [],
-		expand("{out}/long_summary.csv", out=TRIM_FILTER_OUT) if (len(HAPLOTYPE_CALLING) > 0) else [],
+		#expand("{target}/out/fastq/all_samples/", target=HAPLOTYPE_CALLING),
+		expand("{root}/output/multiqc_report.html", root=ROOT),
+		expand("{root}/output/variant_output/dr_depths_freqs.csv", root=ROOT) if (len(VARIANT_CALLING) > 0) else [],
+		expand("{root}/output/haplotype_output/long_summary.csv", root=ROOT) if (len(HAPLOTYPE_CALLING) > 0) else [],
 
 rule call_fastqc:
 	input:
 		pair1=PAIR1,
 		pair2=PAIR2,
 	output:
-		trim_filter_out=directory(expand("{trim_filter_out}/fastqc_in/", trim_filter_out=TRIM_FILTER_OUT)),
+		fastq_out=directory("{root}/output/fastqc_out/"),
 	params:
-		out=TRIM_FILTER_OUT,
+		out="{root}/output",
 		pair1=PAIR1,
 		pair2=PAIR2,
 		pyscript="scripts/step1_call_fastqc.py",
@@ -57,11 +57,11 @@ rule call_fastqc:
 
 rule call_trimmomatic:
 	input:
-		expand("{trim_filter_out}/fastqc_in/", trim_filter_out=TRIM_FILTER_OUT),
+		"{root}/output/fastqc_out/",
 	output:
-		out=directory(expand("{trim_filter_out}/trim/", trim_filter_out=TRIM_FILTER_OUT)),
+		trim_filter_out=directory("{root}/output/trimmed_reads/"),
 	params:
-		out=TRIM_FILTER_OUT,
+		out="{root}/output/trimmed_reads",
 		pair1=PAIR1,
 		pair2=PAIR2,
 		forward=expand("{forward}.fasta", forward=FOWARD),
@@ -72,54 +72,54 @@ rule call_trimmomatic:
 
 rule generate_multiqc_report:
 	input:
-		"{trim_filter_out}/trim",
+		"{root}/output/trimmed_reads/",
 	output:
-		"{trim_filter_out}/multiqc_report.html",
+		"{root}/output/multiqc_report.html",
 	params:
-		trim_filter_out="{trim_filter_out}",
+		out="{root}/output",
 	shell:
-		"multiqc . --outdir {params.trim_filter_out}"
+		"multiqc . --outdir {params.out}"
 
 # variant calling
 if (len(VARIANT_CALLING) > 0):
 	rule variant_calling:
 		input:
-			expand("{trim_filter_out}/trim/", trim_filter_out=TRIM_FILTER_OUT),
+			"{root}/output/trimmed_reads/",
 		output:
-			variant_out=directory("{target}/out/vcf"),
+			variant_out=directory("{root}/output/variant_output/{target}/vcf"),
 		params:
-			variant_out="{target}/out",
-			refs="refs/{target}",
-			trimmed=expand("{trim_filter_out}/trim", trim_filter_out=TRIM_FILTER_OUT),
+			variant_out="{root}/output/variant_output/{target}",
+			refs=REFS + "/{target}",
+			trimmed="{root}/output/trimmed_reads/",
 			target="{target}",
-			pyscript="scripts/step4a_variant_calling.py",
+			pyscript="scripts/step3_variant_calling.py",
 		script:
 			"{params.pyscript}"
 		
 	rule analyze_vcf:
 		input:
-			"{target}/out/vcf",
+			"{root}/output/variant_output/{target}/vcf",
 		output:
-			"{target}/out/DR_mutations.csv",
+			"{root}/output/variant_output/{target}/DR_mutations.csv",
 		params:
 			table=VARIANT_TABLE,
-			vcf="{target}/out/vcf",
+			vcf="{root}/output/variant_output/{target}/vcf",
 			target="{target}",
-			pyscript="scripts/step4b_analyze_VCF.py",
+			pyscript="scripts/step4_analyze_VCF.py",
 		script:
 			"{params.pyscript}"
 		
 	rule combine_vcf_analysis:
 		input:
-			expand("{target}/out/DR_mutations.csv", target=VARIANT_CALLING),
+			expand("{{root}}/output/variant_output/{target}/DR_mutations.csv", target=VARIANT_CALLING),
 		output:
-			dr_depths="{trim_filter_out}/dr_depths_freqs.csv",
+			dr_depths="{root}/output/variant_output/dr_depths_freqs.csv",
 		params:
+			path="{root}/output/variant_output/",
 			targets=VARIANT_CALLING,
-			trim_filter_out=TRIM_FILTER_OUT,
 			table=VARIANT_TABLE,
-			DR_mutations=expand("{target}/out/DR_mutations.csv", target=VARIANT_CALLING),
-			rscript="scripts/step4c_combine_analysis.R",
+			DR_mutations=expand("{root}/output/variant_output/{target}/DR_mutations.csv", root=ROOT, target=VARIANT_CALLING),
+			rscript="scripts/step5_combine_analysis.R",
 		script:
 			"{params.rscript}"
 
@@ -127,133 +127,131 @@ if (len(VARIANT_CALLING) > 0):
 if (len(HAPLOTYPE_CALLING) > 0):
 	rule get_marker_lengths:
 		input:
-			expand("{trim_filter_out}/trim", trim_filter_out=TRIM_FILTER_OUT),
+			"{root}/output/trimmed_reads/",
 		output:
-			"{trim_filter_out}/marker_lengths.csv",
+			"{root}/output/marker_lengths.csv",
 		params:
 			refs=REFS,
 			primers=expand("{forward}.fasta", forward=FOWARD),
-			pyscript="scripts/step3_get_marker_lengths.py",
+			pyscript="scripts/step6_get_marker_lengths.py",
 		script:
 			"{params.pyscript}"
 
 	rule synchronize_reads:
 		input:
-			expand("{trim_filter_out}/trim", trim_filter_out=TRIM_FILTER_OUT),
+			"{root}/output/trimmed_reads/",
 		output:
-			out=directory("{target}/out/fastq/all_samples/"),
+			out=directory("{root}/output/haplotype_output/{target}/bbsplit_out/"),
 		params:
-			out="{target}/out",
-			refs="refs/{target}/{target}.fasta",
-			all_samples="{target}/out/fastq/all_samples",
-			forward_samples="{target}/out/fastq/1",
-			reverse_samples="{target}/out/fastq/2",
-			trimmed=expand("{trim_filter_out}/trim", trim_filter_out=TRIM_FILTER_OUT),
+			out="{root}/output/haplotype_output/{target}/bbsplit_out",
+			refs=REFS + "/{target}/{target}.fasta",
+			mapped_reads="{root}/output/haplotype_output/{target}/bbsplit_out/mapped_reads",
+			forward_samples="{root}/output/haplotype_output/{target}/bbsplit_out/1",
+			reverse_samples="{root}/output/haplotype_output/{target}/bbsplit_out/2",
+			trimmed="{root}/output/trimmed_reads",
 			target="{target}",
-			pyscript="scripts/step4_synchronize_reads.py",
+			pyscript="scripts/step7_synchronize_reads.py",
 		script:
 			"{params.pyscript}"
 
 	rule trim_and_filter:
 		input:
-			"{target}/out/fastq/all_samples/",
+			"{root}/output/haplotype_output/{target}/bbsplit_out/",
 		output:
-			trim_filter_table="{target}/out/haplotype_output/{target}_{q_values}_trimAndFilterTable",
+			trim_filter_table="{root}/output/haplotype_output/{target}/trim_filter_out/{target}_{q_values}_trim_and_filter_table",
 		params:
-			all_samples="{target}/out/fastq/all_samples",
-			read_count="{target}/out/haplotype_output/{target}_read_count",
+			mapped_reads="{root}/output/haplotype_output/{target}/bbsplit_out/mapped_reads",
+			read_count="{root}/output/haplotype_output/{target}/trim_filter_out/{target}_read_count",
 			q_values="{q_values}",
-			haplotype_output="{target}/out/haplotype_output",
-			rscript="scripts/step5_trim_and_filter.R",
+			trim_filter_out="{root}/output/haplotype_output/{target}/trim_filter_out",
+			rscript="scripts/step8_trim_and_filter.R",
 		script:
 			"{params.rscript}"
 
 	rule optimize_reads:
 		input:
-			trim_filter_table=expand("{{target}}/out/haplotype_output/{{target}}_{q_values}_trimAndFilterTable", q_values=TRUNCQ_VALUES),
-			q_trim_filter=expand("{{target}}/out/haplotype_output/{{target}}_{q_values}_trimAndFilterTable", q_values=TRUNCQ_VALUES),
+			trim_filter_table=expand("{{root}}/output/haplotype_output/{{target}}/trim_filter_out/{{target}}_{q_values}_trim_and_filter_table", q_values=TRUNCQ_VALUES),
 		output:
-			max_read_count="{target}/out/haplotype_output/{target}_max_read_count",
-			final_trim_filter_table="{target}/out/haplotype_output/{target}_finalTrimAndFilterTable",
-			final_q_value="{target}/out/haplotype_output/{target}_final_q_value",
+			max_read_count="{root}/output/haplotype_output/{target}/optimize_reads_out/{target}_max_read_count",
+			final_trim_filter_table="{root}/output/haplotype_output/{target}/optimize_reads_out/{target}_final_trim_and_filter_table",
+			final_q_value="{root}/output/haplotype_output/{target}/optimize_reads_out/{target}_final_q_value",
 		params:
 			out="out",
 			target="{target}",
-			trim_filter_path="{target}/out/haplotype_output/{target}",
-			read_count="{target}/out/haplotype_output/{target}_read_count",
-			max_read_count="{target}/out/haplotype_output/{target}_max_read_count",
-			all_samples="{target}/out/fastq/all_samples",
-			final_filtered="{target}/out/fastq/all_samples/final_filtered",
-			rscript="scripts/step6_optimize_reads.R",
+			trim_filter_path="{root}/output/haplotype_output/{target}/trim_filter_out/{target}",
+			read_count="{root}/output/haplotype_output/{target}/trim_filter_out/{target}_read_count",
+			max_read_count="{root}/output/haplotype_output/{target}/optimize_reads_out/{target}_max_read_count",
+			mapped_reads="{root}/output/haplotype_output/{target}/bbsplit_out/mapped_reads",
+			final_filtered="{root}/output/haplotype_output/{target}/bbsplit_out/mapped_reads/final_filtered",
+			rscript="scripts/step9_optimize_reads.R",
 		script:
 			"{params.rscript}"
 
 	rule call_haplotypes:
 		input:
-			"{target}/out/haplotype_output/{target}_finalTrimAndFilterTable",
+			"{root}/output/haplotype_output/{target}/optimize_reads_out/{target}_final_trim_and_filter_table",
 		output:
-			results="{target}/out/haplotype_output/{target}_haplotypes.rds",
-			reads_table="{target}/out/haplotype_output/{target}_trackReadsThroughPipeline.csv",
+			results="{root}/output/haplotype_output/{target}/{target}_haplotypes.rds",
+			reads_table="{root}/output/haplotype_output/{target}/trim_filter_out/{target}_track_reads_through_pipeline.csv",
 		params:
-			all_samples="{target}/out/fastq/all_samples",
-			trim_filter_table="{target}/out/haplotype_output/{target}_finalTrimAndFilterTable",
+			mapped_reads="{root}/output/haplotype_output/{target}/bbsplit_out/mapped_reads",
+			trim_filter_table="{root}/output/haplotype_output/{target}/optimize_reads_out/{target}_final_trim_and_filter_table",
 			cutoff=CUTOFF,
 			seed=SEED,
-			rscript="scripts/step7_call_haplotypes.R",
+			rscript="scripts/step10_call_haplotypes.R",
 		script:
 			"{params.rscript}"
 
 	rule censor_haplotypes:
 		input:
-			input_file="{target}/out/haplotype_output/{target}_haplotypes.rds",
-			lengths=expand("{trim_filter_out}/marker_lengths.csv", trim_filter_out=TRIM_FILTER_OUT),
+			input_file="{root}/output/haplotype_output/{target}/{target}_haplotypes.rds",
+			lengths="{root}/output/marker_lengths.csv",
 		output:
-			precensored_haplotype_table="{target}/out/haplotype_output/{target}_haplotype_table_precensored.csv",
-			snps_between_haps="{target}/out/haplotype_output/{target}_snps_between_haps_within_samples.fasta",
-			unique_seqs="{target}/out/haplotype_output/{target}_uniqueSeqs.fasta",
-			aligned_seqs="{target}/out/haplotype_output/{target}_aligned_seqs.fasta",
-			final_censored="{target}/out/haplotype_output/{target}_uniqueSeqs_final_censored.fasta",
-			final_haplotype_table="{target}/out/haplotype_output/{target}_haplotype_table_censored_final_version.csv",
+			precensored_haplotype_table="{root}/output/haplotype_output/{target}/haplotypes/{target}_haplotype_table_precensored.csv",
+			snps_between_haps="{root}/output/haplotype_output/{target}/sequences/{target}_snps_between_haps_within_samples.fasta",
+			unique_seqs="{root}/output/haplotype_output/{target}/sequences/{target}_unique_seqs.fasta",
+			aligned_seqs="{root}/output/haplotype_output/{target}/sequences/{target}_aligned_seqs.fasta",
+			final_censored="{root}/output/haplotype_output/{target}/sequences/{target}_unique_seqs_final_censored.fasta",
+			final_haplotype_table="{root}/output/haplotype_output/{target}/haplotypes/{target}_haplotype_table_censored_final_version.csv",
 		params:
 			target="{target}",
-			haplotypes="{target}/out/haplotype_output/{target}_haplotypes.rds",
+			haplotypes="{root}/output/haplotype_output/{target}/{target}_haplotypes.rds",
 			depth=READ_DEPTH,
 			proportion=PROPORTION,
-			marker_lengths=expand("{trim_filter_out}/marker_lengths.csv", trim_filter_out=TRIM_FILTER_OUT),
+			marker_lengths="{root}/output/marker_lengths.csv",
 			ratio=READ_DEPTH_RATIO,
-			rscript="scripts/step8_haplotype_censoring.R",
+			rscript="scripts/step11_haplotype_censoring.R",
 		script:
 			"{params.rscript}"
 
 	rule get_read_summaries:
 		input: 
-			expand("{target}/out/haplotype_output/{target}_uniqueSeqs_final_censored.fasta", target=HAPLOTYPE_CALLING),
+			expand("{{root}}/output/haplotype_output/{target}/sequences/{target}_unique_seqs_final_censored.fasta", target=HAPLOTYPE_CALLING),
 		output:
-			trim_summary_names="{trim_filter_out}/trim_summary_names.txt",
-			trim_summaries="{trim_filter_out}/trim_summaries.txt",
-			pre_filt_fastq_counts="{trim_filter_out}/pre-filt_fastq_read_counts.txt",
-			filt_fastq_counts="{trim_filter_out}/filt_fastq_read_counts.txt",
+			pre_filt_fastq_counts="{root}/output/haplotype_output/filtered_dada2/pre-filt_fastq_read_counts.txt",
+			filt_fastq_counts="{root}/output/haplotype_output/filtered_dada2/filt_fastq_read_counts.txt",
 		params:
-			pre_trim_summaries="{trim_filter_out}/trim/summaries",
-			all_pre_trim_summaries="{trim_filter_out}/trim/summaries/*",
-			all_fastq_files="*/out/fastq/all_samples/*fastq.gz",
-			all_filtered_files="*/out/fastq/all_samples/final_filtered/*",
+			trim_summary_names="{root}/output/trimmed_reads/trim_summary_names.txt",
+			trim_summaries="{root}/output/trimmed_reads/trim_summaries.txt",
+			pre_trim_summaries="{root}/output/trimmed_reads/summaries",
+			all_pre_trim_summaries="{root}/output/trimmed_reads/summaries/*",
+			all_fastq_files="{root}/output/haplotype_output/*/bbsplit_out/mapped_reads/*fastq.gz",
+			all_filtered_files="{root}/output/haplotype_output/*/bbsplit_out/mapped_reads/final_filtered/*",
 		script:
-			"scripts/step9_get_read_summaries.sh"
+			"scripts/step12_get_read_summaries.sh"
 
-# keep censored, precensored, remove q value stuff and .rds
 	rule create_summaries:
 		input:
-			trim_summaries="{trim_filter_out}/trim_summaries.txt",
+			pre_filt_fastq_counts="{root}/output/haplotype_output/filtered_dada2/pre-filt_fastq_read_counts.txt",
 		output:
-			long_summary="{trim_filter_out}/long_summary.csv",
-			wide_summary="{trim_filter_out}/wide_summary.csv",
+			long_summary="{root}/output/haplotype_output/long_summary.csv",
+			wide_summary="{root}/output/haplotype_output/wide_summary.csv",
 		params:
-			trim_summary_names="{trim_filter_out}/trim_summary_names.txt",
-			trim_summaries="{trim_filter_out}/trim_summaries.txt",
-			pre_filt_fastq_counts="{trim_filter_out}/pre-filt_fastq_read_counts.txt",
-			filt_fastq_counts="{trim_filter_out}/filt_fastq_read_counts.txt",
-			all_filtered_files="/{trim_filter_out}/fastq/all_samples/final_filtered/.*",
-			rscript="scripts/step10_create_summaries.R",
+			trim_summary_names="{root}/output/trimmed_reads/trim_summary_names.txt",
+			trim_summaries="{root}/output/trimmed_reads/trim_summaries.txt",
+			pre_filt_fastq_counts="{root}/output/haplotype_output/filtered_dada2/pre-filt_fastq_read_counts.txt",
+			filt_fastq_counts="{root}/output/haplotype_output/filtered_dada2/filt_fastq_read_counts.txt",
+			all_filtered_files="{root}/output/haplotype_output//bbsplit_out/mapped_reads/final_filtered/.*",
+			rscript="scripts/step13_create_summaries.R",
 		script:
 			"{params.rscript}"

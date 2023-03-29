@@ -22,7 +22,7 @@ The [`Snakefile`](Snakefile) contains rules which define the output files we wan
 Snakemake automatically builds a directed acyclic graph (DAG) of jobs to figure
 out the dependencies of each of the rules and what order to run them in.
 
-![dag](dag.png)
+![dag](images/dag.png)
 
 The DAG shows how the pipeline can call haplotypes and call variants simultaneously, and how calls can be run in parallel if Snakemake is allowed to run more than one job at a time. Here, the pipeline is parallelized by being called with two targets each for haplotype and variant calling (AMA and CSP for haplotype calling, and PFCRT and PFMDR1 for variant calling) for and six quality scores (2, 5, 10, 15, 20, 25) at the same time.
 
@@ -34,13 +34,13 @@ The DAG shows how the pipeline can call haplotypes and call variants simultaneou
 
 These first three rules are called for the given input data, regardless of whether the pipeline is being used to call haplotypes or call variants. Following this, the pipeline splits up into haplotype and/or variant calling.
 
-`get_marker_lengths` calculates the length of each marker using the lengths of the reference and primer sequences.
-
 `variant_calling` uses a package called Burrows-Wheeler Aligner, or BWA, which maps low-divergent sequences against a large reference genome. This is used for variant calling for drug resistance genes.
 
 `analyze_vcf` takes in the vcf file(s) produced by the previous rule and returns a table of drug-resistance-associated mutations among the amplicon vcf file(s).
 
 `combine_vcf_analysis` uses each target's table returned by `analyze_vcf` and combines them into a summary table that allows for easy analysis of the variant calling results.
+
+`get_marker_lengths` calculates the length of each marker using the lengths of the reference and primer sequences.
 
 `synchronize_reads` cleans, filters, and maps the raw reads. It uses BBmap to map all reads from the reference sequences, CutAdapt to trim the primers and adapter sequences from sequencing reads, and Trimmomatic to quality filter reads if the average of every 4 nucleotides had a Phred Quality Score < 15 or was less than 80 nucleotides long. This is the first step in read processing on the cluster.
 
@@ -107,7 +107,6 @@ These first three rules are called for the given input data, regardless of wheth
     - `variant_calling_targets`: the list of target(s) you want to perform variant calling on.
     - `pair1`: the path to the folder containing the forward reads.
     - `pair2`: the path to the folder containing the reverse reads.
-    - `trim_filter_out`: the path to the overall output folder, which will contain the output produced from trimming and filtering as well as the final output summary tables.
     - `refs`: the path to the folder containing reference sequences for the polymorphic gene target that will be used to map the raw reads to the appropriate gene targets of interest.
     - `forward`: the path to the file with the list of forward primers.
     - `rev`: the path to the file with the list of reverse primers.
@@ -165,7 +164,7 @@ These first three rules are called for the given input data, regardless of wheth
 
     Run it **locally** with:
     ``` sh
-    snakemake --cores {NCORES} # NCORES = number of cores, ie. without parallelization use snakemake --cores 1. You can use snakemake -n to see how many jobs you'll need given the number of targets and quality scores you put in the config file.
+    snakemake --cores {NCORES} --stats output/stats # NCORES = number of cores, ie. without parallelization use snakemake --cores 1. You can use snakemake -n to see how many jobs you'll need given the number of targets and quality scores you put in the config file. The stats command produces a JSON file where you can see statistics about your run, such as runtime.
     ```
 
     To run the workflow on an **HPC with Slurm**:
@@ -188,23 +187,23 @@ These first three rules are called for the given input data, regardless of wheth
 
 Below shows what output files looked like after running this pipeline with a small sample of haplotypes.
 
-`call_fastqc` should produce an output folder `{trim_filter_out}`. Within the output folder, there should be a `fastqc_in` folder with FastQC reports for each input fastq file. This allows you to visualize and assess quality collectively across all reads within a sample. To open the .zip files, download and extract the files.
+`call_fastqc` should produce an `output` directory with a `fastqc_out` folder that contains FastQC reports for each input fastq file. This allows you to visualize and assess quality collectively across all reads within a sample. To open the .zip files, download and extract the files.
 
 Example of FastQC output files for a single sample: `BF1_S1_L001_R1_001_fastqc.html`, `BF1_S1_L001_R1_001_fastqc.zip`, `BF1_S1_L001_R2_001_fastqc.html`, `BF1_S1_L001_R2_001_fastqc.zip`
 
-`call_trimmomatic` should add a `trim` folder within the output directory containing the results from the Trimmomatic program, which filters poor quality reads and trims poor quality bases from your samples and produces statistical summaries.
+`call_trimmomatic` should add a `trimmed_reads` folder within the output directory containing the results from the Trimmomatic program, which filters poor quality reads and trims poor quality bases from your samples and produces statistical summaries.
 
-The `trim` folder contains four folders labeled `1`, `2`, `singleton`, and `summaries`. As an example, the `trim/1` folder contains a `BF1.1.fastq.gz` file, the `trim/2` folder contains a `BF1.2.fastq.gz` file, the `singleton` folder contains `BF1.1_unpaired.fq.gz` and `BF1.2_unpaired.fq.gz` files, and the `summaries` folder contains a `BF1.summary` file.
+The `trimmed_reads` folder contains four folders labeled `1`, `2`, `singleton`, and `summaries`. As an example, the `trim/1` folder contains a `BF1.1.fastq.gz` file, the `trim/2` folder contains a `BF1.2.fastq.gz` file, the `singleton` folder contains `BF1.1_unpaired.fq.gz` and `BF1.2_unpaired.fq.gz` files, and the `summaries` folder contains a `BF1.summary` file.
 
 `generate_multiqc_report` should create a file `multiqc_report.html` in the output directory. If you download this file to your local computer, you can open it in a browser to see the aggregated results as an HTML report.
 
-![multiqc](multiqc_screenshot.png)
+![multiqc](images/multiqc_screenshot.png)
 
 ### Variant Calling
 
-`variant_calling` should create a directory for each target, with each directory containing four folders: `bam`, `sam`, `sort_bam`, and `vcf`.
+`variant_calling` should create a `variant_output` directory, as well as a directory within it for each target, with each one containing four folders: `bam`, `sam`, `sort_bam`, and `vcf`.
 
-`analyze_vcf` should temporarily create a file called `DR_mutations.csv` in the output directory for each target. After running the pipeline on a small set of samples, the PFCRT table looked like this:
+`analyze_vcf` should temporarily create a file called `DR_mutations.csv` in the directory for each target. After running the pipeline on a small set of samples, the PFCRT table looked like this:
 
 |FIELD1|Target|Sample|POS|REF|ALT|ALT_DEPTH|DEPTH|ALT_FREQ|
 |------|------|------|---|---|---|---------|-----|--------|
@@ -213,7 +212,7 @@ The `trim` folder contains four folders labeled `1`, `2`, `singleton`, and `summ
 |2     |PFCRT |BF252 |466|C  |.  |0        |12   |0.0     |
 |3     |PFCRT |BF252 |610|C  |.  |0        |7    |0.0     |
 
-`combine_vcf_analysis` should create a file called `dr_depths_freqs.csv` in the output directory. After running the pipeline on a small set of samples with targets PFCRT and PFMDR1, our depths frequency table looked like this:
+`combine_vcf_analysis` should create a file called `dr_depths_freqs.csv` in the `variant_output` directory. After running the pipeline on a small set of samples with targets PFCRT and PFMDR1, our depths frequency table looked like this:
 
 |Target|Sample|POS|BASE|TOTAL_DEPTH|DEPTH|FREQ                |
 |------|------|---|----|-----------|-----|--------------------|
@@ -279,11 +278,11 @@ The `trim` folder contains four folders labeled `1`, `2`, `singleton`, and `summ
 
 `get_marker_lengths` should add a csv file containing the names of each marker and their corresponding lengths called `marker_lengths.csv` to the output directory.
 
-`synchronize_reads` should create a directory for each target, with each directory containing three folders: `fastq/all_samples`, `ref`, and `results`. `all_samples` contains the cleaned and mapped fastq files, `ref` contains information about the indexes produced and referenced by the BBSplit program, and `results` contains summaries of the BBSplit call on each sample.
+`synchronize_reads` should create a `haplotype_output` directory, as well as a directory within it for each target. For each target, the rule creates a `bbsplit_out` folder containing three folders: `mapped_reads`, `ref`, and `map_info`. `mapped_reads` contains the cleaned and mapped fastq files, `ref` contains information about the indexes produced and referenced by the BBSplit program, and `map_info` contains summaries of the BBSplit call on each sample.
 
-As an example, for AMA, the `fastq/all_samples` folder contains `BF1_AMA_1.fastq.gz` and `BF1_AMA_2.fastq.gz` files, the `ref` folder contains a `genome/1` folder that has `merged_ref_64917.fa.gz`, `namelist.txt`, and `reflist.txt` files, and `results` contains a `BF1.txt` file.
+As an example, for AMA, the `mapped_reads` folder contains `BF1_AMA_1.fastq.gz` and `BF1_AMA_2.fastq.gz` files, the `ref` folder contains a `genome/1` folder that has `merged_ref_64917.fa.gz`, `namelist.txt`, and `reflist.txt` files, and `map_info` contains a `BF1.txt` file.
 
-`trim_and_filter` should produce a `haplotype_output` folder in each target's directory that contains a summary for read trimming and filtering for each q value (which can be changed in the config file), `{target}_{q_values}_trimAndFilterTable`. It also produces a `{target}/read_count` file that lists the read counts for each q value.
+`trim_and_filter` should produce a `trim_filter_out` folder in each target's directory that contains a summary for read trimming and filtering for each q value (which can be changed in the config file), `{target}_{q_values}_trim_and_filter_table`. It also produces a `{target}/read_count` file that lists the read counts for each q value.
 
 After running the pipeline on a small sample of haplotypes, the AMA trim and filter table for a q value of 2 looked like this:
 
@@ -311,7 +310,7 @@ And the AMA read count table looked like this:
 | 5  | 81096  |
 | 10 | 116036 |
 
-`optimize_reads` should produce 3 files in the `haplotype_output` folder: `{target}_final_q_value`, `{target}_max_read_count`, and `{target}_finalTrimAndFilterTable`.
+`optimize_reads` should produce an `optimize_reads_out` folder with 3 files: `{target}_final_q_value`, `{target}_max_read_count`, and `{target}_final_trim_and_filter_table`.
 - `{target}_final_q_value`: contains the quality score that produced the highest number of read counts.
 - `{target}_max_read_count`: contains the value of the highest number of read counts—the read count associated with the optimal quality score.
 - `{target}_finalTrimAndFilterTable`: contains the trim and filter table that was created with the optimal quality score.
@@ -337,11 +336,11 @@ And the final AMA trim and filter table looked like this:
 | BF8_AMA_1.fastq.gz  | 11474    | 10326     |
 | BF9_AMA_1.fastq.gz  | 12432    | 10560     |
 
-`call_haplotypes` should add two files to the `haplotype_output` folder: `{target}_haplotypes.rds` and `{target}_trackReadsThroughPipeline.csv`. 
+`call_haplotypes` should add a temporary file `{target}_haplotypes.rds` to the `haplotype_output` folder as well as a file `{target}_track_reads_through_pipeline.csv` to the `trim_filter_out` folder. 
 - `{target}_haplotypes.rds`: R file that stores the haplotype results data set for further manipulation in `censor_haplotypes`. 
-- `{target}_trackReadsThroughPipeline.csv`: tracks the reads, looking at the number of reads that made it through each step of the pipeline.
+- `{target}_track_reads_through_pipeline.csv`: tracks the reads, looking at the number of reads that made it through each step of the pipeline.
 
-With our small sample, the trackReadsThroughPipeline table for AMA looked like this:
+With our small sample, the track reads through pipeline table for AMA looked like this:
 
 |      | merged | tabled | nonchim |
 |------|--------|--------|---------|
@@ -356,12 +355,12 @@ With our small sample, the trackReadsThroughPipeline table for AMA looked like t
 | BF8  | 10314  | 10314  | 10314   |
 | BF9  | 10549  | 10549  | 10549   |
 
-`censor_haplotypes` should add six files to the haplotype_output folder: `{target}_haplotype_table_precensored.csv`, `{target}_snps_between_haps_within_samples.fasta`, `{target}_uniqueSeqs.fasta`, `{target}_aligned_seqs.fasta`, `{target}_uniqueSeqs_final_censored.fasta`, and `{target}_haplotype_table_censored_final_version.csv`. 
+`censor_haplotypes` should produce a `haplotypes` folder for each target with two files `{target}_haplotype_table_precensored.csv` and `{target}_haplotype_table_censored_final_version.csv`. It should also produce a `sequences` folder with four files: `{target}_snps_between_haps_within_samples.fasta`, `{target}_unique_seqs.fasta`, `{target}_aligned_seqs.fasta`, and `{target}_unique_seqs_final_censored.fasta`.
 - `{target}_haplotype_table_precensored.csv`: outputs the haplotype data set prior to beginning the censoring process (essentially `{target}_haplotypes.rds` in a formatted csv file). 
 - `{target}_snps_between_haps_within_samples.fasta`: fasta file of the haplotypes after the first three steps of the censoring process are completed. This is used to tally up the number of SNPs between all haplotype pairings. 
-- `{target}_uniqueSeqs.fasta`: fasta file of the haplotypes after the fourth step of the censoring process is completed. 
+- `{target}_unique_seqs.fasta`: fasta file of the haplotypes after the fourth step of the censoring process is completed. 
 - `{target}_aligned_seqs.fasta`: fasta file of the sequences after alignment. 
-- `{target}_uniqueSeqs_final_censored.fasta`: fasta file of the haplotype results after all five steps of the censoring process are completed. 
+- `{target}_unique_seqs_final_censored.fasta`: fasta file of the haplotype results after all five steps of the censoring process are completed. 
 - `{target}_haplotype_table_censored_final_version.csv`: outputs the final censored haplotype data set in a formatted table.
 
 With our small sample, the AMA haplotype_table_precensored file looked like this:
@@ -397,7 +396,7 @@ GTAAAGGTATAATTATTGAGAATTCAAAAACTACTTTTTTAACACCGGTAGCTACGGAAAATCAAGATTTAAAAGATGGA
 GTAAAGGTATAATTATTGAGAATTCAAATACTACTTTTTTAAAACCGGTAGCTACGGGAAATCAAGATTTAAAAGATGGAGGTTTTGCTTTTCCTCCAACAGAACCTCTTATATCACCAATGACATTAAATGGTATGAGAGATTTTTATAAAAATAATGAATATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGAATCCAGATAAGGATGAAAATTCAAATTATAAATATCCAGCTGTTTATGATGACAAAGATAAAAAGTGTCATATATTATATATTG
 ```
 
-The AMA uniqueSeqs file looked like this: 
+The AMA unique_seqs file looked like this: 
 ```
 >Seq1
 GTAAAGGTATAATTATTGAGAATTCAAATACTACTTTTTTAACACCGGTAGCTACGGGAAATCAATATTTAAAAGATGGAGGTTTTGCTTTTCCTCCAACAGAACCTCATATGTCACCAATGACATTAGATGAAATGAGACATTTTTATAAAGATAATAAATATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGATTCCAGATAATGATAAAAATTCAAATTATAAATATCCAGCTGTTTATGATGACAAAGATAAAAAGTGTCATATATTATATATTG
@@ -455,7 +454,7 @@ ATATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGAATCCAGATAAGGATGAAAATTCAA
 ATTATAAATATCCAGCTGTTTATGATGACAAAGATAAAAAGTGTCATATATTATATATTG
 ```
 
-The AMA uniqueSeqs_final_censored file looked like this:
+The AMA unique_seqs_final_censored file looked like this:
 ```
 >Seq1
 GTAAAGGTATAATTATTGAGAATTCAAATACTACTTTTTTAAAACCGGTAGCTACGGGAAATCAAGATTTAAAAGATGGAGGTTTTGCTTTTCCTCCAACAAATCCTCTTATATCACCAATGACATTAAATGGTATGAGAGATTTTTATAAAAATAATGAATATGTAAAAAATTTAGATGAATTGACTTTATGTTCAAGACATGCAGGAAATATGAATCCAGATAATGATGAAAATTCAAATTATAAATATCCAGCTGTTTATGATGACAAAGATAAAAAGTGTCATATATTATATATTG
@@ -469,9 +468,9 @@ And the AMA haplotype_table_censored_final table looked like this:
 | 12186 | BF4      |
 | 603   | BF7      |
 
-`get_read_summaries` should produce 4 files in the `{trim_filter_out}` folder: `trim_summaries`, `trim_summary_names`, `pre-filt_fastq_read_counts`, and `filt_fastq_read_counts`.
-- `trim_summaries` consolidates all the `{out}/trim/summaries` data into one file.
-- `trim_summary_names` contains all the file names in `{out}/trim/summaries`.
+`get_read_summaries` should produce two files, `pre-filt_fastq_read_counts` and `filt_fastq_read_counts`, in the `haplotype_output` folder, and two files, `trim_summaries` and `trim_summary_names`, in the `output/trimmed_reads` folder.
+- `trim_summaries` consolidates all the `output/trimmed_reads/summaries` data into one file.
+- `trim_summary_names` contains all the file names in `output/trimmed_reads/summaries`.
 - `pre-filt_fastq_read_counts` contains the read counts prior to filtering.
 - `filt-fastq_read_counts` contains the read counts after filtering.
 
@@ -548,7 +547,7 @@ AMA/out/fastq/all_samples/final_filtered/BF3_final_F_filt.fastq.gz	8491
 AMA/out/fastq/all_samples/final_filtered/BF3_final_R_filt.fastq.gz	8491
 ```
 
-`create_summaries` should produce 2 files in the `{trim_filter_out}` folder: `long_summary` and `wide_summary`. `long_summary` is a csv file that summarizes the read counts with columns read_type, read_ct, sample, and target. This allows for easy manipulation of the dataframe if needed in the future. `wide_summary` is a csv file that summarizes the read counts with each row being a sample. This allows for easy visualization of the data analysis to see how each sample did throughout the workflow.
+`create_summaries` should produce 2 files in the `haplotype_output` folder: `long_summary` and `wide_summary`. `long_summary` is a csv file that summarizes the read counts with columns read_type, read_ct, sample, and target. This allows for easy manipulation of the dataframe if needed in the future. `wide_summary` is a csv file that summarizes the read counts with each row being a sample. This allows for easy visualization of the data analysis to see how each sample did throughout the workflow.
 
 With our small samples of AMA and CSP, the long summary looked like this:
 

@@ -11,8 +11,8 @@ import subprocess
 def makeOutDirs(out):
     i = 0
     os.system('mkdir -p {}'.format(out))
-    os.system('mkdir -p {}/fastqc_in'.format(out))
-    print ("\tFastqc .html files of input reads stored in {}/fastqc_in".format(out))
+    os.system('mkdir -p {}/fastqc_out'.format(out))
+    print ("\tFastqc .html files of input reads stored in {}/fastqc_out".format(out))
 
 def getReads(readsDir):
     if os.path.exists(readsDir):
@@ -43,4 +43,4 @@ pairedReadFiles1 = getReads(pair1)
 pairedReadFiles2 = getReads(pair2)
 
 # call fastqc
-QCreads(pair1, pair2, out + "/fastqc_in", pairedReadFiles1, pairedReadFiles2, "fastq")
+QCreads(pair1, pair2, out + "/fastqc_out", pairedReadFiles1, pairedReadFiles2, "fastq")

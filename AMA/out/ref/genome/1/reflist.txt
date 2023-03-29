@@ -1,1 +1,0 @@
-/gpfs/fs1/home/kh455/haplotype_calling_pipeline/refs/AMA/AMA.fasta
