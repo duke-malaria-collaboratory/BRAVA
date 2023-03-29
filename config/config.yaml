@@ -17,7 +17,7 @@ variant_table: input/variant_calling_table.csv
 root: /home/kh455/haplotype_calling_pipeline
 
 # step4_trim_and_filter
-truncQ_values: [10] # values of truncQ to be used in the filterAndTrim function to find the optimal truncQ value
+truncQ_values: [2, 5, 10, 15, 20, 25] # values of truncQ to be used in the filterAndTrim function to find the optimal truncQ value
 # [2, 5, 10, 15, 20, 25]
 
 # step6_call_haplotypes.R
