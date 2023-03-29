@@ -1,7 +1,5 @@
 configfile: "config/config.yaml"
 
-# work on haplotype/variant calling stuff getting fixed first, update readme, then clean up output files
-
 # modifiable parameters - change in config.yaml file
 #TARGET = config['target']
 VARIANT_CALLING = config['variant_calling_targets']
