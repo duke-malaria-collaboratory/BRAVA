@@ -100,9 +100,9 @@ These first three rules are called for the given input data, regardless of wheth
        ```
        
     - Alternatively, you can install the dependencies listed in
-    [`environment.yaml`](environment.yaml) however you like.
+    [`environment.yaml`](config/environment.yaml) however you like.
 
-1. Edit the configuration file [`config.yaml`](config.yaml).
+1. Edit the configuration file [`config.yaml`](config/config.yaml).
     - `haplotype_calling_targets`: the list of target(s) you want to perform haplotype calling on.
     - `variant_calling_targets`: the list of target(s) you want to perform variant calling on.
     - `pair1`: the path to the folder containing the forward reads.
