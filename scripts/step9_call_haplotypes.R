@@ -17,6 +17,7 @@ library("dada2")
 # read in the path to your folder of fastq files
 path <- snakemake@params[["mapped_reads"]]
 trim_filter_table <- read.csv(snakemake@params[["trim_filter_table"]])
+q_values <- snakemake@params[["q_values"]]
 print("Fastq files:")
 list.files(path)
 
@@ -35,9 +36,9 @@ if (!any(duplicated(c(fnFs, fnRs)))) {
   fnRs <- file.path(path, fnRs)
 
   # first define the filenames for the filtered fastq.gz files
-  filt_path <- file.path(path, "final_filtered") # Place filtered files in filtered/ subdirectory
-  filtFs <- file.path(filt_path, paste0(sample.names, "_final_F_filt.fastq.gz"))
-  filtRs <- file.path(filt_path, paste0(sample.names, "_final_R_filt.fastq.gz"))
+  filt_path <- file.path(path, "filtered") # Place filtered files in filtered/ subdirectory
+  filtFs <- file.path(filt_path, paste0(sample.names, "_", q_values, "_F_filt.fastq.gz"))
+  filtRs <- file.path(filt_path, paste0(sample.names, "_", q_values, "_R_filt.fastq.gz"))
 
   # remove samples that had less than 50 reads after sampling
   keep <- trim_filter_table[,"reads.out"] > snakemake@params[["cutoff"]] # Or other cutoff
@@ -101,6 +102,21 @@ if (!any(duplicated(c(fnFs, fnRs)))) {
   track <- cbind(sapply(mergers, getN), rowSums(seqtab), rowSums(seqtab.nochim))
   colnames(track) <- c("merged", "tabled", "nonchim")
   rownames(track) <- sample.names
+
+  # sum read counts and output it to a file
+  sum <- colSums(track)
+  read_count <- sum[['nonchim']]
+  print("Number of reads:")
+  print(read_count)
+  to_write <- data.frame(q_values, read_count)
+  print(to_write)
+  if (!file.exists(snakemake@params[["read_count"]])) {
+    file.create(snakemake@params[["read_count"]])
+    write.table(to_write, file=snakemake@params[["read_count"]], append=FALSE, col.names = FALSE, row.names = FALSE)
+  } else {
+      write.table(to_write, file=snakemake@params[["read_count"]], append=TRUE, col.names = FALSE, row.names = FALSE)
+  }
+
   write.csv(track, snakemake@output[["reads_table"]])
 
 }

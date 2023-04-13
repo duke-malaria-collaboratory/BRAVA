@@ -45,24 +45,24 @@ if (!any(duplicated(c(fnFs, fnRs)))) {
   out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, maxN=0, maxEE=c(1,1), truncQ=strtoi(snakemake@params[["q_values"]]), rm.phix=FALSE,
                       compress=TRUE, multithread=FALSE, matchIDs = TRUE)
   # sum read counts and output it into a file
-  sum <- colSums(out)
-  read_count <- sum[['reads.out']]
-  print("Number of reads:")
-  print(read_count)
-  q_values <- snakemake@params[["q_values"]]
-  to_write <- data.frame(q_values, read_count)
-  print(to_write)
-  if (!dir.exists(snakemake@params[["trim_filter_out"]])) {
-    dir.create(snakemake@params[["trim_filter_out"]])
-    write.table(to_write, file=snakemake@params[["read_count"]], append=FALSE, col.names = FALSE, row.names = FALSE)
-  } else {
-    if (!file.exists(snakemake@params[["read_count"]])) {
-      file.create(snakemake@params[["read_count"]])
-      write.table(to_write, file=snakemake@params[["read_count"]], append=FALSE, col.names = FALSE, row.names = FALSE)
-    } else {
-      write.table(to_write, file=snakemake@params[["read_count"]], append=TRUE, col.names = FALSE, row.names = FALSE)
-    }
-  }
+  # sum <- colSums(out)
+  # read_count <- sum[['reads.out']]
+  # print("Number of reads:")
+  # print(read_count)
+  # q_values <- snakemake@params[["q_values"]]
+  # to_write <- data.frame(q_values, read_count)
+  # print(to_write)
+  # if (!dir.exists(snakemake@params[["trim_filter_out"]])) {
+  #   dir.create(snakemake@params[["trim_filter_out"]])
+  #   write.table(to_write, file=snakemake@params[["read_count"]], append=FALSE, col.names = FALSE, row.names = FALSE)
+  # } else {
+  #   if (!file.exists(snakemake@params[["read_count"]])) {
+  #     file.create(snakemake@params[["read_count"]])
+  #     write.table(to_write, file=snakemake@params[["read_count"]], append=FALSE, col.names = FALSE, row.names = FALSE)
+  #   } else {
+  #     write.table(to_write, file=snakemake@params[["read_count"]], append=TRUE, col.names = FALSE, row.names = FALSE)
+  #   }
+  # }
   # output summary of read trimming and filtering
   write.csv(out,snakemake@output[["trim_filter_table"]])
 }

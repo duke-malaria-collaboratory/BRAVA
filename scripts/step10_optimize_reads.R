@@ -11,10 +11,15 @@ final_read_count <- max_read_count$read_count
 # write the highest read count to a file
 write(final_read_count, file=snakemake@output[["max_read_count"]])
 write(final_q_value, file=snakemake@output[["final_q_value"]])
+
 # copy the trim and filter table for the q value with the highest read count - we will later delete all trim and filter tables except this
-print(file.path(paste0(snakemake@params[["trim_filter_path"]], "_", final_q_value, "_trim_and_filter_table")))
-trim_filter_table <- file.path(paste0(snakemake@params[["trim_filter_path"]], "_", final_q_value, "_trim_and_filter_table"))
-file.copy(from=trim_filter_table, to=snakemake@output[["final_trim_filter_table"]])
+# print(file.path(paste0(snakemake@params[["trim_filter_path"]], "_", final_q_value, "_track_reads_through_pipeline.csv")))
+reads_table <- file.path(paste0(snakemake@params[["trim_filter_path"]], "_", final_q_value, "_track_reads_through_pipeline.csv"))
+file.copy(from=reads_table, to=snakemake@output[["final_reads_table"]])
+
+print(file.path(paste0(snakemake@params[["haplotype_output_path"]], "_", final_q_value, "_haplotypes.rds")))
+haplotype_table <- file.path(paste0(snakemake@params[["haplotype_output_path"]], "_", final_q_value, "_haplotypes.rds"))
+file.copy(from=haplotype_table, to=snakemake@output[["final_haplotype_table"]])
 
 # copy all the filtered fastq files for the q value with the highest read count - we will later delete all filtered fastq files except this
 # create new folder for final filtered fastq files
@@ -36,3 +41,4 @@ file.copy(from=filtRs, to=final_filtRs)
 
 # now delete the old filtered folder, as it contains the filtered fastq files for the nonoptimal truncQ values
 unlink(filt_path, recursive=TRUE)
+unlink(paste0(snakemake@params[["haplotype_output_path"]], "*_haplotypes.rds"))
