@@ -46,9 +46,9 @@ These first three rules are called for the given input data, regardless of wheth
 
 `trim_and_filter` filters and trims the forward and reverse reads using the DADA2 program and outputs them into a `filtered` folder.
 
-`optimize_reads` finds the quality score that produces the highest number of read counts and uses only the filtered reads created using that quality score.
-
 `call_haplotypes` calls haplotypes for your target(s) and writes the results out into a reads table.
+
+`optimize_reads` finds the quality score that produces the highest number of read counts and uses only the filtered reads created using that quality score.
 
 `censor_haplotypes` censors falsely detected haplotypes. Censoring criteria is applied in this order:
 1. Haplotypes that occur in < 250 of the sample’s reads are removed. You can change this criteria in the config file ("read_depth").
@@ -310,32 +310,6 @@ And the AMA read count table looked like this:
 | 5  | 81096  |
 | 10 | 116036 |
 
-`optimize_reads` should produce an `optimize_reads_out` folder with 3 files: `{target}_final_q_value`, `{target}_max_read_count`, and `{target}_final_trim_and_filter_table`.
-- `{target}_final_q_value`: contains the quality score that produced the highest number of read counts.
-- `{target}_max_read_count`: contains the value of the highest number of read counts—the read count associated with the optimal quality score.
-- `{target}_finalTrimAndFilterTable`: contains the trim and filter table that was created with the optimal quality score.
-
-With our small sample, the AMA final q value was:
-`10`
-
-The AMA max read count was:
-`116036`
-
-And the final AMA trim and filter table looked like this:
-
-|                     | reads.in | reads.out |
-|---------------------|----------|-----------|
-| BF1_AMA_1.fastq.gz  | 13072    | 11777     |
-| BF10_AMA_1.fastq.gz | 14875    | 13384     |
-| BF2_AMA_1.fastq.gz  | 15269    | 13718     |
-| BF3_AMA_1.fastq.gz  | 10116    | 8491      |
-| BF4_AMA_1.fastq.gz  | 13672    | 12226     |
-| BF5_AMA_1.fastq.gz  | 12650    | 11119     |
-| BF6_AMA_1.fastq.gz  | 14591    | 13085     |
-| BF7_AMA_1.fastq.gz  | 12760    | 11350     |
-| BF8_AMA_1.fastq.gz  | 11474    | 10326     |
-| BF9_AMA_1.fastq.gz  | 12432    | 10560     |
-
 `call_haplotypes` should add a temporary file `{target}_haplotypes.rds` to the `haplotype_output` folder as well as a file `{target}_track_reads_through_pipeline.csv` to the `trim_filter_out` folder. 
 - `{target}_haplotypes.rds`: R file that stores the haplotype results data set for further manipulation in `censor_haplotypes`. 
 - `{target}_track_reads_through_pipeline.csv`: tracks the reads, looking at the number of reads that made it through each step of the pipeline.
@@ -354,6 +328,32 @@ With our small sample, the track reads through pipeline table for AMA looked lik
 | BF7  | 11049  | 11049  | 10773   |
 | BF8  | 10314  | 10314  | 10314   |
 | BF9  | 10549  | 10549  | 10549   |
+
+`optimize_reads` should produce an `optimize_reads_out` folder with 3 files: `{target}_final_q_value`, `{target}_max_read_count`, and `{target}_final_track_reads_through_pipeline`.
+- `{target}_final_q_value`: contains the quality score that produced the highest number of read counts.
+- `{target}_max_read_count`: contains the value of the highest number of read counts—the read count associated with the optimal quality score.
+- `{target}_final_track_reads_through_pipeline`: contains the reads table that was created with the optimal quality score.
+
+With our small sample, the AMA final q value was:
+`10`
+
+The AMA max read count was:
+`114561`
+
+And the final AMA trim and filter table looked like this:
+
+|      |merged|tabled|nonchim|
+|------|------|------|-------|
+|BF1   |11768 |11768 |11768  |
+|BF10  |13377 |13377 |13377  |
+|BF2   |13681 |13681 |13681  |
+|BF3   |8450  |8450  |8450   |
+|BF4   |12211 |12211 |12211  |
+|BF5   |10584 |10584 |10360  |
+|BF6   |13078 |13078 |13078  |
+|BF7   |11049 |11049 |10773  |
+|BF8   |10314 |10314 |10314  |
+|BF9   |10549 |10549 |10549  |
 
 `censor_haplotypes` should produce a `haplotypes` folder for each target with two files `{target}_haplotype_table_precensored.csv` and `{target}_haplotype_table_censored_final_version.csv`. It should also produce a `sequences` folder with four files: `{target}_snps_between_haps_within_samples.fasta`, `{target}_unique_seqs.fasta`, `{target}_aligned_seqs.fasta`, and `{target}_unique_seqs_final_censored.fasta`.
 - `{target}_haplotype_table_precensored.csv`: outputs the haplotype data set prior to beginning the censoring process (essentially `{target}_haplotypes.rds` in a formatted csv file). 
