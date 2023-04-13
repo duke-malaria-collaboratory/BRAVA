@@ -310,26 +310,26 @@ And the AMA read count table looked like this:
 | 5  | 81096  |
 | 10 | 116036 |
 
-`call_haplotypes` should add a temporary file `{target}_haplotypes.rds` to the `haplotype_output` folder as well as a file `{target}_track_reads_through_pipeline.csv` to the `trim_filter_out` folder. 
-- `{target}_haplotypes.rds`: R file that stores the haplotype results data set for further manipulation in `censor_haplotypes`. 
-- `{target}_track_reads_through_pipeline.csv`: tracks the reads, looking at the number of reads that made it through each step of the pipeline.
+`call_haplotypes` should add temporary files `{target}_{q_values}_haplotypes.rds` to the `haplotype_output` folder as well as a file `{target}_{q_values}_track_reads_through_pipeline.csv` to the `trim_filter_out` folder. 
+- `{target}_{q_values}_haplotypes.rds`: R file that stores the haplotype results data set for each q value for further manipulation in `censor_haplotypes`. 
+- `{target}_{q_values}_track_reads_through_pipeline.csv`: tracks the reads, looking at the number of reads that made it through each step of the pipeline for each q value.
 
-With our small sample, the track reads through pipeline table for AMA looked like this:
+With our small sample, the AMA track reads through pipeline table for a q value of 2 looked like this:
 
-|      | merged | tabled | nonchim |
-|------|--------|--------|---------|
-| BF1  | 11768  | 11768  | 11768   |
-| BF10 | 13377  | 13377  | 13377   |
-| BF2  | 13681  | 13681  | 13681   |
-| BF3  | 8450   | 8450   | 8450    |
-| BF4  | 12211  | 12211  | 12211   |
-| BF5  | 10584  | 10584  | 10360   |
-| BF6  | 13078  | 13078  | 13078   |
-| BF7  | 11049  | 11049  | 10773   |
-| BF8  | 10314  | 10314  | 10314   |
-| BF9  | 10549  | 10549  | 10549   |
+|      |merged|tabled|nonchim|
+|------|------|------|-------|
+|BF1   |8296  |8296  |8296   |
+|BF10  |9241  |9241  |9241   |
+|BF2   |10239 |10239 |10239  |
+|BF3   |5056  |5056  |5056   |
+|BF4   |8850  |8850  |8850   |
+|BF5   |7614  |7614  |7210   |
+|BF6   |9752  |9752  |9752   |
+|BF7   |8125  |8125  |7795   |
+|BF8   |7378  |7378  |7378   |
+|BF9   |6317  |6317  |6317   |
 
-`optimize_reads` should produce an `optimize_reads_out` folder with 3 files: `{target}_final_q_value`, `{target}_max_read_count`, and `{target}_final_track_reads_through_pipeline`.
+`optimize_reads` should produce an `optimize_reads_out` folder with 3 files: `{target}_final_q_value`, `{target}_max_read_count`, and `{target}_final_track_reads_through_pipeline`, and remove the temporary files from the last step.
 - `{target}_final_q_value`: contains the quality score that produced the highest number of read counts.
 - `{target}_max_read_count`: contains the value of the highest number of read counts—the read count associated with the optimal quality score.
 - `{target}_final_track_reads_through_pipeline`: contains the reads table that was created with the optimal quality score.
