@@ -34,5 +34,5 @@
 ##INFO=<ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
 ##INFO=<ID=MQ,Number=1,Type=Integer,Description="Average mapping quality">
 ##bcftools_callVersion=1.16+htslib-1.17
-##bcftools_callCommand=call -Ov -m --skip-variants indels; Date=Mon Apr 24 12:15:35 2023
+##bcftools_callCommand=call -Ov -m --skip-variants indels; Date=Mon Apr 24 13:00:37 2023
 #CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	/home/kh455/haplotype_calling_pipeline/output/variant_output/PFCRT/sort_bam/BF248_sort.bam

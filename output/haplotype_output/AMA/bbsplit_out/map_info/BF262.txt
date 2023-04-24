@@ -18,9 +18,9 @@ Loaded Reference:	0.001 seconds.
 Loading index for chunk 1-1, build 1
 Indexing threads started for block 0-1
 Indexing threads finished for block 0-1
-Generated Index:	0.286 seconds.
-Analyzed Index:   	3.811 seconds.
-Cleared Memory:    	0.165 seconds.
+Generated Index:	0.280 seconds.
+Analyzed Index:   	3.579 seconds.
+Cleared Memory:    	0.169 seconds.
 Processing reads in paired-ended mode.
 Started read stream.
 Started 56 mapping threads.
@@ -35,9 +35,9 @@ Minimum Score Ratio:  	0.56
 Mapping Mode:         	normal
 Reads Used:           	494	(139605 bases)
 
-Mapping:          	0.871 seconds.
-Reads/sec:       	567.38
-kBases/sec:      	160.34
+Mapping:          	0.809 seconds.
+Reads/sec:       	610.50
+kBases/sec:      	172.53
 
 
 Pairing data:   	pct pairs	num pairs 	pct bases	   num bases
@@ -84,4 +84,4 @@ Del Rate:        	     NaN% 	        0 	     NaN% 	           0
 Ins Rate:        	     NaN% 	        0 	     NaN% 	           0
 N Rate:          	     NaN% 	        0 	     NaN% 	           0
 
-Total time:     	5.230 seconds.
+Total time:     	4.929 seconds.

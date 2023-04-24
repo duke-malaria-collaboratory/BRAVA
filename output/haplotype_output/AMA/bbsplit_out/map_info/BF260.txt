@@ -3,7 +3,7 @@ Executing align2.BBSplitter [ow=t, fastareadlen=500, minhits=1, minratio=0.56, m
 
 Converted arguments to [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=/home/kh455/haplotype_calling_pipeline/output/trimmed_reads/1/BF260.1.fastq.gz, in2=/home/kh455/haplotype_calling_pipeline/output/trimmed_reads/2/BF260.2.fastq.gz, basename=BF260_%_#.fastq, overwrite=true, nodisk, path=/home/kh455/haplotype_calling_pipeline/output/haplotype_output/AMA/bbsplit_out, ref_AMA=input/refs/AMA/AMA.fasta]
 Merged reference file /home/kh455/haplotype_calling_pipeline/output/haplotype_output/AMA/bbsplit_out/ref/genome/1/merged_ref_64917.fa.gz already exists; skipping merge.
-Ref merge time:     	0.051 seconds.
+Ref merge time:     	0.061 seconds.
 Executing align2.BBMap [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=/home/kh455/haplotype_calling_pipeline/output/trimmed_reads/1/BF260.1.fastq.gz, in2=/home/kh455/haplotype_calling_pipeline/output/trimmed_reads/2/BF260.2.fastq.gz, overwrite=true, nodisk, ref=/home/kh455/haplotype_calling_pipeline/output/haplotype_output/AMA/bbsplit_out/ref/genome/1/merged_ref_64917.fa.gz, out_AMA=BF260_AMA_#.fastq]
 Version 39.01
 
@@ -18,9 +18,9 @@ Loaded Reference:	0.001 seconds.
 Loading index for chunk 1-1, build 1
 Indexing threads started for block 0-1
 Indexing threads finished for block 0-1
-Generated Index:	0.296 seconds.
-Analyzed Index:   	3.439 seconds.
-Cleared Memory:    	0.196 seconds.
+Generated Index:	0.471 seconds.
+Analyzed Index:   	3.536 seconds.
+Cleared Memory:    	0.176 seconds.
 Processing reads in paired-ended mode.
 Started read stream.
 Started 56 mapping threads.
@@ -35,9 +35,9 @@ Minimum Score Ratio:  	0.56
 Mapping Mode:         	normal
 Reads Used:           	484	(137745 bases)
 
-Mapping:          	0.930 seconds.
-Reads/sec:       	520.69
-kBases/sec:      	148.19
+Mapping:          	0.814 seconds.
+Reads/sec:       	594.69
+kBases/sec:      	169.25
 
 
 Pairing data:   	pct pairs	num pairs 	pct bases	   num bases
@@ -84,4 +84,4 @@ Del Rate:        	     NaN% 	        0 	     NaN% 	           0
 Ins Rate:        	     NaN% 	        0 	     NaN% 	           0
 N Rate:          	     NaN% 	        0 	     NaN% 	           0
 
-Total time:     	4.952 seconds.
+Total time:     	5.088 seconds.

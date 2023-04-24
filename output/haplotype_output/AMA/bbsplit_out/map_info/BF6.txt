@@ -14,13 +14,13 @@ Executing dna.FastaToChromArrays2 [/home/kh455/haplotype_calling_pipeline/output
 Set genScaffoldInfo=true
 Set genome to 1
 
-Loaded Reference:	0.001 seconds.
+Loaded Reference:	0.000 seconds.
 Loading index for chunk 1-1, build 1
 Indexing threads started for block 0-1
 Indexing threads finished for block 0-1
-Generated Index:	0.236 seconds.
-Analyzed Index:   	3.754 seconds.
-Cleared Memory:    	0.186 seconds.
+Generated Index:	0.286 seconds.
+Analyzed Index:   	3.713 seconds.
+Cleared Memory:    	0.213 seconds.
 Processing reads in paired-ended mode.
 Started read stream.
 Started 56 mapping threads.
@@ -35,9 +35,9 @@ Minimum Score Ratio:  	0.56
 Mapping Mode:         	normal
 Reads Used:           	61726	(16367236 bases)
 
-Mapping:          	11.815 seconds.
-Reads/sec:       	5224.21
-kBases/sec:      	1385.25
+Mapping:          	10.077 seconds.
+Reads/sec:       	6125.66
+kBases/sec:      	1624.28
 
 
 Pairing data:   	pct pairs	num pairs 	pct bases	   num bases
@@ -84,4 +84,4 @@ Del Rate:        	  0.5621% 	       82 	  0.0023% 	          89
 Ins Rate:        	  0.0137% 	        2 	  0.0001% 	           2
 N Rate:          	  0.0000% 	        0 	  0.0000% 	           0
 
-Total time:     	16.071 seconds.
+Total time:     	14.376 seconds.

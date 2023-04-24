@@ -44,3 +44,4 @@ pairedReadFiles2 = getReads(pair2)
 
 # call fastqc
 QCreads(pair1, pair2, out + "/fastqc_out", pairedReadFiles1, pairedReadFiles2, "fastq")
+os.system('cp config/config.yaml {}/config.txt'.format(out))
