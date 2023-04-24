@@ -34,8 +34,8 @@ rule all:
 		# expand("{target}/{out}/haplotype_output/{target}_haplotype_table_censored_final_version.csv", out=OUT, target=TARGET),
 		# expand("out/trim_summaries.txt", out=OUT),
 		# expand("{out}/dr_depths_freqs.csv", out=OUT),
-		#expand("{target}/out/fastq/all_samples/", target=HAPLOTYPE_CALLING),
-		#expand("{root}/output/multiqc_report.html", root=ROOT),
+		# expand("{target}/out/fastq/all_samples/", target=HAPLOTYPE_CALLING),
+		expand("{root}/output/multiqc_report.html", root=ROOT),
 		expand("{root}/output/variant_output/dr_depths_freqs.csv", root=ROOT) if (len(VARIANT_CALLING) > 0) else [],
 		expand("{root}/output/haplotype_output/long_summary.csv", root=ROOT) if (len(HAPLOTYPE_CALLING) > 0) else [],
 
@@ -204,9 +204,22 @@ if (len(HAPLOTYPE_CALLING) > 0):
 		script:
 			"{params.rscript}"
 
+	rule merge_read_tracking:
+		input:
+			"{root}/output/haplotype_output/{target}/optimize_reads_out/{target}_final_track_reads_through_pipeline.csv",
+		output:
+			track_reads_through_dada2="{root}/output/haplotype_output/{target}/optimize_reads_out/{target}_track_reads_through_dada2.csv",
+		params:
+			track_reads_through_pipeline="{root}/output/haplotype_output/{target}/optimize_reads_out/{target}_final_track_reads_through_pipeline.csv",
+			trim_filter_path="{root}/output/haplotype_output/{target}/trim_filter_out/{target}",
+			final_q_value="{root}/output/haplotype_output/{target}/optimize_reads_out/{target}_final_q_value",
+			rscript="scripts/step11_merge_read_tracking.R",
+		script:
+			"{params.rscript}"
+
 	rule censor_haplotypes:
 		input:
-			input_file="{root}/output/haplotype_output/{target}/optimize_reads_out/{target}_final_haplotypes.rds",
+			input_file="{root}/output/haplotype_output/{target}/optimize_reads_out/{target}_track_reads_through_dada2.csv",
 			lengths="{root}/output/marker_lengths.csv",
 		output:
 			precensored_haplotype_table="{root}/output/haplotype_output/{target}/haplotypes/{target}_haplotype_table_precensored.csv",
@@ -222,7 +235,7 @@ if (len(HAPLOTYPE_CALLING) > 0):
 			proportion=PROPORTION,
 			marker_lengths="{root}/output/marker_lengths.csv",
 			ratio=READ_DEPTH_RATIO,
-			rscript="scripts/step11_haplotype_censoring.R",
+			rscript="scripts/step12_haplotype_censoring.R",
 		script:
 			"{params.rscript}"
 
@@ -240,7 +253,7 @@ if (len(HAPLOTYPE_CALLING) > 0):
 			all_fastq_files="{root}/output/haplotype_output/*/bbsplit_out/mapped_reads/*fastq.gz",
 			all_filtered_files="{root}/output/haplotype_output/*/bbsplit_out/mapped_reads/final_filtered/*",
 		script:
-			"scripts/step12_get_read_summaries.sh"
+			"scripts/step13_get_read_summaries.sh"
 
 	rule create_summaries:
 		input:
@@ -254,6 +267,6 @@ if (len(HAPLOTYPE_CALLING) > 0):
 			pre_filt_fastq_counts="{root}/output/haplotype_output/filtered_dada2/pre-filt_fastq_read_counts.txt",
 			filt_fastq_counts="{root}/output/haplotype_output/filtered_dada2/filt_fastq_read_counts.txt",
 			all_filtered_files="{root}/output/haplotype_output//bbsplit_out/mapped_reads/final_filtered/.*",
-			rscript="scripts/step13_create_summaries.R",
+			rscript="scripts/step14_create_summaries.R",
 		script:
 			"{params.rscript}"

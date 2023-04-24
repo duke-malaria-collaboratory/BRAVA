@@ -50,6 +50,8 @@ These first three rules are called for the given input data, regardless of wheth
 
 `optimize_reads` finds the quality score that produces the highest number of read counts and uses only the filtered reads created using that quality score.
 
+`merge_read_tracking` combines the read count files from the previous three rules into one table that shows the number of reads at different points of the workflow.
+
 `censor_haplotypes` censors falsely detected haplotypes. Censoring criteria is applied in this order:
 1. Haplotypes that occur in < 250 of the sample’s reads are removed. You can change this criteria in the config file ("read_depth").
 2. Haplotypes that occur in < 3% of the sample’s reads are removed. You can change this criteria in the config file ("proportion").
@@ -111,6 +113,7 @@ These first three rules are called for the given input data, regardless of wheth
     - `forward`: the path to the file with the list of forward primers.
     - `rev`: the path to the file with the list of reverse primers.
     - `variant_table`: the path to the table that holds positions of interest for each target ran through variant calling.
+    - `root`: the path to your desired output directory.
     - `truncQ_values`: the list of values of truncQ to be used in the filterAndTrim function to find the optimal truncQ value.
     - `cutoff`: the cutoff for which samples with less than this number of reads after sampling should be removed.
     - `seed`: the seed of R's random number generator for the purpose of obtaining a reproducible random result.
@@ -354,6 +357,41 @@ And the final AMA trim and filter table looked like this:
 |BF7   |11049 |11049 |10773  |
 |BF8   |10314 |10314 |10314  |
 |BF9   |10549 |10549 |10549  |
+
+`merge_read_tracking` should add a file `{target}_track_reads_through_dada2.csv` to the optimize reads directory. This file combines the trim and filter table from the `trim_and_filter` rule that corresponds to the optimal q value and the `{target}_final_track_reads_through_pipeline` table that was produced in the last step.
+
+With our small sample, the AMA track_reads_through_dada2 table looked like this:
+
+|      |sample|reads.in|reads.out|merged|tabled|nonchim|
+|------|------|--------|---------|------|------|-------|
+|1     |BF1   |13072   |11777    |11768 |11768 |11768  |
+|2     |BF10  |14875   |13384    |13377 |13377 |13377  |
+|3     |BF2   |15269   |13718    |13681 |13681 |13681  |
+|4     |BF246 |0       |0        |NA    |NA    |NA     |
+|5     |BF247 |0       |0        |NA    |NA    |NA     |
+|6     |BF248 |0       |0        |NA    |NA    |NA     |
+|7     |BF249 |0       |0        |NA    |NA    |NA     |
+|8     |BF250 |0       |0        |NA    |NA    |NA     |
+|9     |BF251 |0       |0        |NA    |NA    |NA     |
+|10    |BF252 |0       |0        |NA    |NA    |NA     |
+|11    |BF253 |0       |0        |NA    |NA    |NA     |
+|12    |BF254 |0       |0        |NA    |NA    |NA     |
+|13    |BF255 |0       |0        |NA    |NA    |NA     |
+|14    |BF256 |0       |0        |NA    |NA    |NA     |
+|15    |BF257 |0       |0        |NA    |NA    |NA     |
+|16    |BF258 |0       |0        |NA    |NA    |NA     |
+|17    |BF259 |0       |0        |NA    |NA    |NA     |
+|18    |BF260 |0       |0        |NA    |NA    |NA     |
+|19    |BF261 |0       |0        |NA    |NA    |NA     |
+|20    |BF262 |0       |0        |NA    |NA    |NA     |
+|21    |BF263 |0       |0        |NA    |NA    |NA     |
+|22    |BF3   |10116   |8491     |8450  |8450  |8450   |
+|23    |BF4   |13672   |12226    |12211 |12211 |12211  |
+|24    |BF5   |12650   |11119    |10584 |10584 |10360  |
+|25    |BF6   |14591   |13085    |13078 |13078 |13078  |
+|26    |BF7   |12760   |11350    |11049 |11049 |10773  |
+|27    |BF8   |11474   |10326    |10314 |10314 |10314  |
+|28    |BF9   |12432   |10560    |10549 |10549 |10549  |
 
 `censor_haplotypes` should produce a `haplotypes` folder for each target with two files `{target}_haplotype_table_precensored.csv` and `{target}_haplotype_table_censored_final_version.csv`. It should also produce a `sequences` folder with four files: `{target}_snps_between_haps_within_samples.fasta`, `{target}_unique_seqs.fasta`, `{target}_aligned_seqs.fasta`, and `{target}_unique_seqs_final_censored.fasta`.
 - `{target}_haplotype_table_precensored.csv`: outputs the haplotype data set prior to beginning the censoring process (essentially `{target}_haplotypes.rds` in a formatted csv file). 

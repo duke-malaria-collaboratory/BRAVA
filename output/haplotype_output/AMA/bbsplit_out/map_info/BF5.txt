@@ -3,7 +3,7 @@ Executing align2.BBSplitter [ow=t, fastareadlen=500, minhits=1, minratio=0.56, m
 
 Converted arguments to [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=/home/kh455/haplotype_calling_pipeline/output/trimmed_reads/1/BF5.1.fastq.gz, in2=/home/kh455/haplotype_calling_pipeline/output/trimmed_reads/2/BF5.2.fastq.gz, basename=BF5_%_#.fastq, overwrite=true, nodisk, path=/home/kh455/haplotype_calling_pipeline/output/haplotype_output/AMA/bbsplit_out, ref_AMA=input/refs/AMA/AMA.fasta]
 Merged reference file /home/kh455/haplotype_calling_pipeline/output/haplotype_output/AMA/bbsplit_out/ref/genome/1/merged_ref_64917.fa.gz already exists; skipping merge.
-Ref merge time:     	0.041 seconds.
+Ref merge time:     	0.064 seconds.
 Executing align2.BBMap [ow=t, fastareadlen=500, minhits=1, minratio=0.56, maxindel=20, qtrim=rl, untrim=t, trimq=6, in=/home/kh455/haplotype_calling_pipeline/output/trimmed_reads/1/BF5.1.fastq.gz, in2=/home/kh455/haplotype_calling_pipeline/output/trimmed_reads/2/BF5.2.fastq.gz, overwrite=true, nodisk, ref=/home/kh455/haplotype_calling_pipeline/output/haplotype_output/AMA/bbsplit_out/ref/genome/1/merged_ref_64917.fa.gz, out_AMA=BF5_AMA_#.fastq]
 Version 39.01
 
@@ -14,13 +14,13 @@ Executing dna.FastaToChromArrays2 [/home/kh455/haplotype_calling_pipeline/output
 Set genScaffoldInfo=true
 Set genome to 1
 
-Loaded Reference:	0.000 seconds.
+Loaded Reference:	0.002 seconds.
 Loading index for chunk 1-1, build 1
 Indexing threads started for block 0-1
 Indexing threads finished for block 0-1
-Generated Index:	0.246 seconds.
-Analyzed Index:   	3.043 seconds.
-Cleared Memory:    	0.196 seconds.
+Generated Index:	0.324 seconds.
+Analyzed Index:   	3.748 seconds.
+Cleared Memory:    	0.205 seconds.
 Processing reads in paired-ended mode.
 Started read stream.
 Started 56 mapping threads.
@@ -35,9 +35,9 @@ Minimum Score Ratio:  	0.56
 Mapping Mode:         	normal
 Reads Used:           	58694	(15485703 bases)
 
-Mapping:          	14.336 seconds.
-Reads/sec:       	4094.06
-kBases/sec:      	1080.17
+Mapping:          	13.274 seconds.
+Reads/sec:       	4421.63
+kBases/sec:      	1166.59
 
 
 Pairing data:   	pct pairs	num pairs 	pct bases	   num bases
@@ -84,4 +84,4 @@ Del Rate:        	  0.4744% 	       60 	  0.0019% 	          63
 Ins Rate:        	  0.0870% 	       11 	  0.0003% 	          11
 N Rate:          	  0.0000% 	        0 	  0.0000% 	           0
 
-Total time:     	17.902 seconds.
+Total time:     	17.688 seconds.
