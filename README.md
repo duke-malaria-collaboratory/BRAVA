@@ -190,7 +190,7 @@ These first three rules are called for the given input data, regardless of wheth
 
 Below shows what output files looked like after running this pipeline with a small sample of haplotypes.
 
-`call_fastqc` should produce an `output` directory with a `fastqc_out` folder that contains FastQC reports for each input fastq file. This allows you to visualize and assess quality collectively across all reads within a sample. To open the .zip files, download and extract the files.
+`call_fastqc` should produce an `output` directory with a `fastqc_out` folder that contains FastQC reports for each input fastq file. This allows you to visualize and assess quality collectively across all reads within a sample. To open the .zip files, download and extract the files. A copy of the config.yaml file will also be added to the output folder so that the parameters for each run can be saved.
 
 Example of FastQC output files for a single sample: `BF1_S1_L001_R1_001_fastqc.html`, `BF1_S1_L001_R1_001_fastqc.zip`, `BF1_S1_L001_R2_001_fastqc.html`, `BF1_S1_L001_R2_001_fastqc.zip`
 
