@@ -97,7 +97,7 @@ These first three rules are called for the given input data, regardless of wheth
     1. Finally, create the environment and activate it:
     
        ``` sh
-       mamba env create -f environment.yaml # you only have to do this once
+       mamba env create -f config/environment.yaml # you only have to do this once
        conda activate haplotype_calling # you have to do this every time
        ```
        
