@@ -68,7 +68,7 @@ These first three rules are called for the given input data, regardless of wheth
 1. Clone or download this repo.
 
     ``` sh
-    git clone https://github.com/kathiehuang/haplotype_calling_pipeline.git
+    git clone https://github.com/duke-malaria-collaboratory/haplotype_calling_pipeline.git
     ```
     Alternatively, if you're viewing this on GitHub,
     you can click the green `Use this template` button to create
