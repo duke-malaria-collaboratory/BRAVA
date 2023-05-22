@@ -7,6 +7,7 @@
 #### --------- load packages ----------------- ####
 library(readr)
 library(dplyr)
+library(tibble)
 library(dada2)
 library(stringr)
 library(Biostrings)
@@ -18,9 +19,9 @@ library(sjmisc)
 #### ------- read in haplotype output -------------- ####
 
 # read in the haplotype data set
-data = read_rds(snakemake@params[["haplotypes"]])
+data = read_csv(snakemake@params[["haplotypes"]]) %>% column_to_rownames(var = "seq_id")
 # retain input info for summary comparison later
-old_data = read_rds(snakemake@params[["haplotypes"]])
+old_data = read_csv(snakemake@params[["haplotypes"]]) %>% column_to_rownames(var = "seq_id")
 old_newcolnames = c(1:ncol(old_data))
 old_pastedcolnames = rep(NA,length(old_newcolnames))
 for (i in 1:length(old_newcolnames)){
@@ -222,7 +223,7 @@ haplotype_num_summary = data.frame("haplotype_ids" = haplotype.names, "haplotype
 # remove haplotypes with 0 reads after censoring
 haplotype_num_summary = haplotype_num_summary[which(haplotype_num_summary$total_reads_across_samples>0),]
 
-# enforce censoring to rds data set
+# enforce censoring to data set
 data = data[,c(haplotype_num_summary$haplotype_ids)]
 # write out the haplotypes results as a fasta
 uniquesToFasta(getUniques(data), fout=snakemake@output[["unique_seqs"]], ids=paste0("Seq", seq(length(getUniques(data)))))
@@ -297,7 +298,7 @@ filtered_variant_table = as.data.frame(dnaMatrix)
 dnaVector = apply(filtered_variant_table,1,paste,collapse="")
 dnaVector = lapply(dnaVector, toupper)
 
-# enforce censoring to rds data set
+# enforce censoring to data set
 data = data[ , which(colnames(data) %in% dnaVector), drop = FALSE]
 
 ### ---- read back in that haplotype sequence file
@@ -359,7 +360,7 @@ haplotype_num_summary = data.frame("haplotype_ids" = haplotype.names, "haplotype
 # remove haplotypes with 0 reads after censoring
 haplotype_num_summary = haplotype_num_summary[which(haplotype_num_summary$total_reads_across_samples>0),]
 
-# enforce censoring to rds data set
+# enforce censoring to data set
 data = data[,c(haplotype_num_summary$haplotype_ids), drop = FALSE]
 
 # write out the haplotypes results as a fasta

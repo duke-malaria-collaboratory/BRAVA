@@ -13,6 +13,7 @@
 
 # load the dada2 library
 library("dada2")
+library(tidyverse)
 
 # read in the path to your folder of fastq files
 path <- snakemake@params[["mapped_reads"]]
@@ -51,11 +52,16 @@ if (!any(duplicated(c(fnFs, fnRs)))) {
   if(!identical(sample.names, sample.namesR)) stop("Forward and reverse files do not match.")
   names(filtFs) <- sample.names
   names(filtRs) <- sample.names
-  # set the random seed
+  print(length(filtFs))
+  print(length(filtRs))
+# set the random seed
   set.seed(snakemake@params[["seed"]])
   # learn the error rates for your amplicon data set
+  print("before errF")
   errF <- learnErrors(filtFs, multithread=TRUE)
+  print("after errF")
   errR <- learnErrors(filtRs, multithread=TRUE)
+  print("after errR")
 
   # Sample inference and merger of paired-end reads
   sample.names <- names(filtFs)
@@ -93,7 +99,7 @@ if (!any(duplicated(c(fnFs, fnRs)))) {
   # it is not uncommon for a majority of the sequence variants to be removed (which we observed)
 
   # write out the results without chimeras
-  saveRDS(seqtab.nochim, snakemake@output[["results"]])
+  write_csv(data.frame(seqtab.nochim)  %>% rownames_to_column(var = "seq_id"), snakemake@output[["results"]])
 
   # track reads through the pipeline
   # look at the number of reads that made it through each step in the pipeline

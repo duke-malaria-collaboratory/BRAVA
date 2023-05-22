@@ -35,8 +35,8 @@ rule all:
 		# expand("out/trim_summaries.txt", out=OUT),
 		# expand("{out}/dr_depths_freqs.csv", out=OUT),
 		# expand("{target}/out/fastq/all_samples/", target=HAPLOTYPE_CALLING),
-		expand("{root}/output/multiqc_report.html", root=ROOT),
-		expand("{root}/output/variant_output/dr_depths_freqs.csv", root=ROOT) if (len(VARIANT_CALLING) > 0) else [],
+#		expand("{root}/output/multiqc_report.html", root=ROOT),
+#		expand("{root}/output/variant_output/dr_depths_freqs.csv", root=ROOT) if (len(VARIANT_CALLING) > 0) else [],
 		expand("{root}/output/haplotype_output/long_summary.csv", root=ROOT) if (len(HAPLOTYPE_CALLING) > 0) else [],
 
 rule call_fastqc:
@@ -68,15 +68,15 @@ rule call_trimmomatic:
 	script:
 		"{params.pyscript}"
 
-rule generate_multiqc_report:
-	input:
-		"{root}/output/trimmed_reads/",
-	output:
-		"{root}/output/multiqc_report.html",
-	params:
-		out="{root}/output",
-	shell:
-		"multiqc . --outdir {params.out}"
+#rule generate_multiqc_report:
+#	input:
+#		"{root}/output/trimmed_reads/",
+#	output:
+#		"{root}/output/multiqc_report.html",
+#	params:
+#		out="{root}/output",
+#	shell:
+#		"multiqc . --outdir {params.out}"
 
 # variant calling
 if (len(VARIANT_CALLING) > 0):
@@ -170,7 +170,7 @@ if (len(HAPLOTYPE_CALLING) > 0):
 		input:
 			"{root}/output/haplotype_output/{target}/trim_filter_out/{target}_{q_values}_trim_and_filter_table",
 		output:
-			results="{root}/output/haplotype_output/{target}/{target}_{q_values}_haplotypes.rds",
+			results="{root}/output/haplotype_output/{target}/trim_filter_out/{target}_{q_values}_haplotypes.csv",
 			reads_table="{root}/output/haplotype_output/{target}/trim_filter_out/{target}_{q_values}_track_reads_through_pipeline.csv",
 		params:
 			mapped_reads="{root}/output/haplotype_output/{target}/bbsplit_out/mapped_reads",
@@ -190,12 +190,12 @@ if (len(HAPLOTYPE_CALLING) > 0):
 			max_read_count="{root}/output/haplotype_output/{target}/optimize_reads_out/{target}_max_read_count",
 			final_reads_table="{root}/output/haplotype_output/{target}/optimize_reads_out/{target}_final_track_reads_through_pipeline.csv",
 			final_q_value="{root}/output/haplotype_output/{target}/optimize_reads_out/{target}_final_q_value",
-			final_haplotype_table="{root}/output/haplotype_output/{target}/optimize_reads_out/{target}_final_haplotypes.rds",
+			final_haplotype_table="{root}/output/haplotype_output/{target}/optimize_reads_out/{target}_final_haplotypes.csv",
 		params:
 			out="out",
 			target="{target}",
 			trim_filter_path="{root}/output/haplotype_output/{target}/trim_filter_out/{target}",
-			haplotype_output_path="{root}/output/haplotype_output/{target}/{target}",
+			haplotype_output_path="{root}/output/haplotype_output/{target}/trim_filter_out/{target}",
 			read_count="{root}/output/haplotype_output/{target}/trim_filter_out/{target}_read_count",
 			max_read_count="{root}/output/haplotype_output/{target}/optimize_reads_out/{target}_max_read_count",
 			mapped_reads="{root}/output/haplotype_output/{target}/bbsplit_out/mapped_reads",
@@ -230,7 +230,7 @@ if (len(HAPLOTYPE_CALLING) > 0):
 			final_haplotype_table="{root}/output/haplotype_output/{target}/haplotypes/{target}_haplotype_table_censored_final_version.csv",
 		params:
 			target="{target}",
-			haplotypes="{root}/output/haplotype_output/{target}/optimize_reads_out/{target}_final_haplotypes.rds",
+			haplotypes="{root}/output/haplotype_output/{target}/optimize_reads_out/{target}_final_haplotypes.csv",
 			depth=READ_DEPTH,
 			proportion=PROPORTION,
 			marker_lengths="{root}/output/marker_lengths.csv",
