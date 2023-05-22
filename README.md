@@ -68,7 +68,7 @@ These first three rules are called for the given input data, regardless of wheth
 1. Clone or download this repo.
 
     ``` sh
-    git clone https://github.com/kathiehuang/haplotype_calling_pipeline.git
+    git clone https://github.com/duke-malaria-collaboratory/haplotype_calling_pipeline.git
     ```
     Alternatively, if you're viewing this on GitHub,
     you can click the green `Use this template` button to create
@@ -97,7 +97,7 @@ These first three rules are called for the given input data, regardless of wheth
     1. Finally, create the environment and activate it:
     
        ``` sh
-       mamba env create -f environment.yaml # you only have to do this once
+       mamba env create -f config/environment.yaml # you only have to do this once
        conda activate haplotype_calling # you have to do this every time
        ```
        
