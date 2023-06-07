@@ -12,11 +12,14 @@ dependencies:
   - fastqc=0.11.9
   - cutadapt=4.1
   - bbmap=39.01
-  - bioconductor-dada2=1.20.0
-  - r-base=4.1.2
-  - r-biocmanager=1.30.16
+  - r-base=4.1
+  - bioconductor-dada2=1.22.0
+  - bioconductor-biocgenerics=0.40.0
+  - bioconductor-msa=1.26.0
+  - bioconductor-GenomeInfoDb
+  - bioconductor-GenomeInfoDbData
+  - r-biocmanager=1.30.20
   - r-readr=2.1.2
-  - r-dplyr=1.0.10
   - clustalw=2.1
   - muscle=5.1
   - r-ape=5.6
@@ -27,7 +30,6 @@ dependencies:
   - r-rlang=1.1.1
   - r-cli=3.6.0
   - r-vctrs=0.6.2
-  - r-tidyselect=1.2.0
   - multiqc=1.14
   - bwa=0.7.17
   - bcftools=1.16
