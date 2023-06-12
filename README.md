@@ -2,7 +2,7 @@
 
 Overview: Using samples from amplicon deep sequencing from gene targets, call haplotypes or call variants.
 
-Method: Targeted amplicon deep sequencing which produces forward and reverse fastq files for each sample.
+Input data: forward and reverse fastq files for each sample from targeted amplicon deep sequencing.
 
 [Snakemake](https://snakemake.readthedocs.io/en/stable) is a workflow manager
 that enables massively parallel and reproducible
