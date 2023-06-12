@@ -1,6 +1,6 @@
-# Running the haplotype/variant calling pipeline with Snakemake
+# BRAVA: Basic and Rigorous Amplicon Variant Analyzer
 
-Overview: Using samples from amplicon deep sequencing from gene targets, either call haplotypes or call variants.
+Overview: Using samples from amplicon deep sequencing from gene targets, call haplotypes or call variants.
 
 Method: Targeted amplicon deep sequencing which produces forward and reverse fastq files for each sample.
 
