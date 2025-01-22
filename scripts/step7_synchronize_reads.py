@@ -60,7 +60,10 @@ def splitReads(refSeqs, refNames, out, read1, read2, read1Dir, read2Dir, target)
         sampleName2 = file2Split[0]
 
         if sampleName[i] == sampleName2:
-            os.system('bbsplit.sh -Xmx15g in={0}/{1} in2={2}/{3} ref={4} basename={5}_%_#.fastq >& {6}/map_info/{5}.txt overwrite=true nodisk path={6}'.format(read1Dir, read1[i], read2Dir, read2[i], refs, sampleName[i], out))
+            os.system('bbsplit.sh -Xmx15g in={0}/{1} in2={2}/{3} ref={4} basename={5}_%_#.fastq > {6}/map_info/{5}.txt overwrite=true nodisk path={6}'.format(read1Dir, read1[i], read2Dir, read2[i], refs, sampleName[i], out))
+
+        print("after bbsplit")
+
 
     for elem in refNames:
         os.system("mv *_{0}* {1}".format(target, out))
@@ -112,7 +115,9 @@ trim2 = snakemake.params["trimmed"] + "/2"
 trimReads1 = getReads(trim1)
 trimReads2 = getReads(trim2)
 
+print("before splitReads")
 splitReads(refSeqs, refNames, out, trimReads1, trimReads2, trim1, trim2, target)
+print("after splitReads")
 
 os.system('mkdir {}'.format(snakemake.params["mapped_reads"]))
 os.system('mv {0}/*.fastq.gz {1} && mv {2}/*.fastq.gz {1}'.format(snakemake.params["forward_samples"], snakemake.params["mapped_reads"], snakemake.params["reverse_samples"]))

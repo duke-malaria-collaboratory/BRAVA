@@ -85,7 +85,7 @@ for (i in 1:nrow(data)){
 haps_to_remove = rep(NA,ncol(data))
 print(marker_length)
 for (i in 1:ncol(data)) {
-  if (nchar(getSequences(data))[i] != marker_length) {
+  if (nchar(colnames(data))[i] != marker_length) {
     haps_to_remove[i] = i
   }
 }
@@ -123,7 +123,7 @@ print("Number of sequences:")
 ncol(data)
 
 # tally up the number of SNPs between all haplotype pairings
-uniquesToFasta(getUniques(data), fout=snakemake@output[["snps_between_haps"]], ids=paste0("Seq", seq(length(getUniques(data)))))
+uniquesToFasta(deframe(as.data.frame(table(colnames(data)))), fout=snakemake@output[["snps_between_haps"]], ids=paste0("Seq", seq(length(deframe(as.data.frame(table(colnames(data))))))))
 dna = readDNAStringSet(snakemake@output[["snps_between_haps"]])
 snp_output = stringDist(dna, method="hamming")
 snp_output = as.matrix(snp_output)
@@ -226,7 +226,7 @@ haplotype_num_summary = haplotype_num_summary[which(haplotype_num_summary$total_
 # enforce censoring to data set
 data = data[,c(haplotype_num_summary$haplotype_ids)]
 # write out the haplotypes results as a fasta
-uniquesToFasta(getUniques(data), fout=snakemake@output[["unique_seqs"]], ids=paste0("Seq", seq(length(getUniques(data)))))
+uniquesToFasta(deframe(as.data.frame(table(colnames(data)))), fout=snakemake@output[["unique_seqs"]], ids=paste0("Seq", seq(length(deframe(as.data.frame(table(colnames(data))))))))
 # created a sequence variant table with the haplotype sequences
 
 ### --- aligning sequences
@@ -364,7 +364,7 @@ haplotype_num_summary = haplotype_num_summary[which(haplotype_num_summary$total_
 data = data[,c(haplotype_num_summary$haplotype_ids), drop = FALSE]
 
 # write out the haplotypes results as a fasta
-uniquesToFasta(getUniques(data), fout=snakemake@output[["final_censored"]], ids=paste0("Seq", seq(length(getUniques(data)))))
+uniquesToFasta(deframe(as.data.frame(table(colnames(data)))), fout=snakemake@output[["final_censored"]], ids=paste0("Seq", seq(length(deframe(as.data.frame(table(colnames(data))))))))
 
 # rename the columns to be a unique haplotype column number
 newcolnames = c(1:ncol(data))
