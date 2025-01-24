@@ -219,21 +219,14 @@ if (len(HAPLOTYPE_CALLING) > 0):
 
 	rule censor_haplotypes:
 		input:
-			input_file="{root}/output/haplotype_output/{target}/optimize_reads_out/{target}_track_reads_through_dada2.csv",
+			haplotypes="{root}/output/haplotype_output/{target}/optimize_reads_out/{target}_final_haplotypes.csv",
 			lengths="{root}/output/marker_lengths.csv",
 		output:
 			precensored_haplotype_table="{root}/output/haplotype_output/{target}/haplotypes/{target}_haplotype_table_precensored.csv",
-			snps_between_haps="{root}/output/haplotype_output/{target}/sequences/{target}_snps_between_haps_within_samples.fasta",
-			unique_seqs="{root}/output/haplotype_output/{target}/sequences/{target}_unique_seqs.fasta",
-			aligned_seqs="{root}/output/haplotype_output/{target}/sequences/{target}_aligned_seqs.fasta",
-			final_censored="{root}/output/haplotype_output/{target}/sequences/{target}_unique_seqs_final_censored.fasta",
-			final_haplotype_table="{root}/output/haplotype_output/{target}/haplotypes/{target}_haplotype_table_censored_final_version.csv",
+			final_haplotype_table="{root}/output/haplotype_output/{target}/haplotypes/{target}_haplotype_table_censored.csv",
 		params:
-			target="{target}",
-			haplotypes="{root}/output/haplotype_output/{target}/optimize_reads_out/{target}_final_haplotypes.csv",
 			depth=READ_DEPTH,
 			proportion=PROPORTION,
-			marker_lengths="{root}/output/marker_lengths.csv",
 			ratio=READ_DEPTH_RATIO,
 			rscript="scripts/step12_haplotype_censoring.R",
 		script:
@@ -241,7 +234,7 @@ if (len(HAPLOTYPE_CALLING) > 0):
 
 	rule get_read_summaries:
 		input: 
-			expand("{{root}}/output/haplotype_output/{target}/sequences/{target}_unique_seqs_final_censored.fasta", target=HAPLOTYPE_CALLING),
+			expand("{{root}}/output/haplotype_output/{target}/haplotypes/{target}_haplotype_table_censored.csv", target=HAPLOTYPE_CALLING),
 		output:
 			pre_filt_fastq_counts="{root}/output/haplotype_output/filtered_dada2/pre-filt_fastq_read_counts.txt",
 			filt_fastq_counts="{root}/output/haplotype_output/filtered_dada2/filt_fastq_read_counts.txt",
