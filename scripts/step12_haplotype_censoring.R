@@ -8,7 +8,6 @@
 
 #### Packages
 library(msa)
-library(ape)
 library(reshape2)
 library(tidyverse)
 
@@ -37,7 +36,15 @@ sigma <- nucleotideSubstitutionMatrix(match = 2, mismatch = -1, baseOnly = TRUE)
 seqs_msa <- msa(dna_ss, substitutionMatrix = sigma, gapOpening = -8, gapExtension = -5)
 
 # get distances between sequences
-dists <- dist.dna(msaConvert(seqs_msa, 'ape::DNAbin'), 
+
+converted <- msaConvert(seqs_msa, 'ape::DNAbin')
+class(converted) <- "matrix"
+
+library(ape)
+converted <- as.DNAbin(converted)
+print(converted)
+
+dists <- dist.dna(converted, 
                   model = 'N', pairwise.deletion = TRUE, as.matrix = TRUE) %>% 
   melt() %>% 
   filter(Var1 != Var2) %>%
